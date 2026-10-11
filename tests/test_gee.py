@@ -62,3 +62,15 @@ def test_raster_window_uses_width_and_height():
     assert window.height == 800
     assert window.col_off == 1600
     assert window.row_off == 0
+
+
+def test_tile_extent_is_north_up_and_matches_chunk_position():
+    from safewindow.gee import tile_extent
+
+    grid = Grid(xmin=1000, ymax=5000, width=2473, height=2081, res=20)
+    transform, (left, bottom, right, top) = tile_extent(grid, (800, 800, 1600, 1600))
+
+    assert transform.e == -20            # north-up, not flipped
+    assert (left, top) == (1000 + 800 * 20, 5000 - 800 * 20)
+    assert (right - left, top - bottom) == (800 * 20, 800 * 20)
+    assert bottom < top

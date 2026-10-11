@@ -26,7 +26,7 @@ python -m venv .venv
 
 ## Live data
 
-The live-data pipeline requires Earth Engine and Earthdata authentication:
+The live-data pipeline requires Earth Engine authentication. Earthdata login is needed only for the optional MCDWD download in `02c_modis.py`.
 
 ```powershell
 earthengine authenticate
@@ -36,6 +36,32 @@ $env:EE_PROJECT="your-project-id"
 ```
 
 The project defaults to `data/live`. The synthetic package remains available in `data_demo` and is explicitly labelled as invented.
+
+## Results: May–July 2022 flood, Sunamganj
+
+All results come from 19 Sentinel-1 flood maps regenerated on 11 October 2026. That rerun followed a fix to the Earth Engine tile export: before it, every tile repeated the whole study area, so earlier outputs were invalid. Full method and limits: [data/live/science_methods.md](data/live/science_methods.md).
+
+**Flood extent vs independent UNOSAT analyses** (other radar sensors, not used to build or tune SafeWindow):
+
+| Reference | Area compared | IoU (95% CI) | Precision | Recall | F1 |
+|---|---|---|---|---|---|
+| Chaohu-1, 25 May 2022 | 25.1 km² | 0.835 (0.786–0.876) | 0.930 | 0.891 | 0.910 |
+| RCM-1, 18 Jun 2022 | 98.4 km² | 0.808 (0.788–0.829) | 0.953 | 0.842 | 0.894 |
+
+The references cover only about 8% of the 1,265 km² study area. They are preliminary satellite analyses, not field ground truth.
+
+**Village isolation at the 20% cut threshold:**
+
+| Outcome | Villages |
+|---|---|
+| Isolated at some point | 5 (catchment population about 187,800, WorldPop 2020) |
+| Uncertain (roads under missing radar coverage) | 8 |
+| Boat-dependent | 2 |
+| Never isolated | 1 |
+
+The same five villages are isolated at the 10%, 20% and 40% thresholds. These village results have not been checked against field reports.
+
+To reproduce the benchmark, run `scripts/build_benchmark.py`. It writes `benchmark.csv`, `benchmark_manifest.json`, `model_evaluation.csv` and `model_evaluation.json`. Sources and parameters are listed in [data/live/source_manifest.json](data/live/source_manifest.json).
 
 ## Tests
 
@@ -69,6 +95,13 @@ The separate FloodNet classifier is retained for classifier research. It is not 
 
 ## Submission readiness
 
-The codebase provides a complete reproducible research prototype, but it is **not yet NASA Space Challenge submission-ready**. A submission requires an audited real-world benchmark, fixed evaluation splits, independent review, source provenance, and recorded scientific metrics.
+The repository now contains real-region results, an independent flood-extent benchmark with metrics and confidence intervals, a source manifest and a methods document.
 
-See [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md) for the evidence gate and [scripts/verify_submission.py](scripts/verify_submission.py) for the submission verification command.
+Three things are still open:
+- an independent scientific review;
+- hand-verified shelters;
+- a check of village isolation dates against field or news reports.
+
+`scripts/verify_submission.py data/live` therefore still fails, but only because no independent review is recorded.
+
+See [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md) for the evidence gate.

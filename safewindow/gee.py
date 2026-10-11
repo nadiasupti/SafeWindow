@@ -74,6 +74,20 @@ def chunk_bounds(grid: Grid, tile_width: int = 800, tile_height: int = 800):
             yield (x, y, min(x + tile_width, grid.width), min(y + tile_height, grid.height))
 
 
+def tile_extent(grid: Grid, bounds):
+    """Affine transform and (left, bottom, right, top) of one raster chunk.
+
+    ``from_origin`` takes a positive y size, while ``grid.transform.e`` is
+    negative; passing it straight through flipped every tile."""
+    import rasterio
+
+    x0, y0, x1, y1 = bounds
+    t = grid.transform
+    transform = rasterio.transform.from_origin(t.c + x0 * t.a, t.f + y0 * t.e, t.a, -t.e)
+    left, top = transform.c, transform.f
+    return transform, (left, top + transform.e * (y1 - y0), left + transform.a * (x1 - x0), top)
+
+
 def raster_window(bounds):
     """Convert absolute tile bounds to Rasterio's width/height window."""
     import rasterio
@@ -111,8 +125,12 @@ def download_to_grid(
                        count=1, dtype=dtype, crs=grid.crs, transform=t,
                        nodata=nodata, compress="deflate") as dst:
         for x0, y0, x1, y1 in chunk_bounds(grid):
-            tile_transform = rasterio.transform.from_origin(
-                t.c + x0 * t.a, t.f + y0 * t.e, t.a, t.e)
+            tile_transform, (left, bottom, right, top) = tile_extent(grid, (x0, y0, x1, y1))
+            width, height = x1 - x0, y1 - y0
+            # Without an explicit region Earth Engine stretches the whole image
+            # footprint over every tile, so each tile repeated the full study area.
+            tile_region = ee.Geometry.Rectangle([left, bottom, right, top],
+                                                proj=grid.crs, geodesic=False)
             url = export_image.getDownloadURL({
                 "name": f"{name}_{x0}_{y0}",
                 "crs": grid.crs,
@@ -120,6 +138,7 @@ def download_to_grid(
                                  tile_transform.c, tile_transform.d,
                                  tile_transform.e, tile_transform.f],
                 "dimensions": f"{x1 - x0}x{y1 - y0}",
+                "region": tile_region,
                 "format": "GEO_TIFF",
             })
             try:

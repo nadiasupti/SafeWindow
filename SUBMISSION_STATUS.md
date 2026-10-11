@@ -2,58 +2,50 @@
 
 ## Status
 
-**Prototype ready; scientific submission not verified.**
+**Real-region results and an independent flood-extent benchmark are complete. An independent scientific review is still missing.**
 
-The repository contains a working, reproducible research prototype. It does not yet contain the evidence required to claim that SafeWindow is ready for NASA Space Challenge submission.
+Updated 11 October 2026, after the Earth Engine export bug was fixed and every flood map was regenerated. Outputs built before that date were invalid.
 
-## What is implemented
+## Evidence status
 
-- Date-aware road-isolation analysis.
-- Flood, rainfall, road, shelter, and population processing.
-- English and Bengali Streamlit interface.
-- Synthetic demo package.
-- Source provenance and artifact hashes.
-- Automated code and artifact tests.
-- A live-data build pipeline.
+| Requirement | Status |
+|---|---|
+| Working prototype | Complete |
+| Real-region flood maps | Complete: 19 Sentinel-1 dates, 16 May to 12 July 2022 |
+| Region-specific benchmark | Complete for flood extent: 2 independent UNOSAT references (Chaohu-1 25 May, RCM-1 18 Jun 2022), covering about 8% of the study area |
+| Fixed splits | Complete: both reference dates are test-only, nothing is tuned on them, results are also split by upazila |
+| Raw benchmark and evaluation tables | Complete: `benchmark.csv`, `model_evaluation.csv` |
+| Metrics, confusion matrix, uncertainty | Complete: IoU, precision, recall, F1, accuracy, block-bootstrap 95% CI (`model_evaluation.json`) |
+| Error distribution | Per upazila in `model_evaluation.csv` |
+| Source manifest | Complete: `source_manifest.json` |
+| Methods, assumptions, limitations | Complete: `science_methods.md` |
+| Reproducible commands | In `science_methods.md`, section 9 |
+| Independent scientific review | **Missing** |
+| Verified shelters | **Missing**: the 50 shelters are unverified OSM candidates |
+| Village-level validation (field or news reports) | **Missing** |
+| Submission deployment package | Blocked by the independent review |
 
-## Required evidence
-
-A submission release must contain all of the following:
-
-1. A versioned, region-specific benchmark with independent ground-truth labels.
-2. Fixed temporal and geographic evaluation splits.
-3. Raw benchmark and evaluation tables.
-4. Reproducible model training and evaluation commands.
-5. Metrics, confusion matrix, uncertainty, and error distributions.
-6. Independent scientific review and reviewer contact information.
-7. A complete source manifest with collection identifiers, dates, licenses, and processing parameters.
-8. A documented method that explains all assumptions and limitations.
-9. A deployment package built from the verified evidence directory.
+All evidence files are in `data/live/`.
 
 ## Evidence gate
-
-Run the following command after producing a verified release:
 
 ```powershell
 .venv\Scripts\python.exe scripts\verify_submission.py data/live
 ```
 
-The command exits with status 1 until every required evidence file exists and the submission status is explicitly `verified`.
+This currently fails with exactly two messages: no independent review is recorded, and the status is not `verified`. Both clear once a reviewer outside the team has checked `science_methods.md` and the benchmark. Record their name, affiliation, contact, date and summary in `data/live/submission_evidence.json`, then set `submission_status` to `verified`.
 
-## Current evidence status
+The NASA Space Apps site does not require this gate. It is the project's own standard for claiming scientific validity.
 
-| Requirement | Status |
-|---|---|
-| Working prototype | Complete |
-| Synthetic demo | Complete, but not scientific evidence |
-| Real-region benchmark | Missing |
-| Independent evaluation | Missing |
-| Fixed splits | Missing |
-| Model metrics and confusion matrix | Missing |
-| Source provenance | Incomplete |
-| Independent review | Missing |
-| Submission deployment package | Missing |
+## Claims that can be made
 
-## Scientific claims that must not be made
+- SafeWindow's Sentinel-1 flood maps agree with independent UNOSAT radar analyses at IoU 0.81–0.84, precision 0.93–0.95 and recall 0.84–0.89, on the areas both cover.
+- With the 20% cut threshold, 5 of 16 villages lose every road route to a shelter candidate at some point. The same 5 are isolated at the 10% and 40% thresholds.
 
-Do not describe the synthetic demo as real-world validation. Do not claim model accuracy, flood performance, or operational readiness without the corresponding audited benchmark and metrics.
+## Claims that must not be made
+
+- That isolation dates are validated: they are not checked against field reports.
+- That the shelters are real flood shelters: they are unverified OSM candidates.
+- That SafeWindow is an operational warning system.
+- That the synthetic demo is real-world validation.
+- That the FloodNet classifier's accuracy is evidence for the isolation results: it is a separate model.

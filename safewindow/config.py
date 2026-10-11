@@ -131,6 +131,14 @@ class Paths:
         return self
 
 
+def utf8_console() -> None:
+    """Let scripts print Bengali village names on a Windows (cp1252) console."""
+    import sys
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def get_paths() -> Paths:
     data = Path(os.environ.get("SAFEWINDOW_DATA_DIR", ROOT / DEFAULT_DATA_DIR))
     if not data.is_absolute():

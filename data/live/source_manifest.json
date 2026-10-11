@@ -1,0 +1,95 @@
+{
+  "project": "SafeWindow",
+  "region": "Sunamganj Sadar, Chhatak and Dowarabazar upazilas, Sunamganj District, Bangladesh",
+  "event": "May-July 2022 Sylhet division flood (UNOSAT event code FL20220525BGD)",
+  "grid": {"crs": "EPSG:32646", "resolution_m": 20, "width": 2473, "height": 2081,
+           "encoding": "0 dry, 1 flooded, 255 unknown"},
+  "sources": [
+    {
+      "name": "Sentinel-1 GRD",
+      "provider": "ESA Copernicus (Space Agency Partner)",
+      "identifier": "COPERNICUS/S1_GRD (Google Earth Engine)",
+      "used_for": "Flood extent on each acquisition date (primary flood source)",
+      "dates": "19 acquisitions, 2022-05-16 to 2022-07-12",
+      "license": "Copernicus Sentinel data, free and open (Copernicus data policy)",
+      "processing": {
+        "script": "pipeline/02a_sentinel1_gee.py",
+        "mode_polarisation": "IW, VV",
+        "speckle_filter": "30 m focal median",
+        "dry_reference": "median of 2022-02-01 to 2022-03-31, same relative orbit where available",
+        "threshold": "Otsu on the date's VV histogram (60 m sample); fallback -18 dB when Otsu falls outside -26..-12 dB",
+        "change_rule": "flooded only if at least 3 dB darker than the dry reference (excludes permanent water)",
+        "slope_mask": "slope > 5 degrees set dry (NASADEM)",
+        "coverage": "pixels outside the swath stay unknown"
+      }
+    },
+    {
+      "name": "NASADEM",
+      "provider": "NASA",
+      "identifier": "NASA/NASADEM_HGT/001 (Google Earth Engine)",
+      "used_for": "Slope mask that removes radar-shadow false positives in the Sentinel-1 flood map",
+      "license": "NASA open data, no restrictions",
+      "processing": {"script": "pipeline/02a_sentinel1_gee.py", "derived": "ee.Terrain.slope, threshold 5 degrees"}
+    },
+    {
+      "name": "GPM IMERG Final Run V07",
+      "provider": "NASA",
+      "identifier": "NASA/GPM_L3/IMERG_V07 (Google Earth Engine)",
+      "used_for": "Daily rainfall over Sunamganj and the upstream Meghalaya hills, shown in the app",
+      "dates": "2022-05-20 to 2022-06-30 (42 days)",
+      "license": "NASA open data, no restrictions",
+      "processing": {"script": "pipeline/04_rainfall_gpm.py",
+                     "boxes_lonlat": {"sunamganj": [90.95, 24.85, 91.75, 25.25],
+                                      "meghalaya_upstream": [91.30, 25.15, 92.10, 25.45]},
+                     "aggregation": "box mean, Bangladesh local days (UTC+6), mm/day"}
+    },
+    {
+      "name": "MODIS Terra surface reflectance MOD09GA v6.1",
+      "provider": "NASA",
+      "identifier": "MODIS/061/MOD09GA (Google Earth Engine)",
+      "used_for": "Optical flood-water proxy, tested; excluded from road cutting because 87-100% of the study area was cloud-masked on every date",
+      "dates": "same 19 dates as Sentinel-1",
+      "license": "NASA open data, no restrictions",
+      "processing": {"script": "pipeline/02c_modis.py --ee-process",
+                     "rule": "NDWI (bands 4 and 2) > 0.15 where the Feb-Mar 2022 baseline NDWI <= 0.15; state_1km cloud mask",
+                     "output": "processed/modis_flood_area.csv"}
+    },
+    {
+      "name": "WorldPop Global Project Population 100 m, 2020",
+      "provider": "WorldPop, University of Southampton",
+      "identifier": "WorldPop/GP/100m/pop, country BGD, year 2020 (Google Earth Engine)",
+      "used_for": "Population of each village catchment (Voronoi cell clipped to the study area)",
+      "license": "CC BY 4.0",
+      "processing": {"script": "pipeline/03b_population.py --worldpop-gee"}
+    },
+    {
+      "name": "OpenStreetMap",
+      "provider": "OpenStreetMap contributors",
+      "identifier": "OSM via osmnx (network_type='all'); upazila boundaries via osmnx geocoding",
+      "used_for": "Road network (21,542 junctions, 24,947 segments), 16 village/town points, 50 shelter candidates, study-area boundary",
+      "dates": "snapshot committed 2026-10-09 (commit e736108)",
+      "license": "ODbL 1.0",
+      "processing": {"scripts": ["pipeline/01_study_area.py", "pipeline/03_osm_roads_places.py"],
+                     "note": "Shelter candidates are unverified OSM schools, clinics and offices"}
+    },
+    {
+      "name": "UNOSAT flood analyses, event FL20220525BGD",
+      "provider": "UNITAR-UNOSAT",
+      "identifier": "Chaohu1_20220525_FloodExtent_Sylhet; RCM1_20220618_FloodExtent_Sylhet (with AnalysisExtent layers)",
+      "url": "https://unosat-maps.web.cern.ch/BD/FL20220525BGD/FL20220525BGD_SHP.zip",
+      "used_for": "Independent reference for the flood-extent benchmark only; never used to build SafeWindow maps",
+      "license": "CC BY-SA (as listed on HDX)",
+      "processing": {"script": "scripts/build_benchmark.py", "manifest": "benchmark_manifest.json"}
+    }
+  ],
+  "parameters": {
+    "road_check_point_spacing_m": 20,
+    "road_cut_threshold": 0.20,
+    "sensitivity_thresholds": [0.10, 0.20, 0.40],
+    "road_unknown_majority": 0.50,
+    "boat_dependent_distance_m": 500,
+    "shelter_snap_max_m": 1000,
+    "default_supply_days": 7,
+    "supply_days_range": [2, 14]
+  }
+}

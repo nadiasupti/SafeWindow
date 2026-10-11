@@ -33,6 +33,7 @@ def sensitivity(vs: pd.DataFrame, villages: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
+    config.utf8_console()
     paths = config.get_paths().ensure()
     nodes, edges = load_network(paths)
     villages = load_villages(paths)

@@ -102,6 +102,7 @@ def main():
     ap.add_argument("--worldpop-gee", action="store_true")
     ap.add_argument("--buildings", action="store_true")
     args = ap.parse_args()
+    config.utf8_console()
     paths = config.get_paths().ensure()
     sa = load_study_area(paths)
     area = sa.union_all()
