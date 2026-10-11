@@ -1,13 +1,15 @@
 """Build a current SafeWindow dataset from live public sources.
 
-Run after configuring Earth Engine and Earthdata credentials:
+Run after configuring Earth Engine credentials, into its own folder:
 
     earthengine authenticate
     $env:EE_PROJECT="your-project-id"
+    $env:SAFEWINDOW_DATA_DIR="data/current"
     python pipeline/10_build_live_data.py
 
-The generated files are written to data/live. The app uses this directory by
-default; data_demo remains available with SAFEWINDOW_DATA_DIR=data_demo.
+Files are written to the folder in SAFEWINDOW_DATA_DIR. The default, data/live,
+holds the May-July 2022 study results and the submission evidence, so the
+script refuses to rebuild it unless --overwrite-evidence is given.
 """
 from __future__ import annotations
 
@@ -21,19 +23,6 @@ from pathlib import Path
 from safewindow import config
 
 ROOT = Path(__file__).resolve().parent.parent
-STEPS = [
-    ("01_study_area.py", []),
-    ("03_osm_roads_places.py", []),
-    ("04_rainfall_gpm.py", []),
-    ("02c_modis.py", ["--register"]),
-    ("02a_sentinel1_gee.py", []),
-    ("02e_merge_flood.py", []),
-    ("05_cut_roads.py", []),
-    ("06_isolation.py", []),
-    ("07_timeline.py", []),
-    ("09_validate.py", []),
-    ("08_build_app_data.py", []),
-]
 
 
 def run(command: list[str]) -> None:
@@ -48,9 +37,16 @@ def main() -> None:
     ap.add_argument("--days", type=int, default=14, help="number of days ending yesterday")
     ap.add_argument("--start", help="optional first date in YYYY-MM-DD format")
     ap.add_argument("--end", help="optional last date in YYYY-MM-DD format")
+    ap.add_argument("--overwrite-evidence", action="store_true",
+                    help="allow rebuilding a data folder that holds submission evidence")
     args = ap.parse_args()
 
-    paths = config.get_paths().ensure()
+    paths = config.get_paths()
+    if (paths.data / "submission_evidence.json").exists() and not args.overwrite_evidence:
+        raise SystemExit(f"{paths.data} holds the 2022 study results and submission evidence. Build current data in "
+                         "another folder (for example $env:SAFEWINDOW_DATA_DIR=\"data/current\"), "
+                         "or pass --overwrite-evidence.")
+    paths = paths.ensure()
     end = date.today() - timedelta(days=1)
     start = date.fromisoformat(args.start) if args.start else end - timedelta(days=args.days - 1)
     if args.end:
@@ -68,6 +64,7 @@ def main() -> None:
     run([sys.executable, str(ROOT / "pipeline" / "01_study_area.py")])
     run([sys.executable, str(ROOT / "pipeline" / "03_osm_roads_places.py")])
     run([sys.executable, str(ROOT / "pipeline" / "03b_population.py"), "--worldpop-gee"])
+    run([sys.executable, str(ROOT / "pipeline" / "03c_bridges.py")])
     run([sys.executable, str(ROOT / "pipeline" / "04_rainfall_gpm.py"), "--start", start.isoformat(), "--end", end.isoformat()])
     dry_start = (start - timedelta(days=90)).isoformat()
     dry_end = (start - timedelta(days=1)).isoformat()

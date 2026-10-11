@@ -13,7 +13,6 @@ import argparse
 
 import pandas as pd
 
-from safewindow import config
 from safewindow.flood import merge_by_date
 
 

@@ -126,7 +126,6 @@ def download_to_grid(
                        nodata=nodata, compress="deflate") as dst:
         for x0, y0, x1, y1 in chunk_bounds(grid):
             tile_transform, (left, bottom, right, top) = tile_extent(grid, (x0, y0, x1, y1))
-            width, height = x1 - x0, y1 - y0
             # Without an explicit region Earth Engine stretches the whole image
             # footprint over every tile, so each tile repeated the full study area.
             tile_region = ee.Geometry.Rectangle([left, bottom, right, top],

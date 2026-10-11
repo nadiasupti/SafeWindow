@@ -1,6 +1,6 @@
 {
   "project": "SafeWindow",
-  "generated_at_utc": "2026-10-11T17:37:17.965846+00:00",
+  "generated_at_utc": "2026-10-11T18:42:28.647426+00:00",
   "python": "3.14.6",
   "platform": "Windows-11-10.0.26200-SP0",
   "data_dir": "I:\\Safewindow\\data\\live",
@@ -8,13 +8,13 @@
   "data_files": [
     {
       "path": "app\\cut_roads.geojson",
-      "sha256": "533d0ee4a818c290c93b3106c2b9173edc7fecd68509e6e307f406804559010b",
-      "bytes": 12268030
+      "sha256": "daeb61966c93eeadf3c11cdce86064a6f525d6fcc69fb26c7c59a4a15f94b22f",
+      "bytes": 12230120
     },
     {
       "path": "app\\exit_routes.geojson",
-      "sha256": "5d369dadde66d8475817741f99503def79e52c874d4d9fcbe4b997d6f1c515f3",
-      "bytes": 5410
+      "sha256": "4694b3fe90122b24f0d9a5209a64ae971660156e9eeebd80d56490a4c347b18f",
+      "bytes": 5417
     },
     {
       "path": "app\\flood\\20220516.png",
@@ -127,24 +127,29 @@
       "bytes": 949
     },
     {
+      "path": "app\\road_reports_verdict.csv",
+      "sha256": "f77c6140c1dc29d915549185b3c8936e11754e6997a33c43e3c467127383257a",
+      "bytes": 940
+    },
+    {
       "path": "app\\sensitivity_summary.csv",
       "sha256": "f086629877fabf54f10957675f5f82e6035c52989d9dae674664a133e3c39ec2",
       "bytes": 154
     },
     {
       "path": "app\\shelters.geojson",
-      "sha256": "3614e6fde0aa220524342b5d2a703bfb279fc02cded571f089367503624ff648",
-      "bytes": 11537
+      "sha256": "e1d28080f9d1e7344b973468260134ea735f890cc814907a1bbfef18c8df733e",
+      "bytes": 11120
     },
     {
       "path": "app\\village_status.csv",
-      "sha256": "2ca1ea8f49746d7cfb242a44c608a94aefc98c9d8c8628ba43a1f83d8397daa8",
+      "sha256": "14a7c3b6dc9e554bb6802d8b198fa77ba28769aa104fbdc8353b06ea3cc08c99",
       "bytes": 14098
     },
     {
       "path": "app\\villages.geojson",
-      "sha256": "c47be245bc168f47b6e95477f2c44ff9586ace907ae0ee813ac9bd7d7f114a2f",
-      "bytes": 10007
+      "sha256": "af4406c602982d84bc5f664af3dd3276db4362475c95e792abcfa733948fb59d",
+      "bytes": 10871
     },
     {
       "path": "benchmark\\chaohu1_20220525_reference.tif",
@@ -157,14 +162,24 @@
       "bytes": 93230
     },
     {
+      "path": "benchmark\\rcm1_20220619_ne_reference.tif",
+      "sha256": "c8857567c0446626294816a12b47845db36f886544278be0d097b842629a5ccf",
+      "bytes": 277173
+    },
+    {
+      "path": "benchmark\\unosat_s1_20220525_ne_reference.tif",
+      "sha256": "25e873f45769fb02ac0a019cf95046b79f8cfc3d2620454882d9cac7b84aaf02",
+      "bytes": 246707
+    },
+    {
       "path": "benchmark.csv",
-      "sha256": "d01a475d652bb78dbc4fd07daebb56cc828776631b42eed45b3a821f50c2614a",
-      "bytes": 433
+      "sha256": "01a9cc742d266c7d70213c93f7e61df13c60345145f94f176ee516cb83271b8f",
+      "bytes": 1324
     },
     {
       "path": "benchmark_manifest.json",
-      "sha256": "07a5f9bfc450af28449ac4b710559044035891de8d290f2bd3bf6c2c6e8f5863",
-      "bytes": 2216
+      "sha256": "acede5bfff82c661b60cbb4ad553717dde43bea0a454ee7865cf30c26e2ac0aa",
+      "bytes": 4842
     },
     {
       "path": "DATA_LABEL",
@@ -173,18 +188,23 @@
     },
     {
       "path": "EVIDENCE_STATUS.md",
-      "sha256": "71a788a2ff8364e77bfff62064f6c9ddf2993033277c418d05715a67adb2fcd6",
-      "bytes": 2105
+      "sha256": "81b8ad9a0bd422b86b4b6ef9e1721ebf5d098eeb0fc11c865455c33061c39231",
+      "bytes": 3151
     },
     {
       "path": "model_evaluation.csv",
-      "sha256": "a64089894974c916566b12049c862861820a02ae06e2e3bb9dfde3a6e36ab37a",
-      "bytes": 639
+      "sha256": "7d0db247504e4a412bcd975fa1271ac7cb3825a6902920d7f4bf8132c31d250f",
+      "bytes": 1653
     },
     {
       "path": "model_evaluation.json",
-      "sha256": "9f3e782af7cdf9da8412286f891c59f23e77fe45140e68ed705e39436fd37164",
-      "bytes": 1921
+      "sha256": "5eaeaeff24d802bcd774c55a21ae0627ae248d7d34d9c2ca0e33abf79e6078aa",
+      "bytes": 4173
+    },
+    {
+      "path": "processed\\bridges.gpkg",
+      "sha256": "85a3e023804372d138278ad754bcc758c741fa3d025a37948ae266f57f90d9f7",
+      "bytes": 200704
     },
     {
       "path": "processed\\flood\\manifest.csv",
@@ -828,8 +848,8 @@
     },
     {
       "path": "raw\\unosat\\README.md",
-      "sha256": "83b7e8aae9070b74001e1a838aa235dad77cce15cd04bb42c797a669f8f0cd49",
-      "bytes": 972
+      "sha256": "41515f9e35095c202f78b7b208bc2a0ba8e68d77010c15087d253d135ba87458",
+      "bytes": 1136
     },
     {
       "path": "raw\\worldpop_2020.tif",
@@ -838,18 +858,28 @@
     },
     {
       "path": "results\\exit_routes.gpkg",
-      "sha256": "f955b70e7325877d1fedf739e946080f8c2226387e2dc0387e05408efc3a9711",
+      "sha256": "4d7b402ab5099f20efa0b46bbd7c9c2cf070dc6990bb5e205da8fd0c54c44bd0",
       "bytes": 106496
     },
     {
       "path": "results\\road_cut_summary.csv",
-      "sha256": "47298b48493849cbfa3ec562316022fa2b8dcf1396756871bb55cf74186672a6",
+      "sha256": "65e3db36fca41799f03501018817a241cd2c251265e54e709483d31f838c4672",
       "bytes": 752
     },
     {
+      "path": "results\\road_reports_check.csv",
+      "sha256": "eeb7a68087e01f312d4826b452c8b5dab030519859af77f3cf063faeb09db759",
+      "bytes": 1307
+    },
+    {
+      "path": "results\\road_reports_verdict.csv",
+      "sha256": "f77c6140c1dc29d915549185b3c8936e11754e6997a33c43e3c467127383257a",
+      "bytes": 940
+    },
+    {
       "path": "results\\road_status.csv",
-      "sha256": "5fce131617e41a661d2b161cd7ab1f0c68b0685f010da29caf5cfa82ec3c529e",
-      "bytes": 29613413
+      "sha256": "4497baeda567d8571bf128e85febff15186afbc32ecd79df24ddc809d8f776ec",
+      "bytes": 29613750
     },
     {
       "path": "results\\sensitivity.csv",
@@ -863,38 +893,43 @@
     },
     {
       "path": "results\\shelters_snapped.csv",
-      "sha256": "16551fa56e4556b97ae86cf9fbb20375dd3059d50aee35b82a12a1dd81f5f81e",
-      "bytes": 6066
+      "sha256": "0503598024d160208ecb0563dc074a9254db541d6812df181d23ca493ba73b99",
+      "bytes": 5866
     },
     {
       "path": "results\\village_status.csv",
-      "sha256": "8d6929fec567b34a26d124d0eb6b21b974089b94ae1de097f9e98cddc4281643",
-      "bytes": 45988
+      "sha256": "e978ba2431a147458a735557a69ae84fc3419a0df2d1b52eb1b68599575fa80e",
+      "bytes": 45987
     },
     {
       "path": "results\\village_summary.csv",
-      "sha256": "4814cc0a5dc03114638880a2c99090137226b9df260c3069d8ebba40e68bc33e",
-      "bytes": 1807
+      "sha256": "dbdfa6500c5c702fc51b08fe8f22e09012e8b05b9a52869802edb5952524fe93",
+      "bytes": 2003
     },
     {
       "path": "results\\villages_snapped.csv",
-      "sha256": "8ef1ca4f2a297811290e12685df36d33bc360ee0ff7ca3e6d9c3f4860f73086e",
-      "bytes": 1569
+      "sha256": "7c037665e411098289564c78de150278b54b4587531e748bc257e3dbe24c01d3",
+      "bytes": 1651
     },
     {
       "path": "science_methods.md",
-      "sha256": "be877e8911f703dfad05f917414cc31d5712b020a7ca5409b9e1c4dc43f9c329",
-      "bytes": 10029
+      "sha256": "86a157cf33357473d8f3e02c884fe30b6b3b518f5b4cb43cdb9442fe6f670915",
+      "bytes": 13532
+    },
+    {
+      "path": "shelter_checklist.csv",
+      "sha256": "33f38a23159a10ed5ac68c574862af56fa8df67d3d69dd8c652dcb1fc8d74d5d",
+      "bytes": 7950
     },
     {
       "path": "source_manifest.json",
-      "sha256": "e7d0d2b92aab2f0faafded4b8f29763fda2524b18a9b4a76f627cb1f1f83f520",
-      "bytes": 5074
+      "sha256": "f18c2b9ab3e0d074c982c26f616525c285c2fc95bd1777a6db0521594ae0211a",
+      "bytes": 6652
     },
     {
       "path": "submission_evidence.json",
-      "sha256": "07bd3dee4621d36ff36474b438e790b1465de9ab79b40659a16512b7f5d5d62b",
-      "bytes": 1420
+      "sha256": "f0a201eba2d77b28d8635297dafa3176a684853bdc19a626e237900b3f37553d",
+      "bytes": 1795
     }
   ],
   "model": null,
