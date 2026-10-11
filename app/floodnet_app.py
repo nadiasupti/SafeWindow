@@ -9,7 +9,10 @@ from PIL import Image
 
 from ml.floodnet_classifier import FloodClassifier, load_checkpoint, predict_image
 
-MODEL_PATH = Path(__file__).resolve().parents[1] / "ml" / "floodnet_model.pt"
+ROOT = Path(__file__).resolve().parents[1]
+MODEL_PATH = ROOT / "ml" / "floodnet_model.pt"
+# Local FloodNet download (not in the repository); the example is shown only if present.
+EXAMPLE_IMAGE = ROOT / "data" / "raw" / "floodnet" / "train_image" / "img" / "10165.jpg"
 
 
 def main() -> None:
@@ -33,8 +36,9 @@ def main() -> None:
 
     if uploaded_image is None:
         st.info("Upload an aerial image to run the classifier.")
-        st.subheader("Example: flood scene")
-        st.image("data/raw/floodnet/train_image/img/10165.jpg", use_container_width=True)
+        if EXAMPLE_IMAGE.exists():
+            st.subheader("Example: flood scene")
+            st.image(str(EXAMPLE_IMAGE), width="stretch")
         return
 
     try:
@@ -50,7 +54,7 @@ def main() -> None:
     col_image, col_result = st.columns([1.5, 1])
     with col_image:
         st.subheader("Uploaded image")
-        st.image(preview, caption=f"{uploaded_image.name} · {preview.size[0]} × {preview.size[1]}", use_container_width=True)
+        st.image(preview, caption=f"{uploaded_image.name} · {preview.size[0]} × {preview.size[1]}", width="stretch")
 
     with col_result:
         st.subheader("Prediction")

@@ -8,7 +8,6 @@
 { "type": "Feature", "properties": { "shelter_id": "osm2332856927", "name": "Sunamganj General Hospital", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.41065, 25.06512 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm2616249197", "name": "Pagla High School", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.44588, 24.92821 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm2616255489", "name": "Khaled General Hospital", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.44335, 24.92182 ] } },
-{ "type": "Feature", "properties": { "shelter_id": "osm5219154452", "name": "Sunny Pharmacy", "type": "pharmacy", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.54577, 24.92744 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm5900028290", "name": "Kathalbari Primary School", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.56174, 25.13619 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm6124539669", "name": "Pangaon Community clinic", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.33071, 24.86799 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm7138660369", "name": "Ryngku, PHC", "type": "centre", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.55874, 25.1674 ] } },
@@ -40,11 +39,10 @@
 { "type": "Feature", "properties": { "shelter_id": "osm539186501", "name": "Gobindogonj RHD Sub Office", "type": "building", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.69013, 24.92759 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539192590", "name": "Bridge Academy", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.67563, 24.93326 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539193065", "name": "Tanjina Center", "type": "community_centre", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.67356, 24.93363 ] } },
-{ "type": "Feature", "properties": { "shelter_id": "osm539200135", "name": "Rahman Pharmacy", "type": "pharmacy", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.63316, 24.94083 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539203370", "name": "koitok hospital", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.56581, 24.92842 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539204695", "name": "Jawa Government Primary School", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.55092, 24.92652 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539350552", "name": "Jawabazar Degree College", "type": "college", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.54195, 24.92902 ] } },
-{ "type": "Feature", "properties": { "shelter_id": "osm539361524", "name": "(unnamed)", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39718, 24.9452 ] } },
+{ "type": "Feature", "properties": { "shelter_id": "osm539361524", "name": "Unnamed hospital", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39718, 24.9452 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539371883", "name": "VARD Eye Hospital", "type": "hospital", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.38736, 25.03817 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539389434", "name": "Local Government Engineering Department, Sunamganj", "type": "building", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39031, 25.06039 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539391083", "name": "Sunamganj Technical School and College", "type": "college", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39287, 25.06521 ] } },
@@ -52,7 +50,7 @@
 { "type": "Feature", "properties": { "shelter_id": "osm539393549", "name": "Road Division, Sunamganj", "type": "building", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39581, 25.06842 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm539968973", "name": "Tuker Bazar High School", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.35701, 25.03064 ] } },
 { "type": "Feature", "properties": { "shelter_id": "osm822990739", "name": "Dergaw primary school - দেরগাও প্রাইমারি স্কুল", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.53714, 24.93084 ] } },
-{ "type": "Feature", "properties": { "shelter_id": "osm1075338151", "name": "(unnamed)", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39439, 24.94653 ] } },
-{ "type": "Feature", "properties": { "shelter_id": "osm1094056629", "name": "(unnamed)", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.67301, 25.0345 ] } }
+{ "type": "Feature", "properties": { "shelter_id": "osm1075338151", "name": "Unnamed school", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.39439, 24.94653 ] } },
+{ "type": "Feature", "properties": { "shelter_id": "osm1094056629", "name": "Unnamed school", "type": "school", "source": "OpenStreetMap" }, "geometry": { "type": "Point", "coordinates": [ 91.67301, 25.0345 ] } }
 ]
 }

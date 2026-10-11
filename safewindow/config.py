@@ -47,10 +47,13 @@ SAMPLE_SPACING_M = 20
 CUT_THRESHOLD = 0.20                     # main result
 SENSITIVITY_THRESHOLDS = [0.10, 0.20, 0.40]
 UNKNOWN_MAJORITY = 0.50                  # > this share unknown -> road "unknown"
+BRIDGE_TOL_M = 3                         # check-point this close to a mapped bridge lies on it
 
 # --- Isolation (Step 6) ----------------------------------------------------------
 BOAT_DEPENDENT_M = 500                   # village farther than this from a road
 SHELTER_SNAP_MAX_M = 1000                # shelter farther than this is not road-reachable
+# OSM candidate types that are not places people can shelter in
+SHELTER_EXCLUDE_TYPES = ("pharmacy",)
 
 # --- Survival Clock (Step 7) --------------------------------------------------------
 # ASSUMPTION, not a measurement: days of food/water a household has on hand.
@@ -97,6 +100,8 @@ class Paths:
     def road_nodes(self) -> Path: return self.processed / "road_nodes.gpkg"
     @property
     def road_edges(self) -> Path: return self.processed / "road_edges.gpkg"
+    @property
+    def bridges(self) -> Path: return self.processed / "bridges.gpkg"
     @property
     def villages(self) -> Path: return self.processed / "villages.gpkg"
     @property

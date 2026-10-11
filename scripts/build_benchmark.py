@@ -1,24 +1,32 @@
-"""Score SafeWindow Sentinel-1 flood maps against independent UNOSAT references.
+"""Score SafeWindow Sentinel-1 flood maps against UNOSAT flood analyses.
 
     python scripts/build_benchmark.py <unosat_shp_dir> [--archive FL20220525BGD_SHP.zip] [--data data/live]
+    python scripts/build_benchmark.py --check     # re-score from the stored reference rasters
 
-Download the archive (337 MB) from SOURCE_URL below and extract the four
-Chaohu1_20220525_* and RCM1_20220618_* AnalysisExtent / FloodExtent shapefiles.
+Download the archive (337 MB) from SOURCE_URL below and extract the
+AnalysisExtent and FloodExtent shapefiles named in REFERENCES. --check needs no
+download: it recomputes the scores from benchmark/<id>_reference.tif and the
+flood maps, and compares them with model_evaluation.csv.
 
-The references are UNOSAT analyses from sensors other than Sentinel-1
-(Chaohu-1 on 25 May 2022, RCM-1 on 18 June 2022), taken from event
-FL20220525BGD. Our maps are produced without using them, with no tuning on
-these dates: the Otsu threshold, the 3 dB change rule and the slope mask are
-fixed in pipeline/02a_sentinel1_gee.py.
+The references come from UNOSAT event FL20220525BGD and are grouped by how
+independent they are of SafeWindow's own maps:
+
+  A  different satellite, same day      Chaohu-1 25 May, RCM-1 18 Jun (small areas)
+  B  different satellite, one day later RCM-1 19 Jun vs our 18 Jun map (whole area)
+  C  same Sentinel-1 image, different method   UNOSAT's own 25 May analysis
+
+Our maps are produced without using any of them, with no tuning on these
+dates: the Otsu threshold, the 3 dB change rule and the slope mask are fixed
+in pipeline/02a_sentinel1_gee.py.
 
 Writes to <data>/:
   benchmark/<id>_reference.tif   reference flood mask on the project grid
-  benchmark.csv                  confusion counts per reference date and upazila
+  benchmark.csv                  confusion counts per reference and upazila
   benchmark_manifest.json        reference sources, split strategy, checksums
   model_evaluation.csv/.json     IoU, precision, recall, F1, accuracy, bootstrap CI
 
 UNOSAT states these products are preliminary and not field validated. This is
-agreement between two satellite analyses, not ground truth.
+agreement between satellite analyses, not ground truth.
 """
 from __future__ import annotations
 
@@ -36,9 +44,23 @@ from rasterio.features import rasterize
 from safewindow import config
 from safewindow.flood import Grid, write_flood_map
 
+TIERS = {
+    "A": "different satellite, same day as the SafeWindow map",
+    "B": "different satellite, one day after the SafeWindow map",
+    "C": "same Sentinel-1 acquisition, different (UNOSAT) method",
+}
 REFERENCES = [
-    {"id": "chaohu1_20220525", "date": "2022-05-25", "sensor": "Chaohu-1 SAR", "stem": "Chaohu1_20220525"},
-    {"id": "rcm1_20220618", "date": "2022-06-18", "sensor": "RCM-1 SAR", "stem": "RCM1_20220618"},
+    {"id": "chaohu1_20220525", "tier": "A", "date": "2022-05-25", "pred_date": "2022-05-25", "sensor": "Chaohu-1 SAR",
+     "flood": "Chaohu1_20220525_FloodExtent_Sylhet", "analysis": "Chaohu1_20220525_AnalysisExtent_Sylhet"},
+    {"id": "rcm1_20220618", "tier": "A", "date": "2022-06-18", "pred_date": "2022-06-18", "sensor": "RCM-1 SAR",
+     "flood": "RCM1_20220618_FloodExtent_Sylhet", "analysis": "RCM1_20220618_AnalysisExtent_Sylhet"},
+    {"id": "rcm1_20220619_ne", "tier": "B", "date": "2022-06-19", "pred_date": "2022-06-18", "sensor": "RCM-1 SAR",
+     "flood": "RCM1_20220619_FloodExtent_NE", "analysis": "RCM1_20220619_AnalysisExtent_NE",
+     "note": "UNOSAT's analysis-extent layer lists Sentinel-1 as the sensor; the flood layer and the file name say RCM-1. "
+             "The two maps are one day apart, so the flood itself may have changed between them."},
+    {"id": "unosat_s1_20220525_ne", "tier": "C", "date": "2022-05-25", "pred_date": "2022-05-25", "sensor": "Sentinel-1 SAR",
+     "flood": "S1_20220525_FloodExtent_NE", "analysis": "S1_20220525_AnalysisExtent_NE",
+     "note": "Same satellite data as SafeWindow; tests the method, not the data."},
 ]
 SOURCE_URL = "https://unosat-maps.web.cern.ch/BD/FL20220525BGD/FL20220525BGD_SHP.zip"
 BLOCK = 50          # 1 km blocks for the bootstrap
@@ -66,8 +88,8 @@ def burn(gdf: gpd.GeoDataFrame, grid: Grid) -> np.ndarray:
 def reference_mask(shp_dir: Path, ref: dict, grid: Grid, study: gpd.GeoDataFrame) -> np.ndarray:
     """0 dry, 1 flooded inside UNOSAT's analysed area; 255 outside it."""
     bbox = tuple(study.to_crs(4326).total_bounds)
-    analysis = gpd.read_file(shp_dir / f"{ref['stem']}_AnalysisExtent_Sylhet.shp")
-    flood = gpd.read_file(shp_dir / f"{ref['stem']}_FloodExtent_Sylhet.shp", bbox=bbox)
+    analysis = gpd.read_file(shp_dir / f"{ref['analysis']}.shp")
+    flood = gpd.read_file(shp_dir / f"{ref['flood']}.shp", bbox=bbox)
     analysed, flooded = burn(analysis, grid), burn(flood, grid)
     out = np.full(analysed.shape, config.UNKNOWN, dtype="uint8")
     out[analysed == 1] = config.DRY
@@ -115,23 +137,62 @@ def bootstrap_ci(pred, ref, valid) -> dict:
             for k, v in draws.items()}
 
 
+def study_zones(grid: Grid, study: gpd.GeoDataFrame) -> dict[str, np.ndarray]:
+    """Pixel masks for the whole study area ('all') and each upazila."""
+    upazilas = study.to_crs(grid.crs)
+    zones = {name: rasterize([(geom, 1)], out_shape=(grid.height, grid.width), transform=grid.transform,
+                             fill=0, dtype="uint8").astype(bool)
+             for name, geom in zip(upazilas["upazila"], upazilas.geometry)}
+    return {"all": np.any(list(zones.values()), axis=0), **zones}
+
+
+def check(paths) -> int:
+    """Re-score every reference from the stored rasters and compare with the
+    published model_evaluation.csv. Returns 0 if all headline metrics match."""
+    grid = Grid.load(paths.grid)
+    zones = study_zones(grid, gpd.read_file(paths.study_area))
+    published = pd.read_csv(paths.data / "model_evaluation.csv").set_index(["reference", "zone"])
+    rows, ok = [], True
+    for ref in REFERENCES:
+        with rasterio.open(paths.flood_dir / f"sentinel1_{ref['pred_date'].replace('-', '')}.tif") as src:
+            pred = src.read(1)
+        with rasterio.open(paths.data / "benchmark" / f"{ref['id']}_reference.tif") as src:
+            reference = src.read(1)
+        mask = (pred != config.UNKNOWN) & (reference != config.UNKNOWN) & zones["all"]
+        s = scores(*confusion(pred, reference, mask))
+        pub = published.loc[(ref["id"], "all")]
+        same = all(abs(s[k] - pub[k]) < 1e-4 for k in ("iou", "precision", "recall", "f1"))
+        ok &= same
+        rows.append({"reference": ref["id"], "tier": ref["tier"], "iou": round(s["iou"], 4),
+                     "published_iou": pub["iou"], "precision": round(s["precision"], 4),
+                     "recall": round(s["recall"], 4), "matches": same})
+    print(pd.DataFrame(rows).to_string(index=False))
+    print("All published benchmark metrics reproduced." if ok else "MISMATCH with model_evaluation.csv")
+    return 0 if ok else 1
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("shp_dir", type=Path, help="folder with the extracted UNOSAT shapefiles")
+    ap.add_argument("shp_dir", type=Path, nargs="?", help="folder with the extracted UNOSAT shapefiles")
     ap.add_argument("--archive", type=Path, help="the downloaded UNOSAT zip, to record its SHA-256")
     ap.add_argument("--data", default=None, help="data directory (default: config data dir)")
+    ap.add_argument("--check", action="store_true", help="re-score from the stored reference rasters; no download")
     args = ap.parse_args()
 
     paths = config.get_paths().ensure() if args.data is None else config.Paths(Path(args.data).resolve())
+    if args.check:
+        raise SystemExit(check(paths))
+    if args.shp_dir is None:
+        ap.error("give the folder with the UNOSAT shapefiles, or use --check")
     out_dir = paths.data
     (out_dir / "benchmark").mkdir(exist_ok=True)
     grid = Grid.load(paths.grid)
     study = gpd.read_file(paths.study_area)
-    upazilas = study.to_crs(grid.crs)
+    zones = study_zones(grid, study)
 
     rows, eval_rows, eval_json, manifest_refs = [], [], [], []
     for ref in REFERENCES:
-        pred_path = paths.flood_dir / f"sentinel1_{ref['date'].replace('-', '')}.tif"
+        pred_path = paths.flood_dir / f"sentinel1_{ref['pred_date'].replace('-', '')}.tif"
         with rasterio.open(pred_path) as src:
             pred = src.read(1)
         reference = reference_mask(args.shp_dir, ref, grid, study)
@@ -139,28 +200,25 @@ def main() -> None:
         write_flood_map(reference, grid, ref_tif)
 
         valid_all = (pred != config.UNKNOWN) & (reference != config.UNKNOWN)
-        zones = {"all": np.ones_like(valid_all)}
-        for name, geom in zip(upazilas["upazila"], upazilas.geometry):
-            zones[name] = rasterize([(geom, 1)], out_shape=pred.shape, transform=grid.transform,
-                                    fill=0, dtype="uint8").astype(bool)
-        zones["all"] = np.any([z for k, z in zones.items() if k != "all"], axis=0)
-
         for zone, zmask in zones.items():
             mask = valid_all & zmask
             if not mask.any():
                 continue
             tp, fp, fn, tn = confusion(pred, reference, mask)
             s = scores(tp, fp, fn, tn)
-            rows.append({"reference": ref["id"], "date": ref["date"], "sensor": ref["sensor"], "zone": zone,
+            rows.append({"reference": ref["id"], "tier": ref["tier"], "date": ref["date"], "pred_date": ref["pred_date"],
+                         "sensor": ref["sensor"], "zone": zone,
                          "pixels_compared": int(mask.sum()), "tp": tp, "fp": fp, "fn": fn, "tn": tn})
-            row = {"reference": ref["id"], "date": ref["date"], "zone": zone,
-                   "area_km2": round(mask.sum() * grid.res ** 2 / 1e6, 1), **{k: round(float(v), 4) for k, v in s.items()}}
+            row = {"reference": ref["id"], "tier": ref["tier"], "date": ref["date"], "pred_date": ref["pred_date"],
+                   "zone": zone, "area_km2": round(mask.sum() * grid.res ** 2 / 1e6, 1),
+                   **{k: round(float(v), 4) for k, v in s.items()}}
             if zone == "all":
                 ci = bootstrap_ci(pred, reference, mask)
                 row.update({k: str(v) for k, v in ci.items()})
                 eval_json.append({**row, **ci, "confusion": {"tp": tp, "fp": fp, "fn": fn, "tn": tn}})
             eval_rows.append(row)
-        manifest_refs.append({**ref, "reference_raster": ref_tif.relative_to(out_dir).as_posix(),
+        manifest_refs.append({**ref, "tier_meaning": TIERS[ref["tier"]],
+                              "reference_raster": ref_tif.relative_to(out_dir).as_posix(),
                               "reference_sha256": sha256(ref_tif),
                               "prediction": pred_path.relative_to(out_dir).as_posix(),
                               "prediction_sha256": sha256(pred_path),
@@ -171,29 +229,36 @@ def main() -> None:
     ev = pd.DataFrame(eval_rows)
     ev.to_csv(out_dir / "model_evaluation.csv", index=False)
 
-    allz = [r for r in eval_json]
-    headline = {r["reference"]: {k: r[k] for k in ("iou", "precision", "recall", "f1", "accuracy")} for r in allz}
+    headline = {r["reference"]: {"tier": r["tier"], **{k: r[k] for k in ("iou", "precision", "recall", "f1", "accuracy")}}
+                for r in eval_json}
     (out_dir / "model_evaluation.json").write_text(json.dumps({
-        "task": "per-pixel flood / not-flood agreement of SafeWindow Sentinel-1 maps with UNOSAT SAR analyses",
+        "task": "per-pixel flood / not-flood agreement of SafeWindow Sentinel-1 maps with UNOSAT flood analyses",
+        "tiers": TIERS,
+        "primary_references": [r["id"] for r in REFERENCES if r["tier"] == "A"],
         "metrics": headline,
-        "details": allz,
+        "details": eval_json,
         "error_distribution": "see model_evaluation.csv: same metrics per upazila zone",
-        "caveat": "References are independent satellite analyses (preliminary, not field validated), not ground truth.",
+        "caveat": "References are satellite analyses (preliminary, not field validated), not ground truth. "
+                  "Only tier A uses both a different satellite and the same day.",
     }, indent=2), encoding="utf-8")
     (out_dir / "benchmark_manifest.json").write_text(json.dumps({
         "name": "SafeWindow Sunamganj flood-extent benchmark",
         "region": "Sunamganj Sadar, Chhatak, Dowarabazar (Sunamganj and Sylhet districts, Bangladesh)",
         "independent_evaluation": True,
-        "independence_note": "Reference sensors (Chaohu-1, RCM-1) differ from Sentinel-1; the UNOSAT analyses were produced by "
-                             "UNITAR-UNOSAT, not by this team.",
-        "split_strategy": "Fixed temporal hold-out: both reference dates (25 May, 18 Jun 2022) are test-only. The method has no "
-                          "trained parameters; thresholds were fixed before scoring and not tuned on these dates. "
-                          "Geographic strata: the three upazilas, reported separately.",
+        "independence_note": "All references were produced by UNITAR-UNOSAT, not by this team, and none was used to build "
+                             "or tune SafeWindow. Tiers A and B use other satellites (Chaohu-1, RCM-1); tier C uses the same "
+                             "Sentinel-1 data with UNOSAT's own method.",
+        "tiers": TIERS,
+        "split_strategy": "Fixed temporal hold-out: every reference date (25 May, 18 Jun, 19 Jun 2022) is test-only. The "
+                          "method has no trained parameters; thresholds were fixed before scoring and not tuned on these "
+                          "dates. Geographic strata: the three upazilas, reported separately.",
         "source_archive": {"url": SOURCE_URL, "event_code": "FL20220525BGD", "publisher": "UNITAR-UNOSAT",
                            "license": "CC BY-SA (as listed on HDX)",
                            "sha256": sha256(args.archive) if args.archive else None},
         "references": manifest_refs,
-        "limitations": ["Two reference dates only.", "Preliminary UNOSAT products, not field validated.",
+        "limitations": ["Same-day, different-satellite references cover only 2-8% of the study area.",
+                        "The whole-area different-satellite reference is one day after the SafeWindow map.",
+                        "Preliminary UNOSAT products, not field validated.",
                         "UNOSAT flood extent (not total water extent) is used, because SafeWindow also leaves out permanent water."],
     }, indent=2), encoding="utf-8")
     print(ev[ev["zone"] == "all"].to_string(index=False))
