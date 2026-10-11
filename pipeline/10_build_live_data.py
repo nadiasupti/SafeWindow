@@ -67,15 +67,19 @@ def main() -> None:
 
     run([sys.executable, str(ROOT / "pipeline" / "01_study_area.py")])
     run([sys.executable, str(ROOT / "pipeline" / "03_osm_roads_places.py")])
+    run([sys.executable, str(ROOT / "pipeline" / "03b_population.py"), "--worldpop-gee"])
     run([sys.executable, str(ROOT / "pipeline" / "04_rainfall_gpm.py"), "--start", start.isoformat(), "--end", end.isoformat()])
-        dry_start = (start - timedelta(days=90)).isoformat()
-        dry_end = (start - timedelta(days=1)).isoformat()
-        run([sys.executable, str(ROOT / "pipeline" / "02a_sentinel1_gee.py"), "--start", start.isoformat(), "--end", end.isoformat(),
-            "--dry-start", dry_start, "--dry-end", dry_end])
-        run([sys.executable, str(ROOT / "pipeline" / "02c_modis.py"), "--ee-process",
-            "--start", start.isoformat(), "--end", end.isoformat(),
-            "--baseline-start", dry_start, "--baseline-end", dry_end])
-    run([sys.executable, str(ROOT / "pipeline" / "02e_merge_flood.py")])
+    dry_start = (start - timedelta(days=90)).isoformat()
+    dry_end = (start - timedelta(days=1)).isoformat()
+    run([sys.executable, str(ROOT / "pipeline" / "02a_sentinel1_gee.py"), "--start", start.isoformat(), "--end", end.isoformat(),
+         "--dry-start", dry_start, "--dry-end", dry_end])
+    run([sys.executable, str(ROOT / "pipeline" / "02c_modis.py"), "--ee-process",
+         "--start", start.isoformat(), "--end", end.isoformat(),
+         "--baseline-start", dry_start, "--baseline-end", dry_end])
+    # Road cutting uses radar only: in the monsoon MODIS is 87-100% cloud, and its
+    # NDWI proxy misses water under vegetation, so filling gaps with it would
+    # mark flooded roads as dry. MODIS stays in the trend table.
+    run([sys.executable, str(ROOT / "pipeline" / "02e_merge_flood.py"), "--sources", "sentinel1"])
     run([sys.executable, str(ROOT / "pipeline" / "05_cut_roads.py")])
     run([sys.executable, str(ROOT / "pipeline" / "06_isolation.py")])
     run([sys.executable, str(ROOT / "pipeline" / "07_timeline.py")])

@@ -13,14 +13,17 @@ The project does **not** provide an official warning, evacuation order, or emerg
 - Village isolation and shelter-route analysis.
 - Survival Clock and date-aware route calculations.
 - English and Bengali Streamlit interface.
-- Current public-data pipeline for MODIS, Sentinel-1, GPM IMERG, and OSM.
+- Current public-data pipeline for MODIS, Sentinel-1, GPM IMERG, NASADEM, WorldPop, and OSM.
+- Real-region results for the May–July 2022 flood: 19 Sentinel-1 flood maps, road cuts, village isolation and aid deadlines.
+- Independent flood-extent benchmark against two UNOSAT radar analyses, with metrics and bootstrap confidence intervals (`scripts/build_benchmark.py`).
+- Source manifest and methods document in `data/live/`.
 - Source provenance, hashes, and output validation.
 - Regression tests for engine behavior, route availability, classifier prediction, and app artifacts.
 
 ## Data status
 
 - **Synthetic demo:** invented terrain, roads, flood, villages, and shelters. Clearly labelled as synthetic.
-- **Live data:** currently requires Earth Engine and Earthdata authentication, a configured project ID, and a successful live source build.
+- **Live data (`data/live`):** real results for the 2022 flood, regenerated on 11 October 2026 after the Earth Engine tile-export fix. Rebuilding needs Earth Engine authentication and `EE_PROJECT`.
 - **No source should be treated as ground truth:** flood maps have cloud/radar gaps, OSM is incomplete, and the supply-day value is an assumption.
 
 ## Quick start
@@ -44,7 +47,7 @@ $env:EE_PROJECT="your-project-id"
 .venv\Scripts\python.exe scripts\inspect_data.py data/live
 ```
 
-The live pipeline writes to `data/live/app` and uses `data/live` by default. It should not be run until Earth Engine and Earthdata credentials have been configured.
+The live pipeline writes to `data/live/app` and uses `data/live` by default. It needs Earth Engine credentials. Earthdata login is needed only for the optional MCDWD route in `02c_modis.py`.
 
 ## Validation
 
@@ -64,7 +67,7 @@ The live pipeline writes to `data/live/app` and uses `data/live` by default. It 
 
 ## NASA Space Challenge submission status
 
-The repository has a complete reproducible prototype and evidence of end-to-end operation. It is not submission-ready as a NASA Space Challenge project because the current project lacks a documented scientific benchmark, validated real-world dataset, independent evaluation, source provenance, and a complete live-data region-specific assessment.
+The repository has real-region results, an independent flood-extent benchmark, metrics with confidence intervals, a source manifest and a methods document. Still missing: an independent scientific review, hand-verified shelters, and a check of village isolation dates against field or news reports.
 
 A verified submission release must pass:
 
