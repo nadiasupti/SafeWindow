@@ -1,0 +1,19 @@
+{
+  "project": "SafeWindow",
+  "team": "DeltaSentinels",
+  "team_members": ["Farhan Labib", "Nadia Supti"],
+  "repository": "https://github.com/nadiasupti/SafeWindow",
+  "region": "Sunamganj Sadar, Chhatak and Dowarabazar upazilas, Sunamganj District, Bangladesh",
+  "study_period_start": "2022-05-16",
+  "study_period_end": "2022-07-12",
+  "ground_truth_source": "UNITAR-UNOSAT flood-extent analyses, event FL20220525BGD: Chaohu-1 SAR (25 May 2022) and RCM-1 SAR (18 June 2022). Independent satellite references, preliminary and not field validated; not field ground truth.",
+  "ground_truth_version": "FL20220525BGD_SHP.zip, SHA-256 be72838a57c629672ed942c99b5bd7b11f9789a3677a6bd528af261ce3cdc49d; layers Chaohu1_20220525_FloodExtent_Sylhet, RCM1_20220618_FloodExtent_Sylhet",
+  "benchmark": "benchmark.csv, benchmark_manifest.json",
+  "evaluation": "model_evaluation.csv, model_evaluation.json",
+  "methods": "science_methods.md",
+  "sources": "source_manifest.json",
+  "independent_review": "",
+  "independent_review_needed": "A reviewer outside the team (for example a remote-sensing or hydrology lecturer, or a Space Apps mentor) reads science_methods.md and the benchmark, then records name, affiliation, contact, date and a short summary here.",
+  "submission_status": "evidence_ready_review_pending",
+  "status_note": "Set submission_status to 'verified' only after an independent review is recorded above."
+}

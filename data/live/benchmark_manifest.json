@@ -1,0 +1,43 @@
+{
+  "name": "SafeWindow Sunamganj flood-extent benchmark",
+  "region": "Sunamganj Sadar, Chhatak, Dowarabazar (Sunamganj and Sylhet districts, Bangladesh)",
+  "independent_evaluation": true,
+  "independence_note": "Reference sensors (Chaohu-1, RCM-1) differ from Sentinel-1; the UNOSAT analyses were produced by UNITAR-UNOSAT, not by this team.",
+  "split_strategy": "Fixed temporal hold-out: both reference dates (25 May, 18 Jun 2022) are test-only. The method has no trained parameters; thresholds were fixed before scoring and not tuned on these dates. Geographic strata: the three upazilas, reported separately.",
+  "source_archive": {
+    "url": "https://unosat-maps.web.cern.ch/BD/FL20220525BGD/FL20220525BGD_SHP.zip",
+    "event_code": "FL20220525BGD",
+    "publisher": "UNITAR-UNOSAT",
+    "license": "CC BY-SA (as listed on HDX)",
+    "sha256": "be72838a57c629672ed942c99b5bd7b11f9789a3677a6bd528af261ce3cdc49d"
+  },
+  "references": [
+    {
+      "id": "chaohu1_20220525",
+      "date": "2022-05-25",
+      "sensor": "Chaohu-1 SAR",
+      "stem": "Chaohu1_20220525",
+      "reference_raster": "benchmark/chaohu1_20220525_reference.tif",
+      "reference_sha256": "9fd6603e8113928bda49577309a063b9afbc027061c6582fb9ffec25609efff3",
+      "prediction": "processed/flood/sentinel1_20220525.tif",
+      "prediction_sha256": "aaf58e677774e2f58cc72405ce986d79859788d5b151331058236d51aecdf50f",
+      "analysed_share_of_study_area_pct": 2.0
+    },
+    {
+      "id": "rcm1_20220618",
+      "date": "2022-06-18",
+      "sensor": "RCM-1 SAR",
+      "stem": "RCM1_20220618",
+      "reference_raster": "benchmark/rcm1_20220618_reference.tif",
+      "reference_sha256": "6baad131366ce6b379e30c2b9196df7ef3d81ef4ae8699753c3285c46b5fd637",
+      "prediction": "processed/flood/sentinel1_20220618.tif",
+      "prediction_sha256": "2eff3304f8a869f4814ad83b8ec6e6694523f721a19f8be0666ef8c4fe52e74d",
+      "analysed_share_of_study_area_pct": 7.8
+    }
+  ],
+  "limitations": [
+    "Two reference dates only.",
+    "Preliminary UNOSAT products, not field validated.",
+    "UNOSAT flood extent (not total water extent) is used, because SafeWindow also leaves out permanent water."
+  ]
+}
