@@ -47,7 +47,7 @@ T = {
         "deadline_label": "Aid deadline (Survival Clock)", "days_left": "{n} days of supplies left on {d}",
         "deadline_passed": "Supplies ran out {n} days before {d}", "not_yet": "Not isolated yet on {d}",
         "sms": "SMS preview (Bangla)", "rain": "Daily rainfall - NASA GPM IMERG",
-        "modis": "Flooded area - NASA MODIS daily flood product", "upstream": "Meghalaya hills (upstream)",
+        "modis": "Flooded area seen by NASA MODIS (MOD09GA proxy; monsoon cloud hides most of the area)", "upstream": "Meghalaya hills (upstream)",
         "local": "Sunamganj", "sens": "Sensitivity test (road cut cutoff)", "valid": "Validation against news reports",
         "limits": "Limits of this prototype",
         "limits_text": ("- Supply days is an assumption, not measured.\n"
@@ -74,7 +74,7 @@ T = {
         "deadline_label": "সাহায্যের শেষ সময় (সারভাইভাল ঘড়ি)", "days_left": "{d} তারিখে আর {n} দিনের মজুদ বাকি",
         "deadline_passed": "{d} তারিখের {n} দিন আগে মজুদ শেষ", "not_yet": "{d} তারিখে এখনো বিচ্ছিন্ন নয়",
         "sms": "এসএমএস নমুনা", "rain": "দৈনিক বৃষ্টিপাত - নাসা জিপিএম আইএমইআরজি",
-        "modis": "প্লাবিত এলাকা - নাসা মোডিস দৈনিক বন্যা তথ্য", "upstream": "মেঘালয় পাহাড় (উজান)",
+        "modis": "নাসা মোডিস-এ দেখা প্লাবিত এলাকা (মেঘের কারণে বেশিরভাগ এলাকা দেখা যায়নি)", "upstream": "মেঘালয় পাহাড় (উজান)",
         "local": "সুনামগঞ্জ", "sens": "সংবেদনশীলতা পরীক্ষা", "valid": "সংবাদ প্রতিবেদনের সাথে যাচাই",
         "limits": "এই প্রোটোটাইপের সীমাবদ্ধতা",
         "limits_text": ("- মজুদ দিন একটি অনুমান, পরিমাপ নয়।\n"
@@ -384,7 +384,7 @@ def charts(opt, meta, day: pd.Timestamp, lang, t):
                             legend=alt.Legend(orient="top")),
             tooltip=["date:T", "box:N", "mm:Q"])
         c1.markdown(f"**{t['rain']}**")
-        c1.altair_chart((bars + rule).properties(height=220), use_container_width=True)
+        c1.altair_chart((bars + rule).properties(height=220), width="stretch")
     if "modis" in opt:
         md = opt["modis"].copy()
         md["date"] = pd.to_datetime(md["date"])
@@ -393,7 +393,7 @@ def charts(opt, meta, day: pd.Timestamp, lang, t):
             x=alt.X("date:T", title=None), y=alt.Y("flooded_km2:Q", title="km²"),
             tooltip=["date:T", "flooded_km2:Q", "unknown_pct:Q"])
         c2.markdown(f"**{t['modis']}**")
-        c2.altair_chart((line + rule + obs).properties(height=220), use_container_width=True)
+        c2.altair_chart((line + rule + obs).properties(height=220), width="stretch")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,89 @@
+{
+  "task": "per-pixel flood / not-flood agreement of SafeWindow Sentinel-1 maps with UNOSAT SAR analyses",
+  "metrics": {
+    "chaohu1_20220525": {
+      "iou": 0.8346,
+      "precision": 0.9299,
+      "recall": 0.8907,
+      "f1": 0.9099,
+      "accuracy": 0.8855
+    },
+    "rcm1_20220618": {
+      "iou": 0.808,
+      "precision": 0.953,
+      "recall": 0.8415,
+      "f1": 0.8938,
+      "accuracy": 0.8536
+    }
+  },
+  "details": [
+    {
+      "reference": "chaohu1_20220525",
+      "date": "2022-05-25",
+      "zone": "all",
+      "area_km2": 25.1,
+      "iou": 0.8346,
+      "precision": 0.9299,
+      "recall": 0.8907,
+      "f1": 0.9099,
+      "accuracy": 0.8855,
+      "iou_ci95": [
+        0.7857,
+        0.8761
+      ],
+      "precision_ci95": [
+        0.9066,
+        0.9487
+      ],
+      "recall_ci95": [
+        0.8445,
+        0.927
+      ],
+      "f1_ci95": [
+        0.88,
+        0.934
+      ],
+      "confusion": {
+        "tp": 36240,
+        "fp": 2733,
+        "fn": 4448,
+        "tn": 19276
+      }
+    },
+    {
+      "reference": "rcm1_20220618",
+      "date": "2022-06-18",
+      "zone": "all",
+      "area_km2": 98.4,
+      "iou": 0.808,
+      "precision": 0.953,
+      "recall": 0.8415,
+      "f1": 0.8938,
+      "accuracy": 0.8536,
+      "iou_ci95": [
+        0.788,
+        0.8288
+      ],
+      "precision_ci95": [
+        0.9439,
+        0.9605
+      ],
+      "recall_ci95": [
+        0.8221,
+        0.8606
+      ],
+      "f1_ci95": [
+        0.8814,
+        0.9064
+      ],
+      "confusion": {
+        "tp": 151624,
+        "fp": 7473,
+        "fn": 28551,
+        "tn": 58387
+      }
+    }
+  ],
+  "error_distribution": "see model_evaluation.csv: same metrics per upazila zone",
+  "caveat": "References are independent satellite analyses (preliminary, not field validated), not ground truth."
+}
