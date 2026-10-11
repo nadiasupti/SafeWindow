@@ -8,7 +8,8 @@ Writes data/app/ (commit this folder; keep it well under 100 MB):
   village_status.csv       status per observed date (main threshold)
   shelters.geojson, exit_routes.geojson, cut_roads.geojson
   flood/YYYYMMDD.png       flood overlay per date (blue flooded, grey unknown)
-  rainfall_daily.csv, modis_flood_area.csv, sensitivity_summary.csv, validation.csv
+  rainfall_daily.csv, modis_flood_area.csv, sensitivity_summary.csv, validation.csv,
+  road_reports_verdict.csv (scripts/road_reports_check.py)
 """
 import json
 import shutil
@@ -96,7 +97,8 @@ def main():
 
     for src, name in [(paths.rainfall, "rainfall_daily.csv"), (paths.modis_timeline, "modis_flood_area.csv"),
                       (paths.results / "sensitivity_summary.csv", "sensitivity_summary.csv"),
-                      (paths.validation_results, "validation.csv")]:
+                      (paths.validation_results, "validation.csv"),
+                      (paths.results / "road_reports_verdict.csv", "road_reports_verdict.csv")]:
         if src.exists():
             shutil.copy(src, app / name)
 

@@ -15,7 +15,9 @@ The project does **not** provide an official warning, evacuation order, or emerg
 - English and Bengali Streamlit interface.
 - Current public-data pipeline for MODIS, Sentinel-1, GPM IMERG, NASADEM, WorldPop, and OSM.
 - Real-region results for the May–July 2022 flood: 19 Sentinel-1 flood maps, road cuts, village isolation and aid deadlines.
-- Independent flood-extent benchmark against two UNOSAT radar analyses, with metrics and bootstrap confidence intervals (`scripts/build_benchmark.py`).
+- Flood-extent benchmark against four UNOSAT analyses in three independence tiers, with bootstrap confidence intervals (`scripts/build_benchmark.py`).
+- Road-cut checks against dated news reports (`scripts/road_reports_check.py`).
+- Bridge-aware road cutting, so water under a mapped bridge does not cut the road (`pipeline/03c_bridges.py`).
 - Source manifest and methods document in `data/live/`.
 - Source provenance, hashes, and output validation.
 - Regression tests for engine behavior, route availability, classifier prediction, and app artifacts.
@@ -43,11 +45,12 @@ On Windows, run `run_demo.bat`.
 ```powershell
 earthengine authenticate
 $env:EE_PROJECT="your-project-id"
+$env:SAFEWINDOW_DATA_DIR="data/current"
 .venv\Scripts\python.exe pipeline\10_build_live_data.py
-.venv\Scripts\python.exe scripts\inspect_data.py data/live
+.venv\Scripts\python.exe scripts\inspect_data.py data/current
 ```
 
-The live pipeline writes to `data/live/app` and uses `data/live` by default. It needs Earth Engine credentials. Earthdata login is needed only for the optional MCDWD route in `02c_modis.py`.
+The live pipeline writes to the folder in `SAFEWINDOW_DATA_DIR`. The default, `data/live`, holds the 2022 study results and evidence, and the script refuses to rebuild it unless `--overwrite-evidence` is given. It needs Earth Engine credentials. Earthdata login is needed only for the optional MCDWD route in `02c_modis.py`.
 
 ## Validation
 
@@ -67,7 +70,7 @@ The live pipeline writes to `data/live/app` and uses `data/live` by default. It 
 
 ## NASA Space Challenge submission status
 
-The repository has real-region results, an independent flood-extent benchmark, metrics with confidence intervals, a source manifest and a methods document. Still missing: an independent scientific review, hand-verified shelters, and a check of village isolation dates against field or news reports.
+The repository has real-region results, a four-reference flood-extent benchmark with confidence intervals, road checks against dated news reports, a source manifest and a methods document. Still missing: an independent scientific review, hand-verified shelters, and a check of village isolation dates against field or news reports.
 
 A verified submission release must pass:
 

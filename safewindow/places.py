@@ -47,4 +47,15 @@ def load_shelters(paths=None) -> gpd.GeoDataFrame:
         return s
     warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
                   "Hand-check 15-30 shelters before the demo (guide Step 3).")
-    return shelters_from_csv(paths.shelter_candidates)
+    return clean_candidates(shelters_from_csv(paths.shelter_candidates))
+
+
+def clean_candidates(s: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Drop OSM candidate types nobody can shelter in (shops), and give
+    unnamed sites a readable label such as 'Unnamed school'."""
+    if "type" not in s:
+        return s
+    s = s[~s["type"].isin(config.SHELTER_EXCLUDE_TYPES)].copy()
+    unnamed = s["name"].isna() | (s["name"] == "(unnamed)")
+    s.loc[unnamed, "name"] = "Unnamed " + s.loc[unnamed, "type"].fillna("facility").str.replace("_", " ")
+    return s

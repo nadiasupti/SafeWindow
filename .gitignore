@@ -231,3 +231,6 @@ data/processed/
 data_demo/
 cache/
 .ipynb_checkpoints/
+
+# Local Python environments (any name)
+.venv*/

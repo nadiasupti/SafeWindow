@@ -29,6 +29,7 @@ OPTIONAL_FILES = (
     "modis_flood_area.csv",
     "sensitivity_summary.csv",
     "validation.csv",
+    "road_reports_verdict.csv",
 )
 
 

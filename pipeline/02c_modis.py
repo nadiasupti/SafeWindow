@@ -148,7 +148,7 @@ def main():
                       .filterBounds(aoi)
                       .filterDate(args.start, end_exclusive))
         print(f"MODIS_EE_COUNT={collection.size().getInfo()}")
-        print(f"MODIS_EE_COLLECTION=MODIS/061/MOD09GA")
+        print("MODIS_EE_COLLECTION=MODIS/061/MOD09GA")
         print(f"MODIS_EE_DATE_RANGE={args.start}..{args.end}")
         if args.ee_process:
             grid = Grid.load(paths.grid)

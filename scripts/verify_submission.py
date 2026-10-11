@@ -32,6 +32,22 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
+REVIEW_FIELDS = ("name", "affiliation", "contact", "date", "decision", "summary")
+APPROVED = {"approved", "approved with changes"}
+
+
+def review_errors(review: Any) -> list[str]:
+    """A structured review (see REVIEW.md) must be filled in and must approve."""
+    if not isinstance(review, dict):
+        return []          # a missing or empty review is reported with the other required keys
+    missing = [k for k in REVIEW_FIELDS if not str(review.get(k, "")).strip()]
+    if missing:
+        return ["independent_review is missing " + ", ".join(missing)]
+    if str(review["decision"]).strip().lower() not in APPROVED:
+        return ["independent_review decision must be 'approved' or 'approved with changes'"]
+    return []
+
+
 def verify(data_dir: Path) -> list[str]:
     errors: list[str] = []
     data_dir = data_dir.resolve()
@@ -55,6 +71,7 @@ def verify(data_dir: Path) -> list[str]:
 
     if evidence.get("submission_status") != "verified":
         errors.append("submission_status must be 'verified'")
+    errors += review_errors(evidence.get("independent_review"))
     if not benchmark.get("independent_evaluation"):
         errors.append("benchmark_manifest.json lacks independent_evaluation")
     if benchmark.get("split_strategy") in (None, ""):
