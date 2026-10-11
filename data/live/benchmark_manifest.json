@@ -2,8 +2,13 @@
   "name": "SafeWindow Sunamganj flood-extent benchmark",
   "region": "Sunamganj Sadar, Chhatak, Dowarabazar (Sunamganj and Sylhet districts, Bangladesh)",
   "independent_evaluation": true,
-  "independence_note": "Reference sensors (Chaohu-1, RCM-1) differ from Sentinel-1; the UNOSAT analyses were produced by UNITAR-UNOSAT, not by this team.",
-  "split_strategy": "Fixed temporal hold-out: both reference dates (25 May, 18 Jun 2022) are test-only. The method has no trained parameters; thresholds were fixed before scoring and not tuned on these dates. Geographic strata: the three upazilas, reported separately.",
+  "independence_note": "All references were produced by UNITAR-UNOSAT, not by this team, and none was used to build or tune SafeWindow. Tiers A and B use other satellites (Chaohu-1, RCM-1); tier C uses the same Sentinel-1 data with UNOSAT's own method.",
+  "tiers": {
+    "A": "different satellite, same day as the SafeWindow map",
+    "B": "different satellite, one day after the SafeWindow map",
+    "C": "same Sentinel-1 acquisition, different (UNOSAT) method"
+  },
+  "split_strategy": "Fixed temporal hold-out: every reference date (25 May, 18 Jun, 19 Jun 2022) is test-only. The method has no trained parameters; thresholds were fixed before scoring and not tuned on these dates. Geographic strata: the three upazilas, reported separately.",
   "source_archive": {
     "url": "https://unosat-maps.web.cern.ch/BD/FL20220525BGD/FL20220525BGD_SHP.zip",
     "event_code": "FL20220525BGD",
@@ -14,9 +19,13 @@
   "references": [
     {
       "id": "chaohu1_20220525",
+      "tier": "A",
       "date": "2022-05-25",
+      "pred_date": "2022-05-25",
       "sensor": "Chaohu-1 SAR",
-      "stem": "Chaohu1_20220525",
+      "flood": "Chaohu1_20220525_FloodExtent_Sylhet",
+      "analysis": "Chaohu1_20220525_AnalysisExtent_Sylhet",
+      "tier_meaning": "different satellite, same day as the SafeWindow map",
       "reference_raster": "benchmark/chaohu1_20220525_reference.tif",
       "reference_sha256": "9fd6603e8113928bda49577309a063b9afbc027061c6582fb9ffec25609efff3",
       "prediction": "processed/flood/sentinel1_20220525.tif",
@@ -25,18 +34,55 @@
     },
     {
       "id": "rcm1_20220618",
+      "tier": "A",
       "date": "2022-06-18",
+      "pred_date": "2022-06-18",
       "sensor": "RCM-1 SAR",
-      "stem": "RCM1_20220618",
+      "flood": "RCM1_20220618_FloodExtent_Sylhet",
+      "analysis": "RCM1_20220618_AnalysisExtent_Sylhet",
+      "tier_meaning": "different satellite, same day as the SafeWindow map",
       "reference_raster": "benchmark/rcm1_20220618_reference.tif",
       "reference_sha256": "6baad131366ce6b379e30c2b9196df7ef3d81ef4ae8699753c3285c46b5fd637",
       "prediction": "processed/flood/sentinel1_20220618.tif",
       "prediction_sha256": "2eff3304f8a869f4814ad83b8ec6e6694523f721a19f8be0666ef8c4fe52e74d",
       "analysed_share_of_study_area_pct": 7.8
+    },
+    {
+      "id": "rcm1_20220619_ne",
+      "tier": "B",
+      "date": "2022-06-19",
+      "pred_date": "2022-06-18",
+      "sensor": "RCM-1 SAR",
+      "flood": "RCM1_20220619_FloodExtent_NE",
+      "analysis": "RCM1_20220619_AnalysisExtent_NE",
+      "note": "UNOSAT's analysis-extent layer lists Sentinel-1 as the sensor; the flood layer and the file name say RCM-1. The two maps are one day apart, so the flood itself may have changed between them.",
+      "tier_meaning": "different satellite, one day after the SafeWindow map",
+      "reference_raster": "benchmark/rcm1_20220619_ne_reference.tif",
+      "reference_sha256": "c8857567c0446626294816a12b47845db36f886544278be0d097b842629a5ccf",
+      "prediction": "processed/flood/sentinel1_20220618.tif",
+      "prediction_sha256": "2eff3304f8a869f4814ad83b8ec6e6694523f721a19f8be0666ef8c4fe52e74d",
+      "analysed_share_of_study_area_pct": 98.7
+    },
+    {
+      "id": "unosat_s1_20220525_ne",
+      "tier": "C",
+      "date": "2022-05-25",
+      "pred_date": "2022-05-25",
+      "sensor": "Sentinel-1 SAR",
+      "flood": "S1_20220525_FloodExtent_NE",
+      "analysis": "S1_20220525_AnalysisExtent_NE",
+      "note": "Same satellite data as SafeWindow; tests the method, not the data.",
+      "tier_meaning": "same Sentinel-1 acquisition, different (UNOSAT) method",
+      "reference_raster": "benchmark/unosat_s1_20220525_ne_reference.tif",
+      "reference_sha256": "25e873f45769fb02ac0a019cf95046b79f8cfc3d2620454882d9cac7b84aaf02",
+      "prediction": "processed/flood/sentinel1_20220525.tif",
+      "prediction_sha256": "aaf58e677774e2f58cc72405ce986d79859788d5b151331058236d51aecdf50f",
+      "analysed_share_of_study_area_pct": 99.7
     }
   ],
   "limitations": [
-    "Two reference dates only.",
+    "Same-day, different-satellite references cover only 2-8% of the study area.",
+    "The whole-area different-satellite reference is one day after the SafeWindow map.",
     "Preliminary UNOSAT products, not field validated.",
     "UNOSAT flood extent (not total water extent) is used, because SafeWindow also leaves out permanent water."
   ]

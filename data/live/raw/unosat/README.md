@@ -7,10 +7,12 @@ https://unosat-maps.web.cern.ch/BD/FL20220525BGD/FL20220525BGD_SHP.zip
 SHA-256: `be72838a57c629672ed942c99b5bd7b11f9789a3677a6bd528af261ce3cdc49d`
 Licence: CC BY-SA (as listed on HDX). Publisher: UNITAR-UNOSAT.
 
-The benchmark uses these layers from `FL20220525BGD_SHP/`:
+The benchmark uses these layers from `FL20220525BGD_SHP/` (AnalysisExtent and FloodExtent for each):
 
-- `Chaohu1_20220525_AnalysisExtent_Sylhet.*` and `Chaohu1_20220525_FloodExtent_Sylhet.*`
-- `RCM1_20220618_AnalysisExtent_Sylhet.*` and `RCM1_20220618_FloodExtent_Sylhet.*`
+- `Chaohu1_20220525_*_Sylhet`: Chaohu-1, 25 May 2022 (tier A)
+- `RCM1_20220618_*_Sylhet`: RCM-1, 18 June 2022 (tier A)
+- `RCM1_20220619_*_NE`: RCM-1, 19 June 2022, north-east Bangladesh (tier B)
+- `S1_20220525_*_NE`: UNOSAT's Sentinel-1 analysis, 25 May 2022 (tier C)
 
 Extract them into a folder, then run:
 

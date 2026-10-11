@@ -15,7 +15,6 @@ actually connected to the river, and a 30 m DEM has metre-level errors on flat
 floodplain. Say clearly in the app and pitch that these days are estimates.
 """
 import argparse
-from datetime import timedelta
 
 import numpy as np
 import pandas as pd

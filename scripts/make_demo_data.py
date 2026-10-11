@@ -122,7 +122,7 @@ def main():
         register_flood_map(day, source, arr, grid, note="SYNTHETIC", paths=paths)
 
     # villages: random points, a few deep in the haor (boat-dependent)
-    pts, names = [], []
+    pts = []
     while len(pts) < 70:
         p = Point(X0 + RNG.uniform(300, W - 300), Y0 + RNG.uniform(300, H - 300))
         if all(p.distance(q) > 600 for q in pts):

@@ -15,7 +15,7 @@ import pandas as pd
 import shapely
 
 from . import config
-from .config import FLOODED, UNKNOWN
+from .config import DRY, FLOODED, UNKNOWN
 from .flood import Grid
 
 
@@ -69,6 +69,26 @@ def lookup(raster: np.ndarray, grid: Grid, x: np.ndarray, y: np.ndarray) -> np.n
     inside = (col >= 0) & (col < grid.width) & (row >= 0) & (row < grid.height)
     out = np.full(x.shape, UNKNOWN, dtype="uint8")
     out[inside] = raster[row[inside], col[inside]]
+    return out
+
+
+def on_bridge(x: np.ndarray, y: np.ndarray, bridges: gpd.GeoDataFrame | None,
+              tol: float = config.BRIDGE_TOL_M) -> np.ndarray:
+    """True for check-points lying on a mapped road bridge."""
+    out = np.zeros(x.shape, dtype=bool)
+    if bridges is None or bridges.empty:
+        return out
+    tree = shapely.STRtree(bridges.geometry.to_numpy())
+    hits = tree.query(shapely.points(x, y), predicate="dwithin", distance=tol)
+    out[np.unique(hits[0])] = True
+    return out
+
+
+def ignore_water_under_bridges(values: np.ndarray, bridge_points: np.ndarray) -> np.ndarray:
+    """A bridge deck stands above the water the radar sees under it, so a
+    flooded pixel on a bridge does not cut the road. Unknown stays unknown."""
+    out = values.copy()
+    out[bridge_points & (out == FLOODED)] = DRY
     return out
 
 

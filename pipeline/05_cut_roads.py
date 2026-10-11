@@ -5,19 +5,24 @@
 For every road segment: check-points every 20 m, look up the merged flood map
 at each one, then
   cut      more than X% of check-points flooded
-  unknown  otherwise, if most check-points are unknown (cloud / no image)
+  unknown  otherwise, if most check-points are unknown (no radar image)
   open     otherwise
 X is run at 10%, 20% (main result) and 40% for the sensitivity test.
+
+Check-points on a mapped bridge (pipeline/03c_bridges.py) ignore flood pixels:
+the radar sees the river under the deck, not water on it.
 
 Writes data/results/road_status.csv with one row per (date, road) and one
 status column per threshold: status_10, status_20, status_40.
 """
+import geopandas as gpd
 import pandas as pd
 import rasterio
 
 from safewindow import config
 from safewindow.flood import Grid, merged_dates, merged_path
-from safewindow.roads import classify, edge_fractions, load_network, lookup, sample_points
+from safewindow.roads import (classify, edge_fractions, ignore_water_under_bridges, load_network, lookup,
+                              on_bridge, sample_points)
 
 
 def status_col(t: float) -> str:
@@ -33,13 +38,19 @@ def main():
         raise SystemExit("No merged flood maps - run pipeline/02e_merge_flood.py first.")
 
     edge_idx, x, y = sample_points(edges)
-    print(f"{len(edges)} roads, {len(x)} check-points, {len(dates)} dates")
+    if paths.bridges.exists():
+        bridge_pts = on_bridge(x, y, gpd.read_file(paths.bridges).to_crs(config.CRS))
+    else:
+        print("WARNING: no bridges.gpkg - run pipeline/03c_bridges.py, or water under bridges will cut roads")
+        bridge_pts = on_bridge(x, y, None)
+    print(f"{len(edges)} roads, {len(x)} check-points ({bridge_pts.sum()} on bridges), {len(dates)} dates")
 
     out, summary = [], []
     for day in dates:
         with rasterio.open(merged_path(day, paths)) as src:
             raster = src.read(1)
-        ff, fu = edge_fractions(lookup(raster, grid, x, y), edge_idx, len(edges))
+        values = ignore_water_under_bridges(lookup(raster, grid, x, y), bridge_pts)
+        ff, fu = edge_fractions(values, edge_idx, len(edges))
         df = pd.DataFrame({"date": day, "edge_id": edges["edge_id"],
                            "frac_flooded": ff.round(3), "frac_unknown": fu.round(3)})
         row = {"date": day}

@@ -8,6 +8,14 @@ From the per-date village status table this computes, for each village:
 and an urgency rank (earliest aid deadline first, then largest population).
 
 Satellite dates have gaps, so isolation is a range, never a single day.
+
+Outcomes, checked in this order:
+  boat_dependent       more than BOAT_DEPENDENT_M from any road
+  isolated             seen isolated on at least one date
+  never_isolated       seen connected on every date
+  connected_when_seen  connected on every date its roads were observed, but
+                       'uncertain' (roads not covered that day) on the others
+  uncertain            never determinately connected or isolated
 """
 from __future__ import annotations
 
@@ -29,7 +37,8 @@ def summarise(status: pd.DataFrame, villages: pd.DataFrame,
         row = {"village_id": vid, "outcome": "never_isolated",
                "last_connected": pd.NaT, "first_isolated": pd.NaT,
                "isolated_from_earliest": pd.NaT, "reconnected": pd.NaT,
-               "safe_exit_date": pd.NaT, "n_dates_isolated": st.count("isolated")}
+               "safe_exit_date": pd.NaT, "n_dates_isolated": st.count("isolated"),
+               "n_dates_connected": st.count("connected"), "n_dates_uncertain": st.count("uncertain")}
         if "boat_dependent" in st:
             row["outcome"] = "boat_dependent"
         elif "isolated" in st:
@@ -44,7 +53,9 @@ def summarise(status: pd.DataFrame, villages: pd.DataFrame,
             # observation before it, all we know is "on or before" this date.
             row["isolated_from_earliest"] = (before[-1] + timedelta(days=1)) if before else dates[i]
         elif "uncertain" in st:
-            row["outcome"] = "uncertain"
+            # Never seen isolated. If it was connected whenever its roads were
+            # observed, saying so is more informative than a blanket "uncertain".
+            row["outcome"] = "connected_when_seen" if "connected" in st else "uncertain"
         rows.append(row)
 
     out = villages[["village_id", "name", "population"]].merge(pd.DataFrame(rows), on="village_id", how="right")

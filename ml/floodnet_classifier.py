@@ -132,7 +132,6 @@ def predict_image(model: nn.Module, image: Image.Image, device: torch.device = t
 
 def evaluate(model: nn.Module, loader: DataLoader, device: torch.device) -> dict[str, float]:
     model.eval()
-    criterion = nn.CrossEntropyLoss()
     total = 0
     correct = 0
     true_positive = 0
