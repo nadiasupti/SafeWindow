@@ -24,10 +24,13 @@ def download(poly_wgs84, attempts: int) -> gpd.GeoDataFrame:
     for attempt in range(1, attempts + 1):
         try:
             return ox.features_from_polygon(poly_wgs84, tags={"bridge": True})
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            if attempt == attempts:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
+                ox._errors.ResponseStatusCodeError) as exc:
+            # an overloaded Overpass server (429/502/503/504) gets a longer wait; other HTTP errors are final
+            busy = any(c in str(exc) for c in ("429", "502", "503", "504"))
+            if attempt == attempts or (isinstance(exc, ox._errors.ResponseStatusCodeError) and not busy):
                 raise
-            time.sleep(2 * 2 ** (attempt - 1))
+            time.sleep(60 * attempt if busy else 2 * 2 ** (attempt - 1))
 
 
 def main():

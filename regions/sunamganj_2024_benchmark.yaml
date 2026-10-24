@@ -1,0 +1,69 @@
+# Flood-extent references for the 2024 Sunamganj flood (UNOSAT event FL20240502BGD).
+# Used by scripts/benchmark_region.py. None of these was used to build or tune
+# SafeWindow; the method is unchanged from 2022. See docs/phase1b_2024_data_check.md.
+#
+# Each reference is scored against one or more SafeWindow dates. The date gap
+# is reported because the flood can change between two images. A prediction
+# listed as several dates joined with "+" is their union (flooded if flooded on
+# any of them), for UNOSAT's own cumulative analysis.
+
+event_code: FL20240502BGD
+publisher: UNITAR-UNOSAT
+license: "CC BY-SA (as listed on HDX)"
+shapefile_dir: ../data/sources/unosat_2024/sadar_pleiades_3890/TC20240502BGD_SHP   # relative to this file
+archives:
+  - {url: "https://unosat.org/static/unosat_filesystem/3890/TC20240502BGD_SHP.zip", hdx: e97de1a2-2e2d-4371-9d38-f5fede3e79a0}
+  - {url: "https://unosat.org/static/unosat_filesystem/3889/TC20240502BGD_SHP.zip", hdx: cb5f8a67-098b-4eb9-8368-1929be47c827}
+  - {url: "https://unosat.org/static/unosat_filesystem/3885/TC20240502BGD_SHP.zip", hdx: 7c143cf3-a1cd-4676-9f0e-b0667ecd597b}
+
+tiers:
+  optical: "different sensor (very-high-resolution optical); misses water under vegetation and cloud"
+  radar: "different radar satellite and band"
+  unknown: "sensor not named by UNOSAT ('GLOBAL Satellite')"
+  same_sensor: "same Sentinel-1 data, UNOSAT's own method; tests the method, not the data"
+
+references:
+  - id: pleiades_20240626_sadar
+    tier: optical
+    sensor: "Pleiades (PHR), optical"
+    date: "2024-06-26"
+    flood: PHR_20240626_FloodExtent_SunamganjSadar
+    analysis: PHR_20240626_AnglysisExtent_SunamganjSadar
+    exclude: PHR_20240626_CloudObstruction_SunamganjSadar
+    predictions: ["2024-06-24", "2024-06-29"]
+
+  - id: saocom_20240626_chhatak
+    tier: radar
+    sensor: "SAOCOM, L-band SAR"
+    date: "2024-06-26"
+    flood: SAOCOM_20240626_FloodExtent_Sylhet
+    analysis: SAOCOM_20240626_AnalysisExtent_Sylhet_1
+    predictions: ["2024-06-29", "2024-06-19"]
+
+  - id: global_20240626_chhatak
+    tier: unknown
+    sensor: "GLOBAL Satellite (not named)"
+    date: "2024-06-26"
+    flood: GLOBAL_20240626_FloodExtent_Sunamganj
+    analysis: GLOBAL_20240626_AnglysisExtent_Sunamganj
+    predictions: ["2024-06-29", "2024-06-19"]
+
+  - id: unosat_s1_20240619_22_sylhet
+    tier: same_sensor
+    sensor: "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June"
+    date: "2024-06-19+2024-06-22"
+    flood: S1_20240619_20240622_FloodExtent_Sylhet
+    analysis: S1_20240619_20240622_AnalysisExtent_Sylhet
+    predictions: ["2024-06-19+2024-06-22", "2024-06-19"]
+    note: "UNOSAT's 2024 FloodExtent counts only new or increased water (17% of the compared area), not water already in the haor."
+
+  # Same UNOSAT product, total water layer. SafeWindow counts all water that is
+  # 3 dB darker than the dry season, which includes seasonal haor water, so this
+  # is the like-for-like definition.
+  - id: unosat_s1_water_20240619_22_sylhet
+    tier: same_sensor
+    sensor: "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)"
+    date: "2024-06-19+2024-06-22"
+    flood: S1_20240619_20240622_WaterExtent_Sylhet
+    analysis: S1_20240619_20240622_AnalysisExtent_Sylhet
+    predictions: ["2024-06-19+2024-06-22"]

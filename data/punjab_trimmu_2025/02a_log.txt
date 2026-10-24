@@ -1,0 +1,28 @@
+﻿      date  relative_orbit     passes  scenes
+2025-08-16             107 DESCENDING       1
+2025-08-20             173  ASCENDING       1
+2025-08-21               5 DESCENDING       2
+2025-08-28             107 DESCENDING       1
+2025-09-01             173  ASCENDING       1
+2025-09-02               5 DESCENDING       2
+2025-09-09             107 DESCENDING       1
+2025-09-13             173  ASCENDING       1
+2025-09-14               5 DESCENDING       2
+2025-08-16: orbit 107
+  otsu: threshold -14.87dB, flooded 1.1% of grid
+2025-08-20: orbit 173
+  otsu: threshold -14.12dB, flooded 1.7% of grid
+2025-08-21: orbit 5
+  otsu: threshold -13.62dB, flooded 1.9% of grid
+2025-08-28: orbit 107
+  otsu: threshold -14.37dB, flooded 1.1% of grid
+2025-09-01: orbit 173
+  otsu: threshold -15.37dB, flooded 9.3% of grid
+2025-09-02: orbit 5
+  otsu: threshold -12.63dB, flooded 9.3% of grid
+2025-09-09: orbit 107
+  otsu: threshold -14.62dB, flooded 8.7% of grid
+2025-09-13: orbit 173
+  otsu: threshold -13.87dB, flooded 3.1% of grid
+2025-09-14: orbit 5
+  otsu: threshold -12.37dB, flooded 3.1% of grid

@@ -1,12 +1,12 @@
 village_id,name,population,outcome,last_connected,first_isolated,isolated_from_earliest,reconnected,safe_exit_date,n_dates_isolated,n_dates_connected,n_dates_uncertain,aid_deadline,urgency_rank,isolation_range,exit_shelter_id,exit_shelter,exit_route_m
-osm3642877016,Paschim Birgaon,13387,isolated,,2022-05-16,2022-05-16,2022-05-18,,16,3,0,2022-05-23,1,isolated on or before 16 May,,,
-osm5506312223,Boromuha,119104,isolated,2022-05-18,2022-05-23,2022-05-19,2022-06-11,2022-05-18,14,4,1,2022-05-26,2,isolated between 19 May and 23 May,osm539361524,Unnamed hospital,8276.0
-osm6123937356,Dholkotob village,20302,isolated,2022-05-18,2022-05-23,2022-05-19,2022-06-11,2022-05-18,16,3,0,2022-05-26,3,isolated between 19 May and 23 May,osm6124539669,Pangaon Community clinic,3045.0
-osm3642870480,Purba Birgaon,19141,isolated,2022-05-18,2022-05-23,2022-05-19,2022-06-11,2022-05-18,10,4,5,2022-05-26,4,isolated between 19 May and 23 May,osm2616255489,Khaled General Hospital,5791.0
-osm3642867917,Patharia,15866,isolated,2022-05-18,2022-05-23,2022-05-19,2022-06-11,2022-05-18,14,5,0,2022-05-26,5,isolated between 19 May and 23 May,osm9707654272,Noakhali Saptogram High School,7931.0
+osm3642877016,Paschim Birgaon,13387,isolated,,2022-05-16,2022-05-16,,,15,0,4,2022-05-23,1,isolated on or before 16 May,,,
+osm6123937356,Dholkotob village,20302,isolated,2022-05-16,2022-05-23,2022-05-17,,2022-05-16,14,1,4,2022-05-24,2,isolated between 17 May and 23 May,osm6124539669,Pangaon Community clinic,3045.0
+osm3642867917,Patharia,15866,isolated,2022-05-16,2022-05-23,2022-05-17,,2022-05-16,14,1,4,2022-05-24,3,isolated between 17 May and 23 May,osm6124539669,Pangaon Community clinic,5612.0
+osm5506312223,Boromuha,119104,isolated,,2022-05-23,2022-05-23,,,14,0,5,2022-05-30,4,isolated on or before 23 May,,,
+osm3642870480,Purba Birgaon,19141,isolated,,2022-05-23,2022-05-23,,,10,0,9,2022-05-30,5,isolated on or before 23 May,,,
 osm6123937357,"BR 28, 29 rice (Vatipara Haor)",2604,boat_dependent,,,,,,0,0,0,,,,,,
 osm9843505110,Banshtala,11560,connected_when_seen,,,,,,0,9,10,,,,,,
-osm6123937355,Dholposhi,1370,never_isolated,,,,,,0,19,0,,,,,,
+osm6123937355,Dholposhi,1370,connected_when_seen,,,,,,0,15,4,,,,,,
 osm822959784,"Jawa Bazar, Dergaw",89460,connected_when_seen,,,,,,0,9,10,,,,,,
 osm9835676256,Kusiura,52517,connected_when_seen,,,,,,0,9,10,,,,,,
 osm6720358434,Liakatganj,165780,connected_when_seen,,,,,,0,9,10,,,,,,

@@ -23,106 +23,44 @@ from streamlit_folium import st_folium
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from safewindow import config  # noqa: E402
+from safewindow.region import rain_label  # noqa: E402
 from safewindow.validation import validate_app_dataset  # noqa: E402
 
 STATUS_COLOR = {"connected": "#2e9d4f", "isolated": "#d7263d", "uncertain": "#f39c12",
                 "boat_dependent": "#8a8f98"}
 
-T = {
-    "en": {
-        "title": "SafeWindow", "tagline": "When does each village lose its last road to a flood shelter?",
-        "language": "Language", "supply": "Household supply days (assumption)",
-        "supply_help": "Days of food and water a family has on hand once cut off. This is an assumption, not a measurement.",
-        "date": "Date", "showing": "Map shows the flood observed on {d} ({src}).",
-        "no_obs": "No observation on or before this date - showing the first one ({d}).",
-        "unknown_note": "{p}% of the area had no radar observation that day (outside the satellite's path) - shown in grey.",
-        "connected": "connected to a shelter", "isolated": "isolated (no road to any shelter)",
-        "uncertain": "uncertain (roads not covered by radar that day)", "boat_dependent": "boat-dependent (> 500 m from a road)",
-        "connected_when_seen": "Not seen isolated",
-        "seen_detail": "Connected on all {c} dates its roads were observed. On the other {u} dates the radar did not cover its roads.",
-        "uncertain_note": "Its roads were not observed on some dates, so its status on those dates is unknown. Treat dates as ranges, not certainties.",
-        "flood": "flood", "no_data": "no radar data",
-        "source_caption": "Built from public satellite data by the SafeWindow pipeline. Not an official warning system.",
-        "how": "How the timeline is calculated",
-        "roads_note": "Model route status at cut thresholds 10% / 20% / 40%, on the last radar view before and the first after each reported date.",
-        "before": "Before", "after": "After",
-        "how_text": ("A village counts as isolated only when no road route to any shelter is left. "
-                     "The isolation range runs from the day after it was last seen connected to the day it was first seen isolated. "
-                     "The safe exit date is the last day it was seen connected. "
-                     "The aid deadline adds the supply days chosen on the left to the earliest possible isolation day."),
-        "urgent": "Responder view - most urgent villages", "rank": "#", "village": "Village",
-        "pop": "Population", "isolated_when": "Isolated", "deadline": "Aid deadline",
-        "pick": "Select a village (or click one on the map)", "none": "-",
-        "panel": "Village details", "isolation": "Isolation date",
-        "never": "Not isolated on any observed date", "safe_exit": "Last safe exit",
-        "route": "{km:.1f} km by road to {s}", "no_exit": "No safe exit observed (already cut off on the first image)",
-        "deadline_label": "Aid deadline (Survival Clock)", "days_left": "{n} days of supplies left on {d}",
-        "deadline_passed": "Supplies ran out {n} days before {d}", "not_yet": "Not isolated yet on {d}",
-        "sms": "SMS preview (Bangla)", "rain": "Daily rainfall - NASA GPM IMERG",
-        "modis": "Flooded area seen by NASA MODIS (MOD09GA proxy; monsoon cloud hides most of the area)", "upstream": "Meghalaya hills (upstream)",
-        "local": "Sunamganj", "sens": "Sensitivity test (road cut cutoff)", "valid": "Validation against news reports",
-        "limits": "Limits of this prototype",
-        "limits_text": ("- Supply days is an assumption, not measured.\n"
-                        "- Flood maps have gaps where the radar did not pass, and radar errors; dates between images are ranges.\n"
-                        "- OpenStreetMap roads are incomplete, and the shelters are unverified OpenStreetMap candidates (schools, clinics, offices).\n"
-                        "- Research prototype, not an official warning system. Follow official alerts (BMD, FFWC, DDM)."),
-        "people": "people", "isolated_count": "{n} villages ({p} people) isolated on {d}",
-    },
-    "bn": {
-        "title": "সেফউইন্ডো", "tagline": "কোন গ্রাম কবে আশ্রয়কেন্দ্রের শেষ রাস্তা হারায়?",
-        "language": "ভাষা", "supply": "পরিবারের মজুদ দিন (অনুমান)",
-        "supply_help": "বিচ্ছিন্ন হওয়ার পর একটি পরিবারের কাছে কত দিনের খাবার ও পানি থাকে। এটি অনুমান, পরিমাপ নয়।",
-        "date": "তারিখ", "showing": "মানচিত্রে {d} তারিখের বন্যা দেখানো হচ্ছে ({src})।",
-        "no_obs": "এই তারিখের আগে কোনো পর্যবেক্ষণ নেই - প্রথমটি দেখানো হচ্ছে ({d})।",
-        "unknown_note": "এলাকার {p}% অংশ সেদিন রাডারের আওতার বাইরে ছিল - ধূসর রঙে দেখানো।",
-        "connected": "আশ্রয়কেন্দ্রের সাথে যুক্ত", "isolated": "বিচ্ছিন্ন (কোনো আশ্রয়কেন্দ্রে সড়ক নেই)",
-        "uncertain": "অনিশ্চিত (সেদিন রাডারে রাস্তা দেখা যায়নি)", "boat_dependent": "নৌকা-নির্ভর (রাস্তা থেকে ৫০০ মি.-এর বেশি)",
-        "connected_when_seen": "বিচ্ছিন্ন দেখা যায়নি",
-        "seen_detail": "যে {c}টি তারিখে রাস্তাগুলো দেখা গেছে, সবগুলোতে যুক্ত ছিল। বাকি {u}টি তারিখে রাডার রাস্তাগুলো দেখেনি।",
-        "uncertain_note": "কিছু তারিখে এর রাস্তাগুলো দেখা যায়নি, তাই সেই দিনগুলোর অবস্থা অজানা। তারিখগুলোকে নিশ্চিত নয়, সময়সীমা হিসেবে ধরুন।",
-        "flood": "বন্যা", "no_data": "রাডারের তথ্য নেই",
-        "source_caption": "সেফউইন্ডো পাইপলাইনে উন্মুক্ত স্যাটেলাইট তথ্য থেকে তৈরি। এটি সরকারি সতর্কবার্তা নয়।",
-        "how": "সময়রেখা কীভাবে হিসাব করা হয়",
-        "roads_note": "প্রতিটি প্রতিবেদিত তারিখের আগের শেষ ও পরের প্রথম রাডার পর্যবেক্ষণে মডেলের পথের অবস্থা (কাটার সীমা ১০% / ২০% / ৪০%)।",
-        "before": "আগে", "after": "পরে",
-        "how_text": ("কোনো আশ্রয়কেন্দ্রে যাওয়ার সড়কপথ না থাকলেই একটি গ্রামকে বিচ্ছিন্ন ধরা হয়। "
-                     "বিচ্ছিন্ন হওয়ার সময়সীমা শুরু হয় শেষবার যুক্ত দেখার পরের দিন থেকে, শেষ হয় প্রথমবার বিচ্ছিন্ন দেখার দিনে। "
-                     "শেষ নিরাপদ বের হওয়ার দিন হলো শেষবার যুক্ত দেখার দিন। "
-                     "সাহায্যের শেষ সময় = সবচেয়ে আগের সম্ভাব্য বিচ্ছিন্ন দিন + বাঁ পাশে বেছে নেওয়া মজুদ দিন।"),
-        "urgent": "উদ্ধারকর্মীর দৃষ্টি - সবচেয়ে জরুরি গ্রাম", "rank": "#", "village": "গ্রাম",
-        "pop": "জনসংখ্যা", "isolated_when": "বিচ্ছিন্ন", "deadline": "সাহায্যের শেষ সময়",
-        "pick": "একটি গ্রাম বেছে নিন (বা মানচিত্রে ক্লিক করুন)", "none": "-",
-        "panel": "গ্রামের বিবরণ", "isolation": "বিচ্ছিন্ন হওয়ার তারিখ",
-        "never": "কোনো পর্যবেক্ষিত তারিখে বিচ্ছিন্ন নয়", "safe_exit": "শেষ নিরাপদ বের হওয়ার দিন",
-        "route": "{s} পর্যন্ত সড়কপথে {km} কিমি", "no_exit": "নিরাপদ পথ পাওয়া যায়নি (প্রথম ছবিতেই বিচ্ছিন্ন)",
-        "deadline_label": "সাহায্যের শেষ সময় (সারভাইভাল ঘড়ি)", "days_left": "{d} তারিখে আর {n} দিনের মজুদ বাকি",
-        "deadline_passed": "{d} তারিখের {n} দিন আগে মজুদ শেষ", "not_yet": "{d} তারিখে এখনো বিচ্ছিন্ন নয়",
-        "sms": "এসএমএস নমুনা", "rain": "দৈনিক বৃষ্টিপাত - নাসা জিপিএম আইএমইআরজি",
-        "modis": "নাসা মোডিস-এ দেখা প্লাবিত এলাকা (মেঘের কারণে বেশিরভাগ এলাকা দেখা যায়নি)", "upstream": "মেঘালয় পাহাড় (উজান)",
-        "local": "সুনামগঞ্জ", "sens": "সংবেদনশীলতা পরীক্ষা", "valid": "সংবাদ প্রতিবেদনের সাথে যাচাই",
-        "limits": "এই প্রোটোটাইপের সীমাবদ্ধতা",
-        "limits_text": ("- মজুদ দিন একটি অনুমান, পরিমাপ নয়।\n"
-                        "- রাডার যেদিন যে এলাকায় যায়নি সেখানে বন্যা মানচিত্রে ফাঁক আছে, রাডারের ত্রুটিও থাকতে পারে; ছবির মাঝের দিনগুলো একটি সময়সীমা।\n"
-                        "- ওপেনস্ট্রিটম্যাপের রাস্তা অসম্পূর্ণ; আশ্রয়কেন্দ্রগুলো যাচাই করা হয়নি (ওপেনস্ট্রিটম্যাপের স্কুল, ক্লিনিক, অফিস)।\n"
-                        "- এটি গবেষণা প্রোটোটাইপ, সরকারি সতর্কবার্তা নয়। সরকারি সতর্কবার্তা মেনে চলুন (BMD, FFWC, DDM)।"),
-        "people": "জন", "isolated_count": "{d} তারিখে {n}টি গ্রাম ({p} জন) বিচ্ছিন্ন",
-    },
-}
-BN_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
-BN_MONTHS = {5: "মে", 6: "জুন", 7: "জুলাই"}
+# App text, one file per language in locales/. A new language needs only a new
+# file there and its code in the region's `languages`.
+LOCALES_DIR = config.ROOT / "locales"
+T = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in sorted(LOCALES_DIR.glob("*.json"))}
+
+
+def app_languages() -> list[str]:
+    """The region's languages that have a locale file, English first if present."""
+    langs = [lang for lang in config.REGION.languages if lang in T]
+    return langs or ["en"]
+
+
+def texts(lang: str) -> dict:
+    """Locale text with the region's warning agencies filled in."""
+    t = dict(T[lang])
+    t["limits_text"] = t["limits_text"].format(agencies=", ".join(config.REGION.agencies))
+    return t
+
+
+def local_num(x, lang: str) -> str:
+    digits = T[lang].get("digits")
+    return str(x).translate(str.maketrans("0123456789", digits)) if digits else str(x)
 
 
 def fmt_date(d, lang: str) -> str:
     if d is None or pd.isna(d):
         return "-"
     d = pd.Timestamp(d)
-    if lang == "bn":
-        return f"{str(d.day).translate(BN_DIGITS)} {BN_MONTHS.get(d.month, d.strftime('%b'))}"
+    months = T[lang].get("months")
+    if months:
+        return f"{local_num(d.day, lang)} {months[d.month - 1]}"
     return d.strftime("%d %b")
-
-
-def bn_num(x, lang: str) -> str:
-    return str(x).translate(BN_DIGITS) if lang == "bn" else str(x)
 
 
 # --- data ------------------------------------------------------------------------
@@ -149,23 +87,21 @@ def load(app_dir: str):
     return meta, villages, status, shelters, routes, cut, opt
 
 
-def sms_text(v, route_km, shelter, lang: str) -> str:
-    if lang == "bn":
-        name = v["name_bn"] if isinstance(v.get("name_bn"), str) and v["name_bn"] else v["name"]
-        lo, hi = v["isolated_from_earliest"], v["first_isolated"]
-        when = (f"{fmt_date(lo, 'bn')} - {fmt_date(hi, 'bn')}" if pd.notna(v["last_connected"])
-                else f"{fmt_date(hi, 'bn')} বা তার আগে")
-        route = f"সড়কপথে {bn_num(f'{route_km:.1f}', 'bn')} কিমি" if route_km is not None else "জানা নেই"
-        return (f"সতর্কতা (পরীক্ষামূলক): {name} এর সড়ক যোগাযোগ {when} এর মধ্যে বিচ্ছিন্ন হতে পারে। "
-                f"নিরাপদ পথ: {route}। নিকটতম আশ্রয়কেন্দ্র: {shelter or 'জানা নেই'}। সরকারি সতর্কবার্তা মেনে চলুন।")
+def village_name(v, lang: str) -> str:
+    """The village name in the locale's own name column (e.g. name_bn) when it has one."""
+    col = T[lang].get("name_column")
+    local = v.get(col) if col else None
+    return local if isinstance(local, str) and local else v["name"]
 
-    name = v["name"]
-    lo, hi = v["isolated_from_earliest"], v["first_isolated"]
-    when = (f"{fmt_date(lo, 'en')} - {fmt_date(hi, 'en')}" if pd.notna(v["last_connected"])
-            else f"on or before {fmt_date(hi, 'en')}")
-    route = f"{route_km:.1f} km by road to {shelter}" if route_km is not None else "not available"
-    return (f"Provisional: {name} may be isolated during {when}. Last safe route: {route}. "
-            f"Follow official flood alerts.")
+
+def sms_text(v, route_km, shelter, lang: str) -> str:
+    t = T[lang]
+    lo, hi = fmt_date(v["isolated_from_earliest"], lang), fmt_date(v["first_isolated"], lang)
+    when = (t["sms_when_range"] if pd.notna(v["last_connected"]) else t["sms_when_before"]).format(lo=lo, hi=hi)
+    route = (t["sms_route"].format(km=local_num(f"{route_km:.1f}", lang), shelter=shelter)
+             if route_km is not None else t["sms_no_route"])
+    return t["sms_template"].format(name=village_name(v, lang), when=when, route=route,
+                                    shelter=shelter or t["sms_no_shelter"])
 
 
 def nearest_village(villages: gpd.GeoDataFrame, lat: float, lng: float, max_m: float = 400):
@@ -211,8 +147,10 @@ def main():
     meta, villages, status, shelters, routes, cut, opt = load(str(paths.app))
 
     with st.sidebar:
-        lang = "bn" if st.radio("Language / ভাষা", ["English", "বাংলা"], horizontal=True) == "বাংলা" else "en"
-        t = T[lang]
+        langs = app_languages()
+        by_name = {T[code]["language_name"]: code for code in langs}
+        lang = by_name[st.radio(" / ".join(T[code]["language"] for code in langs), list(by_name), horizontal=True)]
+        t = texts(lang)
         lo, hi = meta["supply_days_range"]
         supply = st.slider(t["supply"], lo, hi, meta["default_supply_days"], help=t["supply_help"])
         st.markdown("---")
@@ -227,6 +165,9 @@ def main():
     st.caption(t["tagline"])
     if meta.get("data_label"):
         st.warning(f"⚠️ {meta['data_label']}")
+    if meta.get("region", config.REGION.id) != config.REGION.id:
+        st.error(f"This data was built for region {meta['region']!r}, but SAFEWINDOW_REGION is "
+                 f"{config.REGION.id!r}: labels, languages and agencies may not match the data.")
     if is_default_data_dir(paths):
         st.caption(t["source_caption"])
 
@@ -245,13 +186,13 @@ def main():
     st.caption((t["showing"] if len(past) else t["no_obs"]).format(
         d=fmt_date(obs_day, lang), src=meta["sources"].get(obs_day, "")))
     if meta["unknown_pct"].get(obs_day, 0) >= 5:
-        st.caption(t["unknown_note"].format(p=bn_num(round(meta["unknown_pct"][obs_day]), lang)))
+        st.caption(t["unknown_note"].format(p=local_num(round(meta["unknown_pct"][obs_day]), lang)))
 
     st_day = status[status["date"] == obs_day].set_index("village_id")["status"]
     villages["status_now"] = villages["village_id"].map(st_day).fillna("uncertain")
     iso_now = villages[villages["status_now"] == "isolated"]
-    st.markdown("**" + t["isolated_count"].format(n=bn_num(len(iso_now), lang), d=fmt_date(obs_day, lang),
-                p=bn_num(f"{int(iso_now['population'].sum()):,}", lang)) + "**")
+    st.markdown("**" + t["isolated_count"].format(n=local_num(len(iso_now), lang), d=fmt_date(obs_day, lang),
+                p=local_num(f"{int(iso_now['population'].sum()):,}", lang)) + "**")
 
     # --- selected village (from selectbox or map click) ---
     ranked = villages.sort_values(["urgency_rank", "name"], na_position="last")
@@ -362,10 +303,9 @@ def village_panel(villages, routes, vid, day: pd.Timestamp, lang, t):
     shelter = r["shelter_name"].iloc[0] if len(r) else None
 
     st.markdown("---")
-    name = v["name_bn"] if lang == "bn" and isinstance(v.get("name_bn"), str) else v["name"]
-    st.subheader(f"{t['panel']}: {name}")
+    st.subheader(f"{t['panel']}: {village_name(v, lang)}")
     a, b, c, d = st.columns(4)
-    a.metric(t["pop"], "-" if pd.isna(v["population"]) else bn_num(f"{int(v['population']):,}", lang))
+    a.metric(t["pop"], "-" if pd.isna(v["population"]) else local_num(f"{int(v['population']):,}", lang))
     if v["outcome"] == "isolated":
         rng = (f"{fmt_date(v['isolated_from_earliest'], lang)} – {fmt_date(v['first_isolated'], lang)}"
                if pd.notna(v["last_connected"]) else f"≤ {fmt_date(v['first_isolated'], lang)}")
@@ -373,14 +313,13 @@ def village_panel(villages, routes, vid, day: pd.Timestamp, lang, t):
         c.metric(t["safe_exit"], fmt_date(v["safe_exit_date"], lang))
         d.metric(t["deadline_label"], fmt_date(v["aid_deadline"], lang))
         if route_km is not None:
-            st.success("🛣️ " + t["route"].format(km=bn_num(f"{route_km:.1f}", lang) if lang == "bn" else route_km,
-                                                  s=shelter))
+            st.success("🛣️ " + t["route"].format(km=local_num(f"{route_km:.1f}", lang), s=shelter))
         else:
             st.info(t["no_exit"])
         if day >= v["isolated_from_earliest"]:
             left = (v["aid_deadline"] - day).days
-            msg = (t["days_left"].format(n=bn_num(left, lang), d=fmt_date(day, lang)) if left >= 0 else
-                   t["deadline_passed"].format(n=bn_num(-left, lang), d=fmt_date(day, lang)))
+            msg = (t["days_left"].format(n=local_num(left, lang), d=fmt_date(day, lang)) if left >= 0 else
+                   t["deadline_passed"].format(n=local_num(-left, lang), d=fmt_date(day, lang)))
             (st.error if left <= 2 else st.warning)("⏳ " + msg)
         else:
             st.info(t["not_yet"].format(d=fmt_date(day, lang)))
@@ -389,8 +328,8 @@ def village_panel(villages, routes, vid, day: pd.Timestamp, lang, t):
     else:
         b.metric(t["isolation"], t[v["outcome"]] if v["outcome"] in t else t["never"])
         if v["outcome"] == "connected_when_seen":
-            st.caption(t["seen_detail"].format(c=bn_num(int(v.get("n_dates_connected", 0)), lang),
-                                               u=bn_num(int(v.get("n_dates_uncertain", 0)), lang)))
+            st.caption(t["seen_detail"].format(c=local_num(int(v.get("n_dates_connected", 0)), lang),
+                                               u=local_num(int(v.get("n_dates_uncertain", 0)), lang)))
 
     if v["outcome"] == "uncertain":
         st.info(t["uncertain_note"])
@@ -406,7 +345,7 @@ def charts(opt, meta, day: pd.Timestamp, lang, t):
         r["date"] = pd.to_datetime(r["date"])
         r = r[(r["date"] >= meta["app_start"]) & (r["date"] <= meta["app_end"])]
         long = r.melt("date", var_name="box", value_name="mm")
-        long["box"] = long["box"].map({"meghalaya_upstream_mm": t["upstream"], "sunamganj_mm": t["local"]})
+        long["box"] = [rain_label(config.REGION, c.removesuffix("_mm"), lang) for c in long["box"]]
         bars = alt.Chart(long).mark_bar(opacity=0.85).encode(
             x=alt.X("date:T", title=None), xOffset="box:N",
             y=alt.Y("mm:Q", title="mm/day"),

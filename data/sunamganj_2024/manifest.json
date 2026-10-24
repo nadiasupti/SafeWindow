@@ -1,0 +1,854 @@
+{
+  "project": "SafeWindow",
+  "generated_at_utc": "2026-10-24T12:01:16.179599+00:00",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "data_dir": "D:\\mern\\olympid\\nasa_app_challeng\\SafeWindow\\data\\sunamganj_2024",
+  "data_label": "REAL DATA - May-July 2024 Sunamganj flood, mapped from Sentinel-1 radar with the unchanged 2022 method. Roads, villages and shelters are the October 2026 OSM snapshot. OSM shelter candidates are not verified shelters. Research prototype: follow official flood alerts.",
+  "data_files": [
+    {
+      "path": "app\\cut_roads.geojson",
+      "sha256": "e2f065452455041045eda250eadaa0dcf8ec4d427f7684b99ff2b4ec85759b55",
+      "bytes": 8644939
+    },
+    {
+      "path": "app\\exit_routes.geojson",
+      "sha256": "381a525bd0ea6a4f9c2d7250b9103a147e7669633ac3bf05276264307e775662",
+      "bytes": 9493
+    },
+    {
+      "path": "app\\flood\\20240502.png",
+      "sha256": "3a1b1d3ea5059b985f4555d49928b95bf8783ab5343d251b0bbe598768e33ea9",
+      "bytes": 16246
+    },
+    {
+      "path": "app\\flood\\20240505.png",
+      "sha256": "3a1b1d3ea5059b985f4555d49928b95bf8783ab5343d251b0bbe598768e33ea9",
+      "bytes": 16246
+    },
+    {
+      "path": "app\\flood\\20240512.png",
+      "sha256": "b2ac83f89d85c6a48aeb42a13d40c34a2ff9d0c067aeff2bfaa9bc919b1cd353",
+      "bytes": 89186
+    },
+    {
+      "path": "app\\flood\\20240514.png",
+      "sha256": "bfc158c6b1dbeaf548465dee2f3dcf12fb361848f81f0ce8c7b75dfa59947167",
+      "bytes": 78543
+    },
+    {
+      "path": "app\\flood\\20240517.png",
+      "sha256": "74f6d81b8c455bfcddcc06251c440c73b8ad9c1a4bfc67edccdccd7a639823ef",
+      "bytes": 35106
+    },
+    {
+      "path": "app\\flood\\20240519.png",
+      "sha256": "a45b8a7aa5debdbee9c5d5c838cab8ba16c3abd015595011c4153f3137467bb0",
+      "bytes": 60005
+    },
+    {
+      "path": "app\\flood\\20240524.png",
+      "sha256": "c23a8e61955f162a2a79b81f476cbd139f04ddab9f45964905fbe8ab7a0ac143",
+      "bytes": 78141
+    },
+    {
+      "path": "app\\flood\\20240526.png",
+      "sha256": "3a1b1d3ea5059b985f4555d49928b95bf8783ab5343d251b0bbe598768e33ea9",
+      "bytes": 16246
+    },
+    {
+      "path": "app\\flood\\20240529.png",
+      "sha256": "40c753ab8c5aaa1fe9c3270183aa5660058c8e7885b84ca2696ae169b18a06a7",
+      "bytes": 54201
+    },
+    {
+      "path": "app\\flood\\20240531.png",
+      "sha256": "8b72c03ae32020294c6919b31c4f10673ad19b3aa2ec8e5df089d36f2929d163",
+      "bytes": 89008
+    },
+    {
+      "path": "app\\flood\\20240605.png",
+      "sha256": "bf145763ba13ef6df193a840a8f69efd726a822b13051b998d2604c6c944b503",
+      "bytes": 224870
+    },
+    {
+      "path": "app\\flood\\20240607.png",
+      "sha256": "3aaec11b2ac0529e13ebe677136829bbcf6f4bbce983dee35b8e25f1ea33ad9a",
+      "bytes": 202685
+    },
+    {
+      "path": "app\\flood\\20240610.png",
+      "sha256": "deaede9d4f77bea8c4e7895846665a528254e8466395f9f9ab7bd1ae1b64c07d",
+      "bytes": 55026
+    },
+    {
+      "path": "app\\flood\\20240612.png",
+      "sha256": "6190c14859952d747d2d463b6da086fc1144c5017a245e770466f568ef14356d",
+      "bytes": 89024
+    },
+    {
+      "path": "app\\flood\\20240617.png",
+      "sha256": "3a1b1d3ea5059b985f4555d49928b95bf8783ab5343d251b0bbe598768e33ea9",
+      "bytes": 16246
+    },
+    {
+      "path": "app\\flood\\20240619.png",
+      "sha256": "f42b9bcc286d479bdb505bf3623b4dc86e1f13da4bce2db831b14969ebe72cf8",
+      "bytes": 218870
+    },
+    {
+      "path": "app\\flood\\20240622.png",
+      "sha256": "4017a4890f78cefcab973a9e6d6644268583701cab9dfdafd3e8d8f6eefac899",
+      "bytes": 59675
+    },
+    {
+      "path": "app\\flood\\20240624.png",
+      "sha256": "3a1b1d3ea5059b985f4555d49928b95bf8783ab5343d251b0bbe598768e33ea9",
+      "bytes": 16246
+    },
+    {
+      "path": "app\\flood\\20240629.png",
+      "sha256": "c6b8d0b9ed7d021ff980f24952771f332e83df515bfce906bcab2e2837de4410",
+      "bytes": 230235
+    },
+    {
+      "path": "app\\flood\\20240704.png",
+      "sha256": "a02aee0bc6350d48b3264217720905f3501fb9484452cbae8a2e721f9abfe716",
+      "bytes": 60771
+    },
+    {
+      "path": "app\\flood\\20240711.png",
+      "sha256": "854bf4ef89b49b000736c7711b72f0c65a3bedaab12e04f466b155485ce7e29f",
+      "bytes": 251706
+    },
+    {
+      "path": "app\\flood\\20240716.png",
+      "sha256": "b963a6479e994f22683a57d97fd32a3c3ec7e45a25711f755c2ab3d41902a4de",
+      "bytes": 61243
+    },
+    {
+      "path": "app\\flood\\20240723.png",
+      "sha256": "916250d25cbd70fc0bd27f3423c0dcd4affa913126b92bdfb0c7a931edb54dd6",
+      "bytes": 263090
+    },
+    {
+      "path": "app\\flood\\20240728.png",
+      "sha256": "bf16896183e689aa90f43b2a26672cb8b7ae6b1cd076cdf3f474e06f4ec0167a",
+      "bytes": 59663
+    },
+    {
+      "path": "app\\meta.json",
+      "sha256": "a1adf6d828690d370ec16786ec214f7c4e32d721d912d19c2c7fa5da58997c6f",
+      "bytes": 6628
+    },
+    {
+      "path": "app\\rainfall_daily.csv",
+      "sha256": "02bd13d6a59ce1580cfeff24db54887e11302b6688856acafedfc2ce0d0d616b",
+      "bytes": 1988
+    },
+    {
+      "path": "app\\road_reports_verdict.csv",
+      "sha256": "0de10341e754c2868a6efc7256f83af49b99a0889ea7fb7890b1503fede012e4",
+      "bytes": 371
+    },
+    {
+      "path": "app\\sensitivity_summary.csv",
+      "sha256": "43eb66e9b2e79920dce9974350754bc0db72f78f4a6c1ab02a194fc05b3a7c6e",
+      "bytes": 155
+    },
+    {
+      "path": "app\\shelters.geojson",
+      "sha256": "e1d28080f9d1e7344b973468260134ea735f890cc814907a1bbfef18c8df733e",
+      "bytes": 11120
+    },
+    {
+      "path": "app\\village_status.csv",
+      "sha256": "e01d34058b6c2dcc22ff8e51b62ff2e219eb7bb654786f07f45d8dbe8a61d859",
+      "bytes": 17520
+    },
+    {
+      "path": "app\\villages.geojson",
+      "sha256": "63073222b95aa5aca6f62b88b3acfa3b5fb79ff96e1c6d8865bc8db30b687ac2",
+      "bytes": 10906
+    },
+    {
+      "path": "benchmark\\global_20240626_chhatak_reference.tif",
+      "sha256": "d8049b617e6fdf569876ae7bfa2949e798eba5c45f34da8c451cf421e5f3826c",
+      "bytes": 36595
+    },
+    {
+      "path": "benchmark\\pleiades_20240626_sadar_reference.tif",
+      "sha256": "018eb8b0e8f658a0f01f353fa37bd6ece1d86c56e3ef874efe3582f47bba7b5d",
+      "bytes": 52971
+    },
+    {
+      "path": "benchmark\\saocom_20240626_chhatak_reference.tif",
+      "sha256": "d95889cc8c4eefd587a2fb83c966628d61a60e52c3f98fe98fc0de5d6d9cafe6",
+      "bytes": 55419
+    },
+    {
+      "path": "benchmark\\unosat_s1_20240619_22_sylhet_reference.tif",
+      "sha256": "6ec22804428dc2783403e37b3dded05a754a6cf6b1a5fd38add8d24b391ea8fc",
+      "bytes": 292073
+    },
+    {
+      "path": "benchmark\\unosat_s1_water_20240619_22_sylhet_reference.tif",
+      "sha256": "9eb4621431dff05a69226d7f06fa689b5cb087fa1d9700b83a46ec4415604e35",
+      "bytes": 246242
+    },
+    {
+      "path": "benchmark.csv",
+      "sha256": "a6ce818e5e560b514e8bfb1b8f4e9e8e349a67b7e780a605e66b9c6622ec852b",
+      "bytes": 4093
+    },
+    {
+      "path": "benchmark_manifest.json",
+      "sha256": "5fcab9037f1bf380d9224a855ec3a1f97ec0e8bc1803b4441946cd3ef4b667d8",
+      "bytes": 7396
+    },
+    {
+      "path": "DATA_LABEL",
+      "sha256": "bc1856a5291308f2afbd91beb01356932db8dd507387ed3b4006e0b06142c2e1",
+      "bytes": 267
+    },
+    {
+      "path": "model_evaluation.csv",
+      "sha256": "daf824c177adfec30ef6cb0f328f36965a3836c714d1e4f843a97ca0a6ac5d02",
+      "bytes": 5054
+    },
+    {
+      "path": "model_evaluation.json",
+      "sha256": "ecbf4c81124d4fb3fca0bf013c12fd39285805ed07851195a6eaaa03720a5cdd",
+      "bytes": 7031
+    },
+    {
+      "path": "processed\\bridges.gpkg",
+      "sha256": "85a3e023804372d138278ad754bcc758c741fa3d025a37948ae266f57f90d9f7",
+      "bytes": 200704
+    },
+    {
+      "path": "processed\\flood\\manifest.csv",
+      "sha256": "b331cd18736e439a43d37a849e3338565ef62a074fd9be6a223b54ffcbccfe10",
+      "bytes": 2206
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-02.png",
+      "sha256": "86f3c4d711693de505d14973eba512c7c138a52a7e5d2fad3e4de65ec804d730",
+      "bytes": 27898
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-05.png",
+      "sha256": "a990f2314b78cc3aef78e5bfefa40456a395333526c0900c1108ce9d54cbabd2",
+      "bytes": 26867
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-12.png",
+      "sha256": "703043548463416fdd9b4b03ad02c4d9437a2bd47a6425a375966ea9889b3a75",
+      "bytes": 23860
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-14.png",
+      "sha256": "00730e08f836922fbbae9b0e4ab1458f21b7527e154b93f7fb8e051cf75b2580",
+      "bytes": 24417
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-17.png",
+      "sha256": "6319f39ff87812b5d39091c56f94b8c4fcdb1cc09127e171f723487a82fb45bf",
+      "bytes": 21435
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-19.png",
+      "sha256": "0a7d786527396e8d02de4f7f70a028d1c577466b3ae06a9694329838688bf30f",
+      "bytes": 22059
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-24.png",
+      "sha256": "c24005515dda000a270910c077190b13d5e31ff2c0c8fe4c05452c93d0633e0d",
+      "bytes": 23781
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-26.png",
+      "sha256": "9966fb0adb62b7d5c2eed2df778077805470915ab84d0e4c2f80ef9d058c8c5a",
+      "bytes": 26362
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-29.png",
+      "sha256": "3fe7d61cf74ca4891d06562976dcafa43440e5b0681758176ae32b6b96679325",
+      "bytes": 23937
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-05-31.png",
+      "sha256": "d0ae8e5f0b01613b62e8cf61785ea83080042a0cc1efb47a0b3433d0668f6617",
+      "bytes": 22793
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-05.png",
+      "sha256": "8f7c77bb5474d363825e19b46d234c707e15c3a314f9d4a56eb197d79c2ceb7c",
+      "bytes": 22962
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-07.png",
+      "sha256": "1f9d40c6bd29ce866e1f3ce31a6b91cd96f26e805906152c37996b2e31344595",
+      "bytes": 22428
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-10.png",
+      "sha256": "c77bd63683852f7faeb27c061fb2a8f92e270282fb5c486847f41e7c5be14726",
+      "bytes": 22111
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-12.png",
+      "sha256": "8863b4dd5048f1951b241c7b2651be5755e5912a5a1e59f1ba0c2d80c6b7cb26",
+      "bytes": 22628
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-17.png",
+      "sha256": "c076931c71013887f44b4f3aa6a0c606aea0b3af4e2c984ca52b50e286461d8a",
+      "bytes": 26005
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-19.png",
+      "sha256": "0675a4eb9b5cebb7fbb7c74f58f61453d9ba8f50dc324e8aa52b4fee4d3a1689",
+      "bytes": 24031
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-22.png",
+      "sha256": "89c7c8933ea2507898df0ebe3525437a1ba94f38d756f8891ece53f7e2f84f5b",
+      "bytes": 23539
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-24.png",
+      "sha256": "d38b7e913d859bf0d2587cca94dad69256221b911cee479f47740b208c085373",
+      "bytes": 27017
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-06-29.png",
+      "sha256": "a8d7ba205b504eab2c9270c593e3f2745311816708a3a1d1c6729c30415f015f",
+      "bytes": 22098
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-07-04.png",
+      "sha256": "e35d936d74680ed88af22e04f05c023d08d4fc8265bb5a56a7083f862c620c44",
+      "bytes": 21084
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-07-11.png",
+      "sha256": "7e92fc6932f484a270bfc57bbc1ccbe3bf50b77a997401465d0a7e62f5561369",
+      "bytes": 22365
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-07-16.png",
+      "sha256": "fe374186683acc3b8fe37038d6988ca3ee2861fa35c36d8e179337513c91b52d",
+      "bytes": 23016
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-07-23.png",
+      "sha256": "981de65bfef9528bafd12c2c58d46b4239d24f34ced541510bf828ea7bf8ccb6",
+      "bytes": 22858
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2024-07-28.png",
+      "sha256": "8e309ef1deaef12f1c6d51dd48693fd3e44ce746b5a50167c107b1efe4be3aa0",
+      "bytes": 24045
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240502.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240505.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240512.tif",
+      "sha256": "4b30f43048cf2a0183081e7eee962350b755688405d581b6e70eba68824d3bb1",
+      "bytes": 103873
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240514.tif",
+      "sha256": "26478414baa6dbc95edf93b2c1dee29bd8d9820ff4e92a074239d6778755643b",
+      "bytes": 96736
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240517.tif",
+      "sha256": "54a26cada34974c6c80dd81a7c774eeac9521f8f10c60c8fbe0124c87066ada1",
+      "bytes": 56262
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240519.tif",
+      "sha256": "5bae640b92a250fbd4dcae1582c7816529c92811250f22498f136c8b8b393afb",
+      "bytes": 80098
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240524.tif",
+      "sha256": "44e550e42e4f19d8f6f8f705eb3b23b9e52414d9b78e2e445b15eeb2cc42bfa9",
+      "bytes": 93103
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240526.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240529.tif",
+      "sha256": "20e6cad8184b588e759e1902024250ee232ab1b1a8d1436077f0cb5d09488b2b",
+      "bytes": 75315
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240531.tif",
+      "sha256": "03a6384f36dc70ea4e5821f68d2e547ca6e2b26480736114bb219b81e7dcdb99",
+      "bytes": 111038
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240605.tif",
+      "sha256": "2e3f06dc100cec2f29e7058221d9056fdccde19e23b34ff3990e7ef563ee7bf0",
+      "bytes": 237299
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240607.tif",
+      "sha256": "bda4a7737718bdfd69dca33c955a2653f64ee794890a38442a1e894bb3ade5f9",
+      "bytes": 214942
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240610.tif",
+      "sha256": "a72e5c2e05e0d99b2744e23d9f8357ccdd5fc34d5269b9af5c11d68bfc5e4425",
+      "bytes": 75584
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240612.tif",
+      "sha256": "788fcd1c10ab74808893aa4f3d14f0a5daf60539d6b36f3ba6a033edec643a5a",
+      "bytes": 111271
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240617.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240619.tif",
+      "sha256": "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f",
+      "bytes": 231635
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240622.tif",
+      "sha256": "c8c19e0a741ae5c672740eb1bde817f87b8e1b330c7164eb834df5a056101d32",
+      "bytes": 80219
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240624.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240629.tif",
+      "sha256": "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992",
+      "bytes": 242030
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240704.tif",
+      "sha256": "c0500c626d5257647b2b68927c5b3174fd075da8ce64a928f9751ca7f91244f3",
+      "bytes": 81143
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240711.tif",
+      "sha256": "3e97aea5aaeadd61d0c6bf484cfe3054073e0f9fd750bc920d79a78b83b4b4b5",
+      "bytes": 261910
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240716.tif",
+      "sha256": "67d0c164510092bfba3dd16a115859123d2d42e17f2a9c7f79584771a9e302f8",
+      "bytes": 81525
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240723.tif",
+      "sha256": "3447886d7304804594c12c72bbeb541695741f2e4f3c454f0b7f82f1e443894e",
+      "bytes": 271444
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20240728.tif",
+      "sha256": "0c66b62f54612e9c3fbe8952f433d367aaccf1bd43411d954d061b728934b3f0",
+      "bytes": 80021
+    },
+    {
+      "path": "processed\\flood\\sentinel1_log.csv",
+      "sha256": "725354cac97060224aabef4d48b473ebbc57ba092804df494095b493bca75df5",
+      "bytes": 861
+    },
+    {
+      "path": "processed\\flood_merged\\20240502.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood_merged\\20240505.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood_merged\\20240512.tif",
+      "sha256": "4b30f43048cf2a0183081e7eee962350b755688405d581b6e70eba68824d3bb1",
+      "bytes": 103873
+    },
+    {
+      "path": "processed\\flood_merged\\20240514.tif",
+      "sha256": "26478414baa6dbc95edf93b2c1dee29bd8d9820ff4e92a074239d6778755643b",
+      "bytes": 96736
+    },
+    {
+      "path": "processed\\flood_merged\\20240517.tif",
+      "sha256": "54a26cada34974c6c80dd81a7c774eeac9521f8f10c60c8fbe0124c87066ada1",
+      "bytes": 56262
+    },
+    {
+      "path": "processed\\flood_merged\\20240519.tif",
+      "sha256": "5bae640b92a250fbd4dcae1582c7816529c92811250f22498f136c8b8b393afb",
+      "bytes": 80098
+    },
+    {
+      "path": "processed\\flood_merged\\20240524.tif",
+      "sha256": "44e550e42e4f19d8f6f8f705eb3b23b9e52414d9b78e2e445b15eeb2cc42bfa9",
+      "bytes": 93103
+    },
+    {
+      "path": "processed\\flood_merged\\20240526.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood_merged\\20240529.tif",
+      "sha256": "20e6cad8184b588e759e1902024250ee232ab1b1a8d1436077f0cb5d09488b2b",
+      "bytes": 75315
+    },
+    {
+      "path": "processed\\flood_merged\\20240531.tif",
+      "sha256": "03a6384f36dc70ea4e5821f68d2e547ca6e2b26480736114bb219b81e7dcdb99",
+      "bytes": 111038
+    },
+    {
+      "path": "processed\\flood_merged\\20240605.tif",
+      "sha256": "2e3f06dc100cec2f29e7058221d9056fdccde19e23b34ff3990e7ef563ee7bf0",
+      "bytes": 237299
+    },
+    {
+      "path": "processed\\flood_merged\\20240607.tif",
+      "sha256": "bda4a7737718bdfd69dca33c955a2653f64ee794890a38442a1e894bb3ade5f9",
+      "bytes": 214942
+    },
+    {
+      "path": "processed\\flood_merged\\20240610.tif",
+      "sha256": "a72e5c2e05e0d99b2744e23d9f8357ccdd5fc34d5269b9af5c11d68bfc5e4425",
+      "bytes": 75584
+    },
+    {
+      "path": "processed\\flood_merged\\20240612.tif",
+      "sha256": "788fcd1c10ab74808893aa4f3d14f0a5daf60539d6b36f3ba6a033edec643a5a",
+      "bytes": 111271
+    },
+    {
+      "path": "processed\\flood_merged\\20240617.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood_merged\\20240619.tif",
+      "sha256": "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f",
+      "bytes": 231635
+    },
+    {
+      "path": "processed\\flood_merged\\20240622.tif",
+      "sha256": "c8c19e0a741ae5c672740eb1bde817f87b8e1b330c7164eb834df5a056101d32",
+      "bytes": 80219
+    },
+    {
+      "path": "processed\\flood_merged\\20240624.tif",
+      "sha256": "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e",
+      "bytes": 26754
+    },
+    {
+      "path": "processed\\flood_merged\\20240629.tif",
+      "sha256": "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992",
+      "bytes": 242030
+    },
+    {
+      "path": "processed\\flood_merged\\20240704.tif",
+      "sha256": "c0500c626d5257647b2b68927c5b3174fd075da8ce64a928f9751ca7f91244f3",
+      "bytes": 81143
+    },
+    {
+      "path": "processed\\flood_merged\\20240711.tif",
+      "sha256": "3e97aea5aaeadd61d0c6bf484cfe3054073e0f9fd750bc920d79a78b83b4b4b5",
+      "bytes": 261910
+    },
+    {
+      "path": "processed\\flood_merged\\20240716.tif",
+      "sha256": "67d0c164510092bfba3dd16a115859123d2d42e17f2a9c7f79584771a9e302f8",
+      "bytes": 81525
+    },
+    {
+      "path": "processed\\flood_merged\\20240723.tif",
+      "sha256": "3447886d7304804594c12c72bbeb541695741f2e4f3c454f0b7f82f1e443894e",
+      "bytes": 271444
+    },
+    {
+      "path": "processed\\flood_merged\\20240728.tif",
+      "sha256": "0c66b62f54612e9c3fbe8952f433d367aaccf1bd43411d954d061b728934b3f0",
+      "bytes": 80021
+    },
+    {
+      "path": "processed\\flood_merged\\summary.csv",
+      "sha256": "60af82de0722dbb62d0a47884306b52cfb234f10829d5e47183f25eda7f07b57",
+      "bytes": 896
+    },
+    {
+      "path": "processed\\grid.json",
+      "sha256": "06f62c1b15c7a7aab1951322041ea62d180ac6cc58c498633831a68b3fccee37",
+      "bytes": 123
+    },
+    {
+      "path": "processed\\rainfall_daily.csv",
+      "sha256": "02bd13d6a59ce1580cfeff24db54887e11302b6688856acafedfc2ce0d0d616b",
+      "bytes": 1988
+    },
+    {
+      "path": "processed\\road_edges.gpkg",
+      "sha256": "1dbb1e081ca23954bc62e4f9444ca760c95cbae7fb0a4dc4e56645826e47f679",
+      "bytes": 8216576
+    },
+    {
+      "path": "processed\\road_nodes.gpkg",
+      "sha256": "3f3d736bca2c558061a0e9c5894113380def832034e371cc541ebae1acddecfd",
+      "bytes": 2363392
+    },
+    {
+      "path": "processed\\roads.graphml",
+      "sha256": "17869daca81af5e781b6ed2626d4c933f1ffc5dc08850ba83e24ae0255eb7991",
+      "bytes": 33310259
+    },
+    {
+      "path": "processed\\shelters_candidates.csv",
+      "sha256": "ad7a552171d249def12a01b19c5ba420ad3397bd28ff32b171587e2c3eaf20fe",
+      "bytes": 4310
+    },
+    {
+      "path": "processed\\study_area.gpkg",
+      "sha256": "11cd37a6f6f8a015a27e906fbac68372500a02027c39164565acb1c749af620b",
+      "bytes": 122880
+    },
+    {
+      "path": "processed\\villages.gpkg",
+      "sha256": "8ae3d2e16a7c5c883a661ce36c3f09833d147b0449e48db9280db60bc34fb7cb",
+      "bytes": 98304
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-02.tif",
+      "sha256": "7a116ac50cdb5531b32c9fda02e1b18878a4c4b42f18a915b9b9ada902cffa32",
+      "bytes": 59064
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-05.tif",
+      "sha256": "d8797020e9e2b8827d99c5893265d877e6588060c44a0bd1839917c0c27930de",
+      "bytes": 48061
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-12.tif",
+      "sha256": "4b30f43048cf2a0183081e7eee962350b755688405d581b6e70eba68824d3bb1",
+      "bytes": 103873
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-14.tif",
+      "sha256": "26478414baa6dbc95edf93b2c1dee29bd8d9820ff4e92a074239d6778755643b",
+      "bytes": 96736
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-17.tif",
+      "sha256": "54a26cada34974c6c80dd81a7c774eeac9521f8f10c60c8fbe0124c87066ada1",
+      "bytes": 56262
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-19.tif",
+      "sha256": "5bae640b92a250fbd4dcae1582c7816529c92811250f22498f136c8b8b393afb",
+      "bytes": 80098
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-24.tif",
+      "sha256": "44e550e42e4f19d8f6f8f705eb3b23b9e52414d9b78e2e445b15eeb2cc42bfa9",
+      "bytes": 93103
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-26.tif",
+      "sha256": "1d97a71cb79bf48eb19504e9ad2475959cbc30602b8d02ae408e996255a5b611",
+      "bytes": 59093
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-29.tif",
+      "sha256": "20e6cad8184b588e759e1902024250ee232ab1b1a8d1436077f0cb5d09488b2b",
+      "bytes": 75315
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-05-31.tif",
+      "sha256": "03a6384f36dc70ea4e5821f68d2e547ca6e2b26480736114bb219b81e7dcdb99",
+      "bytes": 111038
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-05.tif",
+      "sha256": "2e3f06dc100cec2f29e7058221d9056fdccde19e23b34ff3990e7ef563ee7bf0",
+      "bytes": 237299
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-07.tif",
+      "sha256": "bda4a7737718bdfd69dca33c955a2653f64ee794890a38442a1e894bb3ade5f9",
+      "bytes": 214942
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-10.tif",
+      "sha256": "a72e5c2e05e0d99b2744e23d9f8357ccdd5fc34d5269b9af5c11d68bfc5e4425",
+      "bytes": 75584
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-12.tif",
+      "sha256": "788fcd1c10ab74808893aa4f3d14f0a5daf60539d6b36f3ba6a033edec643a5a",
+      "bytes": 111271
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-17.tif",
+      "sha256": "066222c329c6ae866d6ea9ea24bb51f997356a3d0869ac6fe1fb481de334409e",
+      "bytes": 207766
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-19.tif",
+      "sha256": "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f",
+      "bytes": 231635
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-22.tif",
+      "sha256": "c8c19e0a741ae5c672740eb1bde817f87b8e1b330c7164eb834df5a056101d32",
+      "bytes": 80219
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-24.tif",
+      "sha256": "a353236624736449a2fb0437bd3d5f539a9c2da0b15ba978009d67c94f383942",
+      "bytes": 130266
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-06-29.tif",
+      "sha256": "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992",
+      "bytes": 242030
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-07-04.tif",
+      "sha256": "c0500c626d5257647b2b68927c5b3174fd075da8ce64a928f9751ca7f91244f3",
+      "bytes": 81143
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-07-11.tif",
+      "sha256": "3e97aea5aaeadd61d0c6bf484cfe3054073e0f9fd750bc920d79a78b83b4b4b5",
+      "bytes": 261910
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-07-16.tif",
+      "sha256": "67d0c164510092bfba3dd16a115859123d2d42e17f2a9c7f79584771a9e302f8",
+      "bytes": 81525
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-07-23.tif",
+      "sha256": "3447886d7304804594c12c72bbeb541695741f2e4f3c454f0b7f82f1e443894e",
+      "bytes": 271444
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2024-07-28.tif",
+      "sha256": "0c66b62f54612e9c3fbe8952f433d367aaccf1bd43411d954d061b728934b3f0",
+      "bytes": 80021
+    },
+    {
+      "path": "rebuild_v2_log.txt",
+      "sha256": "44d9bb682492d33265f62e201d6323f3033b0827742fe9e12228eb288b750539",
+      "bytes": 17645
+    },
+    {
+      "path": "results\\exit_routes.gpkg",
+      "sha256": "f3ab142b6b910d1802e5050fb750085836e0de7356ff42ce872c107c0f581365",
+      "bytes": 114688
+    },
+    {
+      "path": "results\\otsu_fallback_check.csv",
+      "sha256": "52bae2589e0abeb8ad5b9fce4019b6498c2e7fa4771b33f7b792202a99c22513",
+      "bytes": 1259
+    },
+    {
+      "path": "results\\road_cut_summary.csv",
+      "sha256": "7ae87823297b5b1fb825dd4781c7286320a88fb18b3146393c64bf1ba819bda5",
+      "bytes": 886
+    },
+    {
+      "path": "results\\road_reference_check.csv",
+      "sha256": "101aaba38ab8f8a98e8d3e6462c7c3f844722a189814c9128dd6ad620f27cbfc",
+      "bytes": 455
+    },
+    {
+      "path": "results\\road_reports_check.csv",
+      "sha256": "c819cf5248ceecd5e32a9b19b6e3b282912cb98d723ae4652c2d8781bae883b8",
+      "bytes": 1649
+    },
+    {
+      "path": "results\\road_reports_verdict.csv",
+      "sha256": "0de10341e754c2868a6efc7256f83af49b99a0889ea7fb7890b1503fede012e4",
+      "bytes": 371
+    },
+    {
+      "path": "results\\road_status.csv",
+      "sha256": "b7db7d0263639f5c8594c4dcf56e82ebbc7d620ad1791aedd3e0a5d23a0578da",
+      "bytes": 38194833
+    },
+    {
+      "path": "results\\sensitivity.csv",
+      "sha256": "e5948f24416c872e122a20bdf9f20f71d5a9c343207209d106767c8c87aad0d5",
+      "bytes": 1823
+    },
+    {
+      "path": "results\\sensitivity_summary.csv",
+      "sha256": "43eb66e9b2e79920dce9974350754bc0db72f78f4a6c1ab02a194fc05b3a7c6e",
+      "bytes": 155
+    },
+    {
+      "path": "results\\shelters_snapped.csv",
+      "sha256": "0503598024d160208ecb0563dc074a9254db541d6812df181d23ca493ba73b99",
+      "bytes": 5866
+    },
+    {
+      "path": "results\\village_status.csv",
+      "sha256": "62f99977ac47d75ee06dafd3afe369c11ed56c209a1acc05192d7e46bd865a74",
+      "bytes": 57232
+    },
+    {
+      "path": "results\\village_summary.csv",
+      "sha256": "68bdb5f5b7fbfbc27e4e8ef220c424266c4e0399af2a193b053e8c3a77dad867",
+      "bytes": 2042
+    },
+    {
+      "path": "results\\villages_snapped.csv",
+      "sha256": "7c037665e411098289564c78de150278b54b4587531e748bc257e3dbe24c01d3",
+      "bytes": 1651
+    },
+    {
+      "path": "run_log.txt",
+      "sha256": "66089dc844785bce9436028f226582c9283384200e4739730cf3d24e7f8ce75a",
+      "bytes": 3677
+    },
+    {
+      "path": "run_log2.txt",
+      "sha256": "2150e6dd28a898f7a8a6ebbc3a786cc260ea10dea41ca3dea77b9fb8a7744679",
+      "bytes": 11867
+    }
+  ],
+  "model": null,
+  "configuration": {
+    "region": "sunamganj_2024",
+    "crs": "EPSG:32646",
+    "grid_res_m": 20,
+    "cut_threshold": 0.2,
+    "boat_dependent_m": 500,
+    "default_supply_days": 7
+  }
+}

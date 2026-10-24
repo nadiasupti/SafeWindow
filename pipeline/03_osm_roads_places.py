@@ -45,19 +45,35 @@ def first(v):
     return v[0] if isinstance(v, list) else v
 
 
+BUSY_CODES = ("429", "502", "503", "504")   # Overpass is rate-limiting or overloaded
+BUSY_WAIT_SECONDS = 60
+
+
+def is_busy(exc: Exception) -> bool:
+    return isinstance(exc, ox._errors.ResponseStatusCodeError) and any(c in str(exc) for c in BUSY_CODES)
+
+
 def retry_osm_call(query: Callable[[], T], attempts: int = 4, delay_seconds: float = 2.0) -> T:
-    """Retry transient OSM transport failures without swallowing permanent errors."""
+    """Retry transient OSM failures (lost connections, and an overloaded Overpass
+    server, which gets a longer wait) without swallowing permanent errors."""
     if attempts < 1:
         raise ValueError("attempts must be at least 1")
     last_error = None
     for attempt in range(1, attempts + 1):
         try:
             return query()
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.ReadTimeout) as exc:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.ReadTimeout,
+                ox._errors.ResponseStatusCodeError) as exc:
+            if isinstance(exc, ox._errors.ResponseStatusCodeError) and not is_busy(exc):
+                raise
             last_error = exc
             if attempt == attempts:
                 break
-            time.sleep(delay_seconds * (2 ** (attempt - 1)))
+            wait = delay_seconds * (2 ** (attempt - 1))
+            if is_busy(exc):
+                wait = max(wait, BUSY_WAIT_SECONDS * attempt)
+                print(f"  Overpass busy ({str(exc).splitlines()[0][:60]}), waiting {wait:.0f}s", flush=True)
+            time.sleep(wait)
     raise last_error
 
 
@@ -110,8 +126,11 @@ def villages(poly_wgs84, attempts=4):
 
 
 def shelters(poly_wgs84, attempts=4):
+    # The query repeats the polygon once per tag; the full outline makes
+    # overpass-api.de reject it (413). ~50 m of simplification is far inside the 1 km buffer.
+    query_poly = poly_wgs84.simplify(0.0005)
     features = retry_osm_call(
-        lambda: ox.features_from_polygon(poly_wgs84, SHELTER_TAGS), attempts=attempts)
+        lambda: ox.features_from_polygon(query_poly, SHELTER_TAGS), attempts=attempts)
     s = to_points(features).reset_index().to_crs(config.CRS_WGS84)
     kind = pd.Series("", index=s.index)
     for col in ["amenity", "healthcare", "building", "emergency", "social_facility", "office"]:

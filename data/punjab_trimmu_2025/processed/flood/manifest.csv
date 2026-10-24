@@ -1,0 +1,10 @@
+date,source,path,note
+2025-08-16,sentinel1,processed/flood/sentinel1_20250816.tif,otsu=-14.87dB otsu orbit=107
+2025-08-20,sentinel1,processed/flood/sentinel1_20250820.tif,otsu=-14.12dB otsu orbit=173
+2025-08-21,sentinel1,processed/flood/sentinel1_20250821.tif,otsu=-13.62dB otsu orbit=5
+2025-08-28,sentinel1,processed/flood/sentinel1_20250828.tif,otsu=-14.37dB otsu orbit=107
+2025-09-01,sentinel1,processed/flood/sentinel1_20250901.tif,otsu=-15.37dB otsu orbit=173
+2025-09-02,sentinel1,processed/flood/sentinel1_20250902.tif,otsu=-12.63dB otsu orbit=5
+2025-09-09,sentinel1,processed/flood/sentinel1_20250909.tif,otsu=-14.62dB otsu orbit=107
+2025-09-13,sentinel1,processed/flood/sentinel1_20250913.tif,otsu=-13.87dB otsu orbit=173
+2025-09-14,sentinel1,processed/flood/sentinel1_20250914.tif,otsu=-12.37dB otsu orbit=5

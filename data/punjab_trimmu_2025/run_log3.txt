@@ -1,0 +1,109 @@
+== pipeline\02e_merge_flood.py --sources sentinel1
+      date   sources  flooded_pct  dry_pct  unknown_pct
+2025-08-16 sentinel1         1.11    98.89         0.00
+2025-08-20 sentinel1         1.70    98.30         0.00
+2025-08-21 sentinel1         1.86    98.14         0.01
+2025-08-28 sentinel1         1.06    98.94         0.00
+2025-09-01 sentinel1         9.33    90.67         0.00
+2025-09-02 sentinel1         9.33    90.66         0.01
+2025-09-09 sentinel1         8.72    91.28         0.00
+2025-09-13 sentinel1         3.14    96.86         0.00
+2025-09-14 sentinel1         3.06    96.94         0.01
+
+usable dates (<50% unknown): 9; peak 01 Sep ; before peak: True; after peak: True
+GO/NO-GO: GO
+== pipeline\05_cut_roads.py
+1327 roads, 42247 check-points (361 on bridges), 9 dates
+      date  cut_km_10  cut_km_20  cut_km_40  unknown_km
+2025-08-16        0.8        0.0        0.0         4.2
+2025-08-20        3.3        0.6        0.0         4.2
+2025-08-21        2.1        0.0        0.0         4.2
+2025-08-28        0.5        0.0        0.0         4.2
+2025-09-01       76.6       26.0        9.8         4.2
+2025-09-02      125.6       64.5       16.5         4.2
+2025-09-09       88.6       33.5        7.0         4.2
+2025-09-13       18.9        8.3        2.8         4.2
+2025-09-14       18.4        4.0        1.7         4.2
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\results\road_status.csv
+== pipeline\06_isolation.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:792
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$($a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+26 villages (4 boat-dependent, > 500 m from a road); 3 shelters
+ threshold       date  boat_dependent  connected  isolated
+       0.1 2025-08-16               4         22         0
+       0.1 2025-08-20               4         22         0
+       0.1 2025-08-21               4         22         0
+       0.1 2025-08-28               4         22         0
+       0.1 2025-09-01               4         15         7
+       0.1 2025-09-02               4         15         7
+       0.1 2025-09-09               4         20         2
+       0.1 2025-09-13               4         22         0
+       0.1 2025-09-14               4         20         2
+       0.2 2025-08-16               4         22         0
+       0.2 2025-08-20               4         22         0
+       0.2 2025-08-21               4         22         0
+       0.2 2025-08-28               4         22         0
+       0.2 2025-09-01               4         20         2
+       0.2 2025-09-02               4         20         2
+       0.2 2025-09-09               4         20         2
+       0.2 2025-09-13               4         22         0
+       0.2 2025-09-14               4         22         0
+       0.4 2025-08-16               4         22         0
+       0.4 2025-08-20               4         22         0
+       0.4 2025-08-21               4         22         0
+       0.4 2025-08-28               4         22         0
+       0.4 2025-09-01               4         20         2
+       0.4 2025-09-02               4         20         2
+       0.4 2025-09-09               4         22         0
+       0.4 2025-09-13               4         22         0
+       0.4 2025-09-14               4         22         0
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\results\village_status.csv
+== pipeline\07_timeline.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:792
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$($a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+outcome
+never_isolated    20
+boat_dependent     4
+isolated           2
+
+Top 10 most urgent:
+ urgency_rank                     name  population                    isolation_range aid_deadline                        exit_shelter
+            1             Bela Surbana       52144 isolated between 29 Aug and 01 Sep   2025-09-05 Govt Elementary School Basti Nohani
+            2           بستی محرم سیال       23195 isolated between 29 Aug and 01 Sep   2025-09-05 Govt Elementary School Basti Nohani
+         <NA>               Chak 46 HF        4486                                             NaT                                 NaN
+         <NA> Dera Mahar Noor Budhwana        2954                                             NaT                                 NaN
+         <NA>            Garh Maharaja      122078                                             NaT                                 NaN
+         <NA>                    Ghagh        1503                                             NaT                                 NaN
+         <NA>             Kho Ratiwala       21839                                             NaT                                 NaN
+         <NA>                    Mahay        1870                                             NaT                                 NaN
+         <NA>                  Malkana       69021                                             NaT                                 NaN
+         <NA>                Munirabad       25815                                             NaT                                 NaN
+
+Sensitivity:
+ threshold  villages_isolated  people_isolated  mean_shift_days_vs_main  villages_changed_outcome
+       0.1                  7           113898                      0.0                         5
+       0.2                  2            75339                      0.0                         0
+       0.4                  2            75339                      0.0                         0
+== scripts\benchmark_region.py regions\punjab_trimmu_2025_benchmark.yaml
+         reference        tier  pred_date  gap_days  area_km2    iou         iou_ci95  precision  recall
+ems_iceye_20250830       radar 2025-09-01         2     789.2 0.4235  [0.401, 0.4443]     0.4769  0.7910
+ems_iceye_20250830       radar 2025-08-28        -2     789.2 0.0981 [0.0848, 0.1115]     0.4906  0.1092
+ems_iceye_20250831       radar 2025-09-01         1     858.3 0.5326 [0.5152, 0.5487]     0.7312  0.6623
+ems_iceye_20250831       radar 2025-08-28        -3     858.3 0.0509  [0.0432, 0.059]     0.5101  0.0535
+   ems_s1_20250828 same_sensor 2025-08-28         0     907.9 0.2900 [0.2603, 0.3173]     0.4122  0.4946
+   ems_s1_20250901 same_sensor 2025-09-01         0    1013.8 0.6800  [0.666, 0.6937]     0.7747  0.8477
+   ems_s1_20250902 same_sensor 2025-09-02         0    1013.6 0.6245 [0.6106, 0.6396]     0.7525  0.7858

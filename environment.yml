@@ -10,12 +10,17 @@ dependencies:
   - rasterio
   - networkx
   - osmnx
+  - requests
+  - pyyaml
   - scikit-learn
   - matplotlib
   - streamlit
   - folium
   - altair
   - pytest
+  - pytorch
+  - tqdm
+  - pillow
   - pip
   - pip:
       - streamlit-folium

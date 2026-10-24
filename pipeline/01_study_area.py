@@ -7,6 +7,9 @@
     python pipeline/01_study_area.py                     # boundaries from OpenStreetMap
     python pipeline/01_study_area.py --hdx data/raw/bgd_admbnda_adm3.shp   # boundaries from HDX COD-AB
 
+    # or, when the region file sets area.boundary_file (any polygon file, e.g. a
+    # Copernicus EMS area of interest), that polygon is the study area
+
 Writes data/processed/study_area.gpkg (EPSG:32646) and grid.json.
 """
 import argparse
@@ -27,8 +30,10 @@ SUNAMGANJ_UPAZILAS = [
 
 def from_osm(name: str) -> gpd.GeoDataFrame:
     import osmnx as ox
-    queries = [f"{name} Upazila, {config.DISTRICT} District, {config.COUNTRY}",
-               f"{name} Upazila, {config.COUNTRY}", f"{name}, {config.DISTRICT}, {config.COUNTRY}"]
+    unit, parent_unit = config.REGION.admin_unit, config.REGION.parent_unit
+    queries = [f"{name} {unit}, {config.DISTRICT} {parent_unit}, {config.COUNTRY}",
+               f"{name} {unit}, {config.COUNTRY}", f"{name}, {config.DISTRICT}, {config.COUNTRY}"]
+    queries = [" ".join(q.split()).replace(" ,", ",") for q in queries]   # tidy when a unit word is empty
     for q in queries:
         try:
             gdf = ox.geocode_to_gdf(q)
@@ -55,6 +60,17 @@ def from_hdx(path: str, names: list[str]) -> gpd.GeoDataFrame:
         print(f"  {n!r} -> {match[0]!r}")
         out.append(adm[adm[col] == match[0]].assign(upazila=n)[["upazila", "geometry"]])
     return pd.concat(out)
+
+
+def from_boundary(path) -> gpd.GeoDataFrame:
+    """Study area from a polygon file. Each feature becomes a zone, named by its
+    'name' column if present (zones are reported separately in the benchmark)."""
+    b = gpd.read_file(path)
+    b = b[b.geometry.geom_type.isin(["Polygon", "MultiPolygon"])]
+    if b.empty:
+        raise SystemExit(f"{path} has no polygons")
+    names = b["name"].astype(str) if "name" in b else pd.Series([config.REGION.id] * len(b), index=b.index)
+    return gpd.GeoDataFrame({"upazila": names.to_numpy()}, geometry=b.geometry.to_numpy(), crs=b.crs)
 
 
 def rank():
@@ -88,10 +104,14 @@ def main():
         return rank()
 
     paths = config.get_paths().ensure()
-    print(f"Study area upazilas: {config.UPAZILAS}")
-    if args.hdx:
+    if config.REGION.boundary_file is not None:
+        print(f"Study area from {config.REGION.boundary_file}")
+        sa = from_boundary(config.REGION.boundary_file)
+    elif args.hdx:
+        print(f"Study area upazilas: {config.UPAZILAS}")
         sa = from_hdx(args.hdx, config.UPAZILAS)
     else:
+        print(f"Study area upazilas: {config.UPAZILAS}")
         sa = pd.concat([from_osm(n) for n in config.UPAZILAS])
     sa = gpd.GeoDataFrame(sa, crs=sa.crs).to_crs(config.CRS)
     sa.to_file(paths.study_area, driver="GPKG")

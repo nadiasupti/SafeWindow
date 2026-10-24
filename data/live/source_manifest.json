@@ -22,7 +22,7 @@
         "mode_polarisation": "IW, VV",
         "speckle_filter": "30 m focal median",
         "dry_reference": "median of 2022-02-01 to 2022-03-31, same relative orbit where available",
-        "threshold": "Otsu on the date's VV histogram (60 m sample); fallback -18 dB when Otsu falls outside -26..-12 dB",
+        "threshold": "Otsu on the date's VV histogram (60 m sample). If Otsu falls outside -26..-12 dB or the histogram has too few pixels, the whole map for that date is set unknown (since 2026-10-24; before, a fixed -18 dB was used). 4 of 19 dates: 2022-05-18, 2022-06-11, 2022-06-23, 2022-07-05.",
         "change_rule": "flooded only if at least 3 dB darker than the dry reference (excludes permanent water)",
         "slope_mask": "slope > 5 degrees set dry (NASADEM)",
         "coverage": "pixels outside the swath stay unknown"
@@ -149,5 +149,14 @@
     "shelter_exclude_types": [
       "pharmacy"
     ]
-  }
+  },
+  "revisions": [
+    {
+      "date": "2026-10-24",
+      "change": "Otsu-failure dates set unknown instead of a fixed -18 dB threshold",
+      "reason": "the -18 dB maps showed almost no water (wind-roughened haor water peaks near -15 dB) and created false connected/reconnected observations",
+      "previous_version": "data/archive/live_v1_2026-10-12",
+      "evidence": "docs/phase3a_report.md section 5; scripts/otsu_fallback_check.py"
+    }
+  ]
 }

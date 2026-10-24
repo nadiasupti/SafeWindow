@@ -1,0 +1,74 @@
+# SafeWindow region: the May-July 2022 flood in Sunamganj, Bangladesh.
+# These values reproduce the published results in data/live. Method settings
+# (road-cut thresholds, boat and shelter distances) stay in safewindow/config.py
+# so every region is analysed with the same rules.
+
+id: sunamganj_2022
+name: "Sunamganj, Bangladesh: May-July 2022 flood"
+
+area:
+  # Admin units fetched from OpenStreetMap by pipeline/01_study_area.py
+  admin_names: ["Sunamganj Sadar", "Chhatak", "Dowarabazar"]
+  admin_unit: Upazila          # word used in the OSM search, e.g. "Chhatak Upazila"
+  parent: Sunamganj            # the unit that contains them
+  parent_unit: District
+  country: Bangladesh
+  iso3: BGD                    # WorldPop country code
+  bbox: [91.25, 24.80, 91.75, 25.18]   # lon/lat: west, south, east, north
+
+crs: "EPSG:32646"              # UTM 46N; "auto" picks the UTM zone from bbox
+
+dates:
+  flood: ["2022-05-15", "2022-07-15"]          # radar dates to map
+  dry_reference: ["2022-02-01", "2022-03-31"]  # the haor is dry
+  app: ["2022-05-20", "2022-06-30"]            # range shown in the app
+
+# Daily rainfall boxes, lon/lat: west, south, east, north. The names become
+# CSV columns (<name>_mm) that the app reads.
+rain_boxes:
+  sunamganj: [90.95, 24.85, 91.75, 25.25]
+  # Southern Meghalaya slopes around Cherrapunji (Sohra), upstream of Sunamganj.
+  meghalaya_upstream: [91.30, 25.15, 92.10, 25.45]
+
+# How the app names each rainfall box, per language.
+rain_labels:
+  sunamganj: {en: Sunamganj, bn: সুনামগঞ্জ}
+  meghalaya_upstream: {en: "Meghalaya hills (upstream)", bn: "মেঘালয় পাহাড় (উজান)"}
+
+# Village points: "osm" (OSM place nodes) or "open_buildings" (clusters of
+# Google Open Buildings: candidate settlements, not official villages).
+settlements: osm
+
+# Optional local shelter list (CSV with name, lat, lon; optional type,
+# capacity, verified_by), relative to this file. Replaces the OSM candidates.
+shelters_csv: null
+
+# ASSUMPTION, not a measurement: days of food and water a household has on hand.
+supply_days: {default: 7, min: 2, max: 14}
+
+# App languages: each needs a file in locales/ (en.json, bn.json, ...).
+languages: ["en", "bn"]
+# Official warning agencies the app tells people to follow.
+agencies: ["BMD", "FFWC", "DDM"]
+
+references:
+  unosat_event: FL20220525BGD
+
+# Dated news reports of cut roads, checked by scripts/road_reports_check.py.
+# `route` is one of the routes that script knows: chhatak_dowarabazar (any road
+# between the two upazila towns) or sunamganj_sylhet_highway.
+road_reports:
+  - id: chhatak_dowarabazar
+    route: chhatak_dowarabazar
+    event_date: "2022-05-19"
+    published: "2022-05-20"
+    source: "The Daily Star, 'Sylhet, Sunamganj: Troubles mount as more areas flooded' (Dwoha Chowdhury)"
+    url: "https://www.thedailystar.net/environment/climate-crisis/natural-disaster/news/sylhet-sunamganj-troubles-mount-more-areas-flooded-3027406"
+    quote: "Road communications between Chhatak and Dowarabazar upazilas of Sunamganj were cut yesterday."
+  - id: sunamganj_sylhet_highway
+    route: sunamganj_sylhet_highway
+    event_date: "2022-06-16"
+    published: "2022-06-18"
+    source: "The Daily Star, '40 lakh people stranded in Sylhet, Sunamganj'"
+    url: "https://www.thedailystar.net/environment/climate-crisis/natural-disaster/news/40-lakh-people-stranded-sylhet-sunamganj-floodwater-3050221"
+    quote: "Due to the flood situation, road communication with Sunamganj has been cut off from other parts of the country since Thursday."

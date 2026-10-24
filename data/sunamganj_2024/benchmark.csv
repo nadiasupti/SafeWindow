@@ -1,0 +1,26 @@
+reference,tier,sensor,date,pred_date,gap_days,zone,pixels_compared,tp,fp,fn,tn
+pleiades_20240626_sadar,optical,"Pleiades (PHR), optical",2024-06-26,2024-06-29,3,all,350810,167046,4809,70456,108499
+pleiades_20240626_sadar,optical,"Pleiades (PHR), optical",2024-06-26,2024-06-29,3,Sunamganj Sadar,300870,158518,2810,66170,73372
+pleiades_20240626_sadar,optical,"Pleiades (PHR), optical",2024-06-26,2024-06-29,3,Dowarabazar,49940,8528,1999,4286,35127
+saocom_20240626_chhatak,radar,"SAOCOM, L-band SAR",2024-06-26,2024-06-29,3,all,63367,25966,2861,8465,26075
+saocom_20240626_chhatak,radar,"SAOCOM, L-band SAR",2024-06-26,2024-06-29,3,Chhatak,63367,25966,2861,8465,26075
+saocom_20240626_chhatak,radar,"SAOCOM, L-band SAR",2024-06-26,2024-06-19,-7,all,63367,29343,5089,5088,23847
+saocom_20240626_chhatak,radar,"SAOCOM, L-band SAR",2024-06-26,2024-06-19,-7,Chhatak,63367,29343,5089,5088,23847
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-29,3,all,80003,23328,4273,15946,36456
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-29,3,Chhatak,74818,21857,3939,13781,35241
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-29,3,Dowarabazar,5185,1471,334,2165,1215
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-19,-7,all,80003,28078,9086,11196,31643
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-19,-7,Chhatak,74818,26196,8374,9442,30806
+global_20240626_chhatak,unknown,GLOBAL Satellite (not named),2024-06-26,2024-06-19,-7,Dowarabazar,5185,1882,712,1754,837
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,all,3154144,456488,1624872,90427,982357
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Sunamganj Sadar,1252919,88658,882977,22034,259250
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Chhatak,1026345,227926,422334,43115,332970
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Dowarabazar,874880,139904,319561,25278,390137
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19,-3,all,3154144,455662,1621923,91253,985306
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19,-3,Sunamganj Sadar,1252919,87832,880028,22860,262199
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19,-3,Chhatak,1026345,227926,422334,43115,332970
+unosat_s1_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",2024-06-19+2024-06-22,2024-06-19,-3,Dowarabazar,874880,139904,319561,25278,390137
+unosat_s1_water_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,all,3154144,2076231,5129,211392,861392
+unosat_s1_water_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Sunamganj Sadar,1252919,970470,1165,74984,206300
+unosat_s1_water_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Chhatak,1026345,648098,2162,86961,289124
+unosat_s1_water_20240619_22_sylhet,same_sensor,"Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",2024-06-19+2024-06-22,2024-06-19+2024-06-22,3,Dowarabazar,874880,457663,1802,49447,365968

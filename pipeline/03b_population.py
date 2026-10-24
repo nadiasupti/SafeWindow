@@ -8,11 +8,14 @@ Each village gets the area that is closer to it than to any other village
 (Voronoi cell, clipped to the study area). Its population is the WorldPop sum
 inside that cell, so no person is counted twice.
 
---buildings: if OSM has too few villages, replace them with clusters of
-Google Open Buildings (DBSCAN, 60 m). Each cluster is a settlement, named after
-the nearest OSM village within 1 km when there is one.
+--buildings (or `settlements: open_buildings` in the region file): if OSM has
+too few villages, replace them with clusters of Google Open Buildings (DBSCAN,
+60 m). Each cluster is a CANDIDATE settlement, not an official village. It is
+labelled after the nearest OSM village within 1 km when there is one, and
+processed/settlements_check.json records how well clusters and OSM villages match.
 """
 import argparse
+import json
 
 import geopandas as gpd
 import numpy as np
@@ -26,14 +29,21 @@ from safewindow.flood import Grid
 from safewindow.places import load_study_area, load_villages
 
 WORLDPOP_RES = 100
+MATCH_M = 1000      # a cluster and an OSM village this close describe the same place
 
 
 def worldpop_from_gee(paths, sa):
     from safewindow import gee
+    iso3 = config.REGION.iso3
+    if not iso3:
+        raise SystemExit("Set area.iso3 (e.g. BGD) in the region file: WorldPop is filtered by country.")
     ee = gee.init()
     grid = Grid.from_bounds(*sa.total_bounds, res=WORLDPOP_RES)
-    img = (ee.ImageCollection("WorldPop/GP/100m/pop").filter(ee.Filter.eq("country", "BGD"))
-           .filter(ee.Filter.eq("year", 2020)).first().select("population").unmask(0).toFloat())
+    col = (ee.ImageCollection("WorldPop/GP/100m/pop").filter(ee.Filter.eq("country", iso3))
+           .filter(ee.Filter.eq("year", 2020)))
+    if col.size().getInfo() == 0:
+        raise SystemExit(f"No WorldPop 2020 image for country {iso3!r}; check area.iso3 in the region file.")
+    img = col.first().select("population").unmask(0).toFloat()
     return gee.download_to_grid(img, grid, paths.raw / "worldpop_2020.tif", "worldpop",
                                 region=gee.study_area_geometry(paths), dtype="float32", nodata=-9999)
 
@@ -63,14 +73,36 @@ def cluster_buildings(df: pd.DataFrame, osm_villages: gpd.GeoDataFrame) -> gpd.G
          .groupby("lab").agg(x=("x", "mean"), y=("y", "mean"), n_buildings=("x", "size")).reset_index())
     out = gpd.GeoDataFrame(c, geometry=gpd.points_from_xy(c["x"], c["y"]), crs=config.CRS)
     near = gpd.sjoin_nearest(out, osm_villages[["name", "name_bn", "geometry"]], how="left",
-                             max_distance=1000, distance_col="d")
+                             max_distance=MATCH_M, distance_col="d")
     near = near[~near.index.duplicated()]
-    out["name"] = near["name"].fillna(pd.Series([f"Settlement {i + 1}" for i in range(len(out))], index=out.index))
+    numbered = pd.Series([f"Candidate settlement {i + 1}" for i in range(len(out))], index=out.index)
+    out["name"] = ("Candidate settlement near " + near["name"]).fillna(numbered)
     out["name_bn"] = near["name_bn"]
+    out["osm_match"] = near["name"]
     out["village_id"] = [f"ob{i + 1:05d}" for i in range(len(out))]
-    out["place"], out["source"] = "building_cluster", "Google Open Buildings v3"
-    print(f"  {len(out)} settlements from {keep.sum()} clustered buildings ({(~keep).sum()} scattered)")
-    return out[["village_id", "name", "name_bn", "place", "source", "n_buildings", "geometry"]]
+    out["place"], out["source"] = "candidate_settlement", "Google Open Buildings v3 (DBSCAN cluster)"
+    print(f"  {len(out)} candidate settlements from {keep.sum()} clustered buildings ({(~keep).sum()} scattered)")
+    return out[["village_id", "name", "name_bn", "place", "source", "n_buildings", "osm_match", "geometry"]]
+
+
+def settlement_check(clusters: gpd.GeoDataFrame, osm_villages: gpd.GeoDataFrame) -> dict:
+    """How well building clusters and OSM villages describe the same places.
+    Neither is ground truth: this only shows where the two sources agree."""
+    found = 0
+    if len(osm_villages) and len(clusters):
+        d = gpd.sjoin_nearest(osm_villages[["geometry"]], clusters[["geometry"]], how="left", distance_col="d")
+        found = int((d[~d.index.duplicated()]["d"] <= MATCH_M).sum())
+    named = int(clusters["osm_match"].notna().sum())
+    return {
+        "candidate_settlements": len(clusters),
+        "osm_villages": len(osm_villages),
+        "osm_villages_with_a_cluster_within_m": MATCH_M,
+        "osm_villages_with_a_cluster": found,
+        "osm_village_match_rate": round(found / len(osm_villages), 3) if len(osm_villages) else None,
+        "clusters_near_an_osm_village": named,
+        "cluster_match_rate": round(named / len(clusters), 3) if len(clusters) else None,
+        "note": "Candidate settlements are building clusters, not official villages; neither source is ground truth.",
+    }
 
 
 def voronoi_cells(villages: gpd.GeoDataFrame, area) -> gpd.GeoSeries:
@@ -100,7 +132,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--worldpop", help="local WorldPop GeoTIFF")
     ap.add_argument("--worldpop-gee", action="store_true")
-    ap.add_argument("--buildings", action="store_true")
+    ap.add_argument("--buildings", action="store_true",
+                    help="use Google Open Buildings clusters (default from the region's 'settlements')")
     args = ap.parse_args()
     config.utf8_console()
     paths = config.get_paths().ensure()
@@ -108,8 +141,12 @@ def main():
     area = sa.union_all()
     villages = load_villages(paths)
 
-    if args.buildings:
-        villages = cluster_buildings(buildings_from_gee(paths, sa), villages)
+    if args.buildings or config.REGION.settlements == "open_buildings":
+        osm_villages = villages
+        villages = cluster_buildings(buildings_from_gee(paths, sa), osm_villages)
+        check = settlement_check(villages, osm_villages)
+        (paths.processed / "settlements_check.json").write_text(json.dumps(check, indent=2), encoding="utf-8")
+        print(f"  settlement check: {check}")
 
     raster = args.worldpop or (worldpop_from_gee(paths, sa) if args.worldpop_gee else None)
     if raster is None:

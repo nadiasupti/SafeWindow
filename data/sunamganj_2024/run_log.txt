@@ -1,0 +1,92 @@
+== 02a_sentinel1_gee.py
+      date  relative_orbit     passes  scenes
+2024-05-02              77 DESCENDING       1
+2024-05-05             114  ASCENDING       1
+2024-05-12              41  ASCENDING       2
+2024-05-14              77 DESCENDING       1
+2024-05-17             114  ASCENDING       1
+2024-05-19             150 DESCENDING       2
+2024-05-24              41  ASCENDING       2
+2024-05-26              77 DESCENDING       1
+2024-05-29             114  ASCENDING       1
+2024-05-31             150 DESCENDING       2
+2024-06-05              41  ASCENDING       2
+2024-06-07              77 DESCENDING       1
+2024-06-10             114  ASCENDING       1
+2024-06-12             150 DESCENDING       2
+2024-06-17              41  ASCENDING       2
+2024-06-19              77 DESCENDING       1
+2024-06-22             114  ASCENDING       1
+2024-06-24             150 DESCENDING       2
+2024-06-29              41  ASCENDING       2
+2024-07-04             114  ASCENDING       1
+2024-07-11              41  ASCENDING       2
+2024-07-16             114  ASCENDING       1
+2024-07-23              41  ASCENDING       2
+2024-07-28             114  ASCENDING       1
+2024-05-02: orbit 77
+  Otsu gave -10.4 dB (implausible), using -18.0 dB
+  threshold -18.0 dB, flooded 0.8% of grid
+2024-05-05: orbit 114
+  Otsu gave -10.1 dB (implausible), using -18.0 dB
+  threshold -18.0 dB, flooded 0.0% of grid
+2024-05-12: orbit 41
+  threshold -13.6 dB, flooded 3.8% of grid
+2024-05-14: orbit 77
+  threshold -12.6 dB, flooded 2.7% of grid
+2024-05-17: orbit 114
+  threshold -13.1 dB, flooded 0.3% of grid
+2024-05-19: orbit 150
+  threshold -13.6 dB, flooded 2.5% of grid
+2024-05-24: orbit 41
+  threshold -12.4 dB, flooded 3.3% of grid
+2024-05-26: orbit 77
+  Otsu gave -11.4 dB (implausible), using -18.0 dB
+  threshold -18.0 dB, flooded 1.2% of grid
+2024-05-29: orbit 114
+  threshold -13.9 dB, flooded 2.4% of grid
+2024-05-31: orbit 150
+  threshold -12.9 dB, flooded 9.1% of grid
+2024-06-05: orbit 41
+  threshold -14.1 dB, flooded 36.9% of grid
+2024-06-07: orbit 77
+  threshold -14.9 dB, flooded 33.7% of grid
+2024-06-10: orbit 114
+  threshold -17.7 dB, flooded 5.4% of grid
+2024-06-12: orbit 150
+  threshold -12.2 dB, flooded 8.3% of grid
+2024-06-17: orbit 41
+  Otsu gave -11.9 dB (implausible), using -18.0 dB
+  threshold -18.0 dB, flooded 6.6% of grid
+2024-06-19: orbit 77
+  threshold -15.1 dB, flooded 40.4% of grid
+2024-06-22: orbit 114
+  threshold -19.3 dB, flooded 6.6% of grid
+2024-06-24: orbit 150
+  Otsu gave -11.9 dB (implausible), using -18.0 dB
+  threshold -18.0 dB, flooded 5.2% of grid
+2024-06-29: orbit 41
+  threshold -13.1 dB, flooded 35.0% of grid
+2024-07-04: orbit 114
+  threshold -16.4 dB, flooded 6.7% of grid
+2024-07-11: orbit 41
+  threshold -13.1 dB, flooded 38.4% of grid
+2024-07-16: orbit 114
+  threshold -18.8 dB, flooded 6.4% of grid
+2024-07-23: orbit 41
+  threshold -12.6 dB, flooded 33.3% of grid
+2024-07-28: orbit 114
+  threshold -18.1 dB, flooded 5.7% of grid
+== 04_rainfall_gpm.py
+sunamganj (90.95, 24.85, 91.75, 25.25) ...
+meghalaya_upstream (91.3, 25.15, 92.1, 25.45) ...
+       sunamganj_mm  meghalaya_upstream_mm
+count          92.0                   92.0
+mean           26.6                   28.8
+std            34.8                   43.5
+min             0.0                    0.0
+25%             4.5                    3.7
+50%            13.3                    7.7
+75%            32.3                   32.9
+max           166.2                  218.7
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\sunamganj_2024\processed\rainfall_daily.csv

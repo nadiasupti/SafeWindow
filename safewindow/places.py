@@ -34,10 +34,32 @@ def shelters_from_csv(path) -> gpd.GeoDataFrame:
     return gdf.to_crs(config.CRS)
 
 
+def shelters_from_local_list(path) -> gpd.GeoDataFrame:
+    """A shelter list supplied with the region (e.g. from a disaster-management
+    office): name, lat, lon, optional type, capacity and verified_by."""
+    df = pd.read_csv(path)
+    missing = {"name", "lat", "lon"} - set(df.columns)
+    if missing:
+        raise ValueError(f"{path} is missing columns {sorted(missing)}")
+    if "shelter_id" not in df:
+        df["shelter_id"] = [f"local{i + 1:04d}" for i in range(len(df))]
+    df["shelter_id"] = df["shelter_id"].astype(str)
+    df["type"] = df["type"] if "type" in df else "shelter"
+    df["source"] = df["source"] if "source" in df else f"local list ({path.name})"
+    gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df["lon"], df["lat"]), crs=config.CRS_WGS84)
+    return gdf.to_crs(config.CRS)
+
+
 def load_shelters(paths=None) -> gpd.GeoDataFrame:
-    """The hand-checked list if it exists (only rows with verified == yes),
-    otherwise the raw OpenStreetMap candidates with a warning."""
+    """In order: the region's local shelter list (regions/*.yaml shelters_csv),
+    the hand-checked list (only rows with verified == yes), otherwise the raw
+    OpenStreetMap candidates with a warning."""
     paths = paths or config.get_paths()
+    local = config.REGION.shelters_csv
+    if local is not None:
+        if not local.exists():
+            raise FileNotFoundError(f"shelters_csv {local} from region {config.REGION.id!r} not found")
+        return shelters_from_local_list(local)
     if paths.shelters_verified.exists():
         s = shelters_from_csv(paths.shelters_verified)
         if "verified" in s:
@@ -46,7 +68,7 @@ def load_shelters(paths=None) -> gpd.GeoDataFrame:
             raise ValueError(f"No rows marked verified=yes in {paths.shelters_verified}")
         return s
     warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
-                  "Hand-check 15-30 shelters before the demo (guide Step 3).")
+                  "Hand-check 15-30 shelters before the demo (scripts/shelter_checklist.py).")
     return clean_candidates(shelters_from_csv(paths.shelter_candidates))
 
 

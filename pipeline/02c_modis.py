@@ -10,7 +10,7 @@ only fills pixels no better source covers.
     python pipeline/02c_modis.py --register            # also use as gap-filler
     python pipeline/02c_modis.py --find                # list MCDWD collections if the default name fails
 
-Layer: the 3-day composite by default (fewer cloud gaps, see guide). Pixel
+Layer: the 3-day composite by default (fewer cloud gaps). Pixel
 codes: 0 no water, 1 normal surface water, 2 recurring flood, 3 flood,
 255 insufficient data (cloud). Codes 2 and 3 count as FLOODED, 0 and 1 as DRY,
 and 255 stays UNKNOWN - cloud is never treated as dry.

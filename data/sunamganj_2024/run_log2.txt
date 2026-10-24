@@ -1,0 +1,176 @@
+== 02e_merge_flood.py --sources sentinel1
+      date   sources  flooded_pct  dry_pct  unknown_pct
+2024-05-02 sentinel1         0.84    99.16         0.00
+2024-05-05 sentinel1         0.01    47.28        52.70
+2024-05-12 sentinel1         3.78    96.22         0.00
+2024-05-14 sentinel1         2.70    97.30         0.00
+2024-05-17 sentinel1         0.34    46.96        52.70
+2024-05-19 sentinel1         2.47    55.50        42.04
+2024-05-24 sentinel1         3.32    96.68         0.00
+2024-05-26 sentinel1         1.19    98.81         0.00
+2024-05-29 sentinel1         2.39    44.91        52.70
+2024-05-31 sentinel1         9.13    48.92        41.95
+2024-06-05 sentinel1        36.88    63.12         0.00
+2024-06-07 sentinel1        33.70    66.30         0.00
+2024-06-10 sentinel1         5.39    41.91        52.70
+2024-06-12 sentinel1         8.29    49.83        41.87
+2024-06-17 sentinel1         6.56    93.44         0.00
+2024-06-19 sentinel1        40.45    59.55         0.00
+2024-06-22 sentinel1         6.63    40.67        52.70
+2024-06-24 sentinel1         5.21    52.87        41.92
+2024-06-29 sentinel1        34.97    65.03         0.00
+2024-07-04 sentinel1         6.68    40.61        52.70
+2024-07-11 sentinel1        38.40    61.60         0.00
+2024-07-16 sentinel1         6.37    40.92        52.70
+2024-07-23 sentinel1        33.33    66.67         0.00
+2024-07-28 sentinel1         5.71    41.58        52.70
+
+usable dates (<50% unknown): 16; peak 19 Jun ; before peak: True; after peak: True
+GO/NO-GO: GO
+== 05_cut_roads.py
+24947 roads, 286523 check-points (1331 on bridges), 24 dates
+      date  cut_km_10  cut_km_20  cut_km_40  unknown_km
+2024-05-02       18.3        9.8        5.5        26.5
+2024-05-05        0.7        0.4        0.0      3722.5
+2024-05-12      110.9       67.3       32.9        26.5
+2024-05-14      118.2       60.6       24.7        26.5
+2024-05-17       13.8        5.5        0.3      3722.5
+2024-05-19       67.2       50.9       36.6      2932.8
+2024-05-24      120.2       69.0       34.4        26.5
+2024-05-26       17.3        8.5        2.3        26.5
+2024-05-29       98.0       79.9       46.7      3722.5
+2024-05-31      517.5      437.2      314.5      2930.0
+2024-06-05     1700.6     1443.1     1090.8        26.5
+2024-06-07     1440.4     1241.1      969.1        26.5
+2024-06-10      292.3      260.8      207.9      3719.2
+2024-06-12      519.8      426.3      333.9      2923.4
+2024-06-17      309.0      170.0       43.6        26.5
+2024-06-19     1861.5     1608.1     1256.7        26.5
+2024-06-22      351.8      309.6      246.7      3718.5
+2024-06-24      327.7      257.9      163.7      2928.9
+2024-06-29     1645.5     1398.2     1054.9        26.5
+2024-07-04      389.1      346.2      265.9      3718.7
+2024-07-11     1856.9     1574.9     1170.7        26.5
+2024-07-16      338.4      308.4      241.2      3718.7
+2024-07-23     1520.1     1250.7      947.8        26.5
+2024-07-28      314.8      288.7      220.7      3718.7
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\sunamganj_2024\results\road_status.csv
+== 06_isolation.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:672
++ ... ntent $log; & .venv\Scripts\python.exe "pipeline\$($a[0])" $a[1..9] * ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+16 villages (2 boat-dependent, > 500 m from a road); 48 shelters
+ threshold       date  boat_dependent  connected  isolated  uncertain
+       0.1 2024-05-02               2         14         0          0
+       0.1 2024-05-05               2          5         0          9
+       0.1 2024-05-12               2         14         0          0
+       0.1 2024-05-14               2         13         1          0
+       0.1 2024-05-17               2          5         0          9
+       0.1 2024-05-19               2          6         0          8
+       0.1 2024-05-24               2         14         0          0
+       0.1 2024-05-26               2         14         0          0
+       0.1 2024-05-29               2          3         1         10
+       0.1 2024-05-31               2          2         4          8
+       0.1 2024-06-05               2         11         3          0
+       0.1 2024-06-07               2         10         4          0
+       0.1 2024-06-10               2          2         3          9
+       0.1 2024-06-12               2          2         4          8
+       0.1 2024-06-17               2         14         0          0
+       0.1 2024-06-19               2          9         5          0
+       0.1 2024-06-22               2          1         4          9
+       0.1 2024-06-24               2          2         4          8
+       0.1 2024-06-29               2          9         5          0
+       0.1 2024-07-04               2          1         4          9
+       0.1 2024-07-11               2          9         5          0
+       0.1 2024-07-16               2          1         4          9
+       0.1 2024-07-23               2          9         5          0
+       0.1 2024-07-28               2          1         4          9
+       0.2 2024-05-02               2         14         0          0
+       0.2 2024-05-05               2          5         0          9
+       0.2 2024-05-12               2         14         0          0
+       0.2 2024-05-14               2         13         1          0
+       0.2 2024-05-17               2          5         0          9
+       0.2 2024-05-19               2          6         0          8
+       0.2 2024-05-24               2         14         0          0
+       0.2 2024-05-26               2         14         0          0
+       0.2 2024-05-29               2          5         0          9
+       0.2 2024-05-31               2          2         4          8
+       0.2 2024-06-05               2         11         3          0
+       0.2 2024-06-07               2         10         4          0
+       0.2 2024-06-10               2          2         3          9
+       0.2 2024-06-12               2          2         4          8
+       0.2 2024-06-17               2         14         0          0
+       0.2 2024-06-19               2          9         5          0
+       0.2 2024-06-22               2          1         4          9
+       0.2 2024-06-24               2          3         3          8
+       0.2 2024-06-29               2          9         5          0
+       0.2 2024-07-04               2          1         4          9
+       0.2 2024-07-11               2          9         5          0
+       0.2 2024-07-16               2          1         4          9
+       0.2 2024-07-23               2          9         5          0
+       0.2 2024-07-28               2          1         4          9
+       0.4 2024-05-02               2         14         0          0
+       0.4 2024-05-05               2          5         0          9
+       0.4 2024-05-12               2         14         0          0
+       0.4 2024-05-14               2         14         0          0
+       0.4 2024-05-17               2          5         0          9
+       0.4 2024-05-19               2          6         0          8
+       0.4 2024-05-24               2         14         0          0
+       0.4 2024-05-26               2         14         0          0
+       0.4 2024-05-29               2          5         0          9
+       0.4 2024-05-31               2          5         1          8
+       0.4 2024-06-05               2         11         3          0
+       0.4 2024-06-07               2         10         4          0
+       0.4 2024-06-10               2          2         3          9
+       0.4 2024-06-12               2          4         2          8
+       0.4 2024-06-17               2         14         0          0
+       0.4 2024-06-19               2          9         5          0
+       0.4 2024-06-22               2          1         4          9
+       0.4 2024-06-24               2          4         2          8
+       0.4 2024-06-29               2         11         3          0
+       0.4 2024-07-04               2          1         4          9
+       0.4 2024-07-11               2         10         4          0
+       0.4 2024-07-16               2          1         4          9
+       0.4 2024-07-23               2         11         3          0
+       0.4 2024-07-28               2          1         3         10
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\sunamganj_2024\results\village_status.csv
+== 07_timeline.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:672
++ ... ntent $log; & .venv\Scripts\python.exe "pipeline\$($a[0])" $a[1..9] * ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+outcome
+connected_when_seen    8
+isolated               5
+boat_dependent         2
+never_isolated         1
+
+Top 10 most urgent:
+ urgency_rank                           name  population                    isolation_range aid_deadline             exit_shelter
+            1                  Purba Birgaon       19141 isolated between 13 May and 14 May   2024-05-20  Khaled General Hospital
+            2                       Boromuha      119104 isolated between 30 May and 31 May   2024-06-06 Pangaon Community clinic
+            3                       Patharia       15866 isolated between 30 May and 31 May   2024-06-06 Pangaon Community clinic
+            4                Paschim Birgaon       13387 isolated between 30 May and 31 May   2024-06-06 Pangaon Community clinic
+            5              Dholkotob village       20302 isolated between 18 Jun and 19 Jun   2024-06-25 Pangaon Community clinic
+         <NA> BR 28, 29 rice (Vatipara Haor)        2604                                             NaT                      NaN
+         <NA>                      Banshtala       11560                                             NaT                      NaN
+         <NA>                      Dholposhi        1370                                             NaT                      NaN
+         <NA>             Jawa Bazar, Dergaw       89460                                             NaT                      NaN
+         <NA>                        Kusiura       52517                                             NaT                      NaN
+
+Sensitivity:
+ threshold  villages_isolated  people_isolated  mean_shift_days_vs_main  villages_changed_outcome
+       0.1                  5           187800                     -0.4                         0
+       0.2                  5           187800                      0.0                         0
+       0.4                  5           187800                      6.8                         0

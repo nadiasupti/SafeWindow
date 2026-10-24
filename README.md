@@ -6,7 +6,7 @@ SafeWindow is a research prototype for estimating when villages lose all road ac
 
 ## Project guide
 
-See [PROJECT_GUIDE.md](PROJECT_GUIDE.md) for the scientific scope, data status, live-data prerequisites, validation commands, and NASA Space Challenge submission assessment.
+See [docs/PROJECT_GUIDE.md](docs/PROJECT_GUIDE.md) for the scientific scope, data status, live-data prerequisites, validation commands, and NASA Space Challenge submission assessment.
 
 ## Quick start
 
@@ -42,6 +42,11 @@ The app defaults to `data/live`, which holds the May–July 2022 study results a
 
 All results come from 19 Sentinel-1 flood maps regenerated on 11 October 2026. That rerun followed a fix to the Earth Engine tile export: before it, every tile repeated the whole study area, so earlier outputs were invalid. Full method and limits: [data/live/science_methods.md](data/live/science_methods.md).
 
+**Updated 24 October 2026.**
+- **Rule change.** On 4 of the 19 dates, Otsu finds no dark-water threshold, typically because wind-roughened haor water is not dark. Those maps are now set to unknown instead of being classified with a fixed −18 dB, which caught almost no water. The other 15 maps are unchanged.
+- **What changed.** Some isolation and safe-exit dates moved, and the "reconnected" dates disappeared. The five isolated villages, their population, the benchmark scores and both news checks did not change.
+- **Where to look.** The previous version is kept in `data/archive/live_v1_2026-10-12/`. Details are in [docs/phase3a_report.md](docs/phase3a_report.md), section 5.
+
 **Flood extent vs UNOSAT analyses.** None of these was used to build or tune SafeWindow. They are grouped by independence:
 
 | Tier | Reference | Area compared | IoU (95% CI) | Precision | Recall |
@@ -62,13 +67,46 @@ These are preliminary satellite analyses, not field ground truth.
 | Outcome | Villages |
 |---|---|
 | Isolated at some point | 5 (catchment population about 187,800, WorldPop 2020) |
-| Connected on every date its roads were observed (9 of 19) | 8 |
+| Connected on every date its roads were observed, unknown on the others | 9 |
 | Boat-dependent | 2 |
-| Connected on all 19 dates | 1 |
 
 - **Robust to the threshold:** the same five villages are isolated at the 10%, 20% and 40% thresholds.
+- **Dates:**
+  - Paschim Birgaon is isolated on or before 16 May.
+  - Dholkotob and Patharia are isolated between 17 and 23 May; their last safe exit is 16 May.
+  - Boromuha and Purba Birgaon are isolated on or before 23 May; no safe exit was observed.
 - **Bridges:** water under the 534 mapped road bridges is not counted as flooded road.
 - **Not field-checked:** the village dates have not been checked against reports of specific villages.
+
+## Results: May–July 2024 flood, Sunamganj (unseen test)
+
+The same area and the same method were run on the 2024 flood, with no threshold changed (`regions/sunamganj_2024.yaml`, `data/sunamganj_2024/`). Details: [docs/phase3a_report.md](docs/phase3a_report.md).
+
+- **The same five villages are isolated again** at every threshold, and all 16 villages have the same outcome as in 2022.
+- **Flood extent vs independent sensors** (UNOSAT FL20240502BGD, 26 June; our maps are 3–7 days away):
+  - Pleiades optical, IoU 0.69;
+  - SAOCOM L-band radar, IoU 0.74;
+  - UNOSAT's Sentinel-1 total water, IoU 0.91.
+
+  Precision is 0.85–0.97 against the independent sensors.
+- **Roads:** 56–71% of the road SafeWindow cuts lies on roads UNOSAT marks as flood-affected on the SAOCOM image.
+- **News:** the Chhatak–Dowarabazar route, reported inundated on 18 June 2024, is cut on the next radar view (19 June) at every threshold.
+
+## Three floods, one method
+
+The same code and thresholds were used for all three floods; nothing was tuned per flood. Details: `docs/phase3a_report.md` and `docs/phase3b_report.md`.
+
+| | Sunamganj 2022 | Sunamganj 2024 (unseen year) | Trimmu, Pakistan 2025 (unseen country) |
+|---|---|---|---|
+| Sentinel-1 dates (unusable) | 19 (4) | 24 (5) | 9 (0) |
+| Best independent sensor, same day or nearest | Chaohu-1 / RCM-1, same day: IoU 0.81–0.84 | SAOCOM (−7 d) 0.74; Pleiades (+3 d) 0.69 | ICEYE (+1 d) 0.53 |
+| Same Sentinel-1 data, other method | UNOSAT: 0.89 | UNOSAT total water: 0.91 | Copernicus EMS: 0.68 (1 Sep), 0.62 (2 Sep) |
+| Precision against independent sensors | 0.93–0.95 | 0.85–0.97 | 0.48–0.73 |
+| Villages isolated at 20% (stable 10–40%?) | 5 of 16 (yes) | the same 5 of 16 (yes) | 2 of 26 (no: 7 at 10%) |
+| Dated road reports | 2 of 2 match | 1 cut on the next view | 1 not seen: man-made breaches, also absent from EMS maps |
+| OSM inputs | 4,988 km road, 50 shelters | same | 805 km road, 3 shelters |
+
+The method transfers, with clear limits. Agreement drops where the flood changes within a day or two, where irrigated rice may look like flood, and where OpenStreetMap is thin.
 
 **Reproducing the results.** Run `scripts/build_benchmark.py` and `scripts/road_reports_check.py`. Sources and parameters are listed in [data/live/source_manifest.json](data/live/source_manifest.json).
 
@@ -91,7 +129,14 @@ Public sources
   -> Streamlit application
 ```
 
-The separate FloodNet classifier is retained for classifier research. It is not the same model as the temporal flood segmentation pipeline.
+## Experimental, not part of SafeWindow results
+
+The `ml/` folder and `app/floodnet_app.py` are side experiments. No SafeWindow flood map, road cut, isolation date or benchmark score uses them.
+
+- **FloodNet classifier** (`ml/floodnet_classifier.py`, `ml/floodnet_model.pt`): labels a whole aerial photo as flooded or not. It is trained on the public FloodNet dataset.
+- **Temporal U-Net** (`ml/model.py`, `ml/model.pt`): trained only on the synthetic demo data, so it must not be used for real predictions.
+
+SafeWindow's flood maps come from the rule-based Sentinel-1 method in `pipeline/02a_sentinel1_gee.py`.
 
 ## Scientific limitations
 
@@ -117,4 +162,4 @@ Three things are still open:
 
 `scripts/verify_submission.py data/live` therefore still fails, but only because no independent review is recorded.
 
-See [SUBMISSION_STATUS.md](SUBMISSION_STATUS.md) for the evidence gate.
+See [docs/SUBMISSION_STATUS.md](docs/SUBMISSION_STATUS.md) for the evidence gate.

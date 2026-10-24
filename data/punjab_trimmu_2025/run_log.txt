@@ -1,0 +1,92 @@
+== 01_study_area.py
+Study area from D:\mern\olympid\nasa_app_challeng\SafeWindow\regions\punjab_trimmu_2025_aoi.geojson
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\processed\study_area.gpkg (1014 km2)
+grid: 1939 x 3173 px at 20.0 m -> D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\processed\grid.json
+== 03_osm_roads_places.py
+downloading roads (network_type='all' so village paths are included)...
+  1057 junctions, 1327 road segments, 805 km
+  road types: {'residential': 692, 'tertiary': 198, 'unclassified': 159, 'primary': 124, 'secondary': 54, 'trunk': 46, 'path': 45, 'service': 4, 'primary_link': 2, 'track': 2}
+downloading villages...
+python.exe : Traceback (most recent call last):
+At line:1 char:1144
++ ... ntent $log; & .venv\Scripts\python.exe "pipeline\$($a[0])" $a[1..9] * ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\requests\models.py", line 1116, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nadia\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nadia\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nadia\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\_http.py", line 314, in 
+_parse_response
+    response_json: dict[str, Any] | list[dict[str, Any]] = response.json()
+                                                           ^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\requests\models.py", line 1120, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\pipeline\03_osm_roads_places.py", line 159, in <module>
+    main()
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\pipeline\03_osm_roads_places.py", line 152, in main
+    villages(sa.to_crs(config.CRS_WGS84).union_all(), attempts=args.osm_attempts)
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\pipeline\03_osm_roads_places.py", line 96, in villages
+    features = retry_osm_call(
+               ^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\pipeline\03_osm_roads_places.py", line 55, in retry_osm_call
+    return query()
+           ^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\pipeline\03_osm_roads_places.py", line 97, in <lambda>
+    lambda: ox.features_from_polygon(poly_wgs84, PLACE_TAGS), attempts=attempts)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\features.py", line 332, in 
+features_from_polygon
+    return _create_gdf(response_jsons, polygon, tags)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\features.py", line 406, in 
+_create_gdf
+    for response_json in response_jsons:
+                         ^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\_overpass.py", line 432, in 
+_download_overpass_features
+    yield _overpass_request(OrderedDict(data=query_str))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\_overpass.py", line 488, in 
+_overpass_request
+    response_json = _http._parse_response(response)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\osmnx\_http.py", line 320, in 
+_parse_response
+    raise ResponseStatusCodeError(msg) from e
+osmnx._errors.ResponseStatusCodeError: 'overpass-api.de' responded: 502 Bad Gateway # 502 Gateway Timeout
+
+This Overpass API server is currently at capacity. All query workers are busy
+and the request queue is full.
+
+## What to do
+
+Retry your request using exponential backoff: wait a short interval, then retry.
+If the request fails again, double the wait time and retry again.
+
+## For heavy or automated use
+
+This public endpoint is intended for browser-based and human-operated tools.
+For automated or high-volume use, run a local Overpass API instance:
+
+https://github.com/b1tw153/Overpass-API/blob/main/README.md
+

@@ -1,0 +1,25 @@
+date,source,path,note
+2024-05-02,sentinel1,processed/flood/sentinel1_20240502.tif,otsu=-10.37dB otsu_failed orbit=77
+2024-05-05,sentinel1,processed/flood/sentinel1_20240505.tif,otsu=-10.13dB otsu_failed orbit=114
+2024-05-12,sentinel1,processed/flood/sentinel1_20240512.tif,otsu=-13.62dB otsu orbit=41
+2024-05-14,sentinel1,processed/flood/sentinel1_20240514.tif,otsu=-12.62dB otsu orbit=77
+2024-05-17,sentinel1,processed/flood/sentinel1_20240517.tif,otsu=-13.13dB otsu orbit=114
+2024-05-19,sentinel1,processed/flood/sentinel1_20240519.tif,otsu=-13.62dB otsu orbit=150
+2024-05-24,sentinel1,processed/flood/sentinel1_20240524.tif,otsu=-12.37dB otsu orbit=41
+2024-05-26,sentinel1,processed/flood/sentinel1_20240526.tif,otsu=-11.37dB otsu_failed orbit=77
+2024-05-29,sentinel1,processed/flood/sentinel1_20240529.tif,otsu=-13.87dB otsu orbit=114
+2024-05-31,sentinel1,processed/flood/sentinel1_20240531.tif,otsu=-12.87dB otsu orbit=150
+2024-06-05,sentinel1,processed/flood/sentinel1_20240605.tif,otsu=-14.13dB otsu orbit=41
+2024-06-07,sentinel1,processed/flood/sentinel1_20240607.tif,otsu=-14.88dB otsu orbit=77
+2024-06-10,sentinel1,processed/flood/sentinel1_20240610.tif,otsu=-17.74dB otsu orbit=114
+2024-06-12,sentinel1,processed/flood/sentinel1_20240612.tif,otsu=-12.25dB otsu orbit=150
+2024-06-17,sentinel1,processed/flood/sentinel1_20240617.tif,otsu=-11.88dB otsu_failed orbit=41
+2024-06-19,sentinel1,processed/flood/sentinel1_20240619.tif,otsu=-15.13dB otsu orbit=77
+2024-06-22,sentinel1,processed/flood/sentinel1_20240622.tif,otsu=-19.26dB otsu orbit=114
+2024-06-24,sentinel1,processed/flood/sentinel1_20240624.tif,otsu=-11.87dB otsu_failed orbit=150
+2024-06-29,sentinel1,processed/flood/sentinel1_20240629.tif,otsu=-13.13dB otsu orbit=41
+2024-07-04,sentinel1,processed/flood/sentinel1_20240704.tif,otsu=-16.38dB otsu orbit=114
+2024-07-11,sentinel1,processed/flood/sentinel1_20240711.tif,otsu=-13.13dB otsu orbit=41
+2024-07-16,sentinel1,processed/flood/sentinel1_20240716.tif,otsu=-18.75dB otsu orbit=114
+2024-07-23,sentinel1,processed/flood/sentinel1_20240723.tif,otsu=-12.63dB otsu orbit=41
+2024-07-28,sentinel1,processed/flood/sentinel1_20240728.tif,otsu=-18.12dB otsu orbit=114

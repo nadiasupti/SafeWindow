@@ -234,3 +234,14 @@ cache/
 
 # Local Python environments (any name)
 .venv*/
+
+# Earthdata login config (points to local cookie/netrc files)
+.dodsrc
+
+# Local experiment runs, downloaded reference sources and old versions
+data/experiments/
+data/sources/
+data/archive/
+
+# Local reproduction of data/live (pixel-identical; see docs/phase1_report.md)
+data/rerun/

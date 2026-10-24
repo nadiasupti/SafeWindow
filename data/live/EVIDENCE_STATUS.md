@@ -18,6 +18,17 @@ The earlier Sentinel-1 rasters were corrupt: every 800 × 800 pixel tile held th
 - **Benchmark.** Extended to four UNOSAT references in three independence tiers.
 - **News checks.** Added road checks against two dated news reports (`results/road_reports_verdict.csv`).
 
+## What changed on 24 October 2026
+
+- **Reproduced.** The 19 Sentinel-1 maps were rebuilt from Earth Engine with project `safewindow-2026`. They are pixel-identical to the published maps, and every result file matched (`docs/phase1_report.md`).
+- **Rule change.** On dates where Otsu finds no plausible threshold, the map is now set to unknown instead of being classified at a fixed −18 dB. Those maps had shown almost no water.
+  - Affected dates: 18 May, 11 June, 23 June and 5 July. The other 15 maps are unchanged.
+  - Rebuilt from the new maps: road status, village status, timeline, news checks and the app package.
+  - Unchanged: the 5 isolated villages and their population, the benchmark scores (`build_benchmark.py --check` passes) and both news checks.
+  - Changed: some isolation and safe-exit dates, and the "reconnected" dates are gone.
+  - The previous version is kept in `data/archive/live_v1_2026-10-12/`.
+- **New evidence.** The 2024 flood was run as an unseen test (`data/sunamganj_2024/`, `docs/phase3a_report.md`). The same 5 villages are isolated.
+
 ## Verified outputs
 
 - `processed/study_area.gpkg`: Sunamganj Sadar, Chhatak and Dowarabazar, 1,265 km².
@@ -46,6 +57,6 @@ The earlier Sentinel-1 rasters were corrupt: every 800 × 800 pixel tile held th
 
 ## Remaining steps
 
-1. Independent scientific review, following `REVIEW.md` and recorded in `submission_evidence.json`.
+1. Independent scientific review, following `docs/REVIEW.md` and recorded in `submission_evidence.json`.
 2. Check shelters in `shelter_checklist.csv` (a map link is given for each), then run `python scripts/shelter_checklist.py apply` and rerun steps 06, 07 and 08.
 3. Collect news or field reports into `validation/news_reports.csv` and run `pipeline/09_validate.py`.

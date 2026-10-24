@@ -1,0 +1,187 @@
+{
+  "name": "SafeWindow flood-extent benchmark, Sunamganj, Bangladesh: May-July 2024 flood",
+  "region": "sunamganj_2024",
+  "event_code": "FL20240502BGD",
+  "publisher": "UNITAR-UNOSAT",
+  "license": "CC BY-SA (as listed on HDX)",
+  "archives": [
+    {
+      "url": "https://unosat.org/static/unosat_filesystem/3890/TC20240502BGD_SHP.zip",
+      "hdx": "e97de1a2-2e2d-4371-9d38-f5fede3e79a0"
+    },
+    {
+      "url": "https://unosat.org/static/unosat_filesystem/3889/TC20240502BGD_SHP.zip",
+      "hdx": "cb5f8a67-098b-4eb9-8368-1929be47c827"
+    },
+    {
+      "url": "https://unosat.org/static/unosat_filesystem/3885/TC20240502BGD_SHP.zip",
+      "hdx": "7c143cf3-a1cd-4676-9f0e-b0667ecd597b"
+    }
+  ],
+  "independence_note": "No reference was used to build or tune SafeWindow; the method and thresholds are unchanged from the 2022 study.",
+  "tiers": {
+    "optical": "different sensor (very-high-resolution optical); misses water under vegetation and cloud",
+    "radar": "different radar satellite and band",
+    "unknown": "sensor not named by UNOSAT ('GLOBAL Satellite')",
+    "same_sensor": "same Sentinel-1 data, UNOSAT's own method; tests the method, not the data"
+  },
+  "references": [
+    {
+      "id": "pleiades_20240626_sadar",
+      "tier": "optical",
+      "sensor": "Pleiades (PHR), optical",
+      "date": "2024-06-26",
+      "flood": "PHR_20240626_FloodExtent_SunamganjSadar",
+      "analysis": "PHR_20240626_AnglysisExtent_SunamganjSadar",
+      "exclude": "PHR_20240626_CloudObstruction_SunamganjSadar",
+      "tier_meaning": "different sensor (very-high-resolution optical); misses water under vegetation and cloud",
+      "reference_raster": "benchmark/pleiades_20240626_sadar_reference.tif",
+      "reference_sha256": "018eb8b0e8f658a0f01f353fa37bd6ece1d86c56e3ef874efe3582f47bba7b5d",
+      "predictions": [
+        {
+          "pred_date": "2024-06-24",
+          "files": [
+            "processed/flood/sentinel1_20240624.tif"
+          ],
+          "sha256": [
+            "c94c9656904ecf0ca92fab7a142722ec33654172788657cc6a4cb582316cf11e"
+          ]
+        },
+        {
+          "pred_date": "2024-06-29",
+          "files": [
+            "processed/flood/sentinel1_20240629.tif"
+          ],
+          "sha256": [
+            "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 11.1
+    },
+    {
+      "id": "saocom_20240626_chhatak",
+      "tier": "radar",
+      "sensor": "SAOCOM, L-band SAR",
+      "date": "2024-06-26",
+      "flood": "SAOCOM_20240626_FloodExtent_Sylhet",
+      "analysis": "SAOCOM_20240626_AnalysisExtent_Sylhet_1",
+      "tier_meaning": "different radar satellite and band",
+      "reference_raster": "benchmark/saocom_20240626_chhatak_reference.tif",
+      "reference_sha256": "d95889cc8c4eefd587a2fb83c966628d61a60e52c3f98fe98fc0de5d6d9cafe6",
+      "predictions": [
+        {
+          "pred_date": "2024-06-29",
+          "files": [
+            "processed/flood/sentinel1_20240629.tif"
+          ],
+          "sha256": [
+            "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992"
+          ]
+        },
+        {
+          "pred_date": "2024-06-19",
+          "files": [
+            "processed/flood/sentinel1_20240619.tif"
+          ],
+          "sha256": [
+            "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 2.0
+    },
+    {
+      "id": "global_20240626_chhatak",
+      "tier": "unknown",
+      "sensor": "GLOBAL Satellite (not named)",
+      "date": "2024-06-26",
+      "flood": "GLOBAL_20240626_FloodExtent_Sunamganj",
+      "analysis": "GLOBAL_20240626_AnglysisExtent_Sunamganj",
+      "tier_meaning": "sensor not named by UNOSAT ('GLOBAL Satellite')",
+      "reference_raster": "benchmark/global_20240626_chhatak_reference.tif",
+      "reference_sha256": "d8049b617e6fdf569876ae7bfa2949e798eba5c45f34da8c451cf421e5f3826c",
+      "predictions": [
+        {
+          "pred_date": "2024-06-29",
+          "files": [
+            "processed/flood/sentinel1_20240629.tif"
+          ],
+          "sha256": [
+            "0a4cd592a14cc32ad32119ec3acb71155ae600f1c0bff2008d9260eb54a80992"
+          ]
+        },
+        {
+          "pred_date": "2024-06-19",
+          "files": [
+            "processed/flood/sentinel1_20240619.tif"
+          ],
+          "sha256": [
+            "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 2.5
+    },
+    {
+      "id": "unosat_s1_20240619_22_sylhet",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",
+      "date": "2024-06-19+2024-06-22",
+      "flood": "S1_20240619_20240622_FloodExtent_Sylhet",
+      "analysis": "S1_20240619_20240622_AnalysisExtent_Sylhet",
+      "note": "UNOSAT's 2024 FloodExtent counts only new or increased water (17% of the compared area), not water already in the haor.",
+      "tier_meaning": "same Sentinel-1 data, UNOSAT's own method; tests the method, not the data",
+      "reference_raster": "benchmark/unosat_s1_20240619_22_sylhet_reference.tif",
+      "reference_sha256": "6ec22804428dc2783403e37b3dded05a754a6cf6b1a5fd38add8d24b391ea8fc",
+      "predictions": [
+        {
+          "pred_date": "2024-06-19+2024-06-22",
+          "files": [
+            "processed/flood/sentinel1_20240619.tif",
+            "processed/flood/sentinel1_20240622.tif"
+          ],
+          "sha256": [
+            "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f",
+            "c8c19e0a741ae5c672740eb1bde817f87b8e1b330c7164eb834df5a056101d32"
+          ]
+        },
+        {
+          "pred_date": "2024-06-19",
+          "files": [
+            "processed/flood/sentinel1_20240619.tif"
+          ],
+          "sha256": [
+            "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 99.7
+    },
+    {
+      "id": "unosat_s1_water_20240619_22_sylhet",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",
+      "date": "2024-06-19+2024-06-22",
+      "flood": "S1_20240619_20240622_WaterExtent_Sylhet",
+      "analysis": "S1_20240619_20240622_AnalysisExtent_Sylhet",
+      "tier_meaning": "same Sentinel-1 data, UNOSAT's own method; tests the method, not the data",
+      "reference_raster": "benchmark/unosat_s1_water_20240619_22_sylhet_reference.tif",
+      "reference_sha256": "9eb4621431dff05a69226d7f06fa689b5cb087fa1d9700b83a46ec4415604e35",
+      "predictions": [
+        {
+          "pred_date": "2024-06-19+2024-06-22",
+          "files": [
+            "processed/flood/sentinel1_20240619.tif",
+            "processed/flood/sentinel1_20240622.tif"
+          ],
+          "sha256": [
+            "a77166eef52fc876eff527aa1b1463650d8bfb3c448572a269f9a330ccabf35f",
+            "c8c19e0a741ae5c672740eb1bde817f87b8e1b330c7164eb834df5a056101d32"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 99.7
+    }
+  ]
+}

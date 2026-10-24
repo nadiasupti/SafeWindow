@@ -1,0 +1,27 @@
+village_id,name,name_bn,place,source,population,node_id,snap_dist_m,boat_dependent
+osm302929255,اٹهاره ہزارى,,town,OpenStreetMap,6041,13717286953,42.687591652813644,False
+osm866810159,Garh Maharaja,,village,OpenStreetMap,122078,8210620025,107.49345961192927,False
+osm3591035304,Malkana,,village,OpenStreetMap,69021,3591046971,251.7031163155098,False
+osm3591035305,Munirabad,,village,OpenStreetMap,25815,8494970017,272.1377009222623,False
+osm12265523187,رکھ بھنگو,,village,OpenStreetMap,10570,9216860490,47.789685144299774,False
+osm12265523196,Ghagh,,village,OpenStreetMap,1503,9216860489,139.2437614885048,False
+osm12265543288,ہسوالی,,village,OpenStreetMap,13783,12265543286,63.841714322495854,False
+osm12265543308,منگن,,village,OpenStreetMap,582,6647635884,178.0539780952256,False
+osm12265543324,حویلی منگن,,village,OpenStreetMap,711,11347831988,286.60413214645723,False
+osm12265543333,بستی منگن,,village,OpenStreetMap,1185,12265543342,32.77433272460522,False
+osm12265543343,بستی نوہانی,,village,OpenStreetMap,38441,11347831991,159.70368287867004,False
+osm12265543363,ڈیرا مہر صدیق,,village,OpenStreetMap,661,12265543364,322.74311829895095,False
+osm12265543380,Mahay,,village,OpenStreetMap,1870,12265543384,88.43981416905615,False
+osm12265543385,چاہ شیر والا,,village,OpenStreetMap,332,12265543384,411.18382243868933,False
+osm12265543386,Tibba Gehli,,hamlet,OpenStreetMap,519,12265543388,89.7417545825626,False
+osm12265543389,یارےوالا,,village,OpenStreetMap,11272,11347832018,836.3698332186592,True
+osm12265543394,Pabanwala,,village,OpenStreetMap,13001,12265543286,903.9036984563032,True
+osm12265566860,بستی محرم سیال,,village,OpenStreetMap,23195,4808098584,77.33680523951872,False
+osm12265566898,Bela Surbana,,village,OpenStreetMap,52144,4808096991,32.09161418409023,False
+osm12265571008,گلبرگ,,village,OpenStreetMap,1413,12265571007,192.7939774409822,False
+osm12265571046,ﷲ یار جوتہ,,village,OpenStreetMap,1554,9216935607,326.64128421270595,False
+osm12265571078,Kho Ratiwala,,village,OpenStreetMap,21839,12265571087,75.0416358914193,False
+osm12265571294,چک غلام جیلانی,,village,OpenStreetMap,1892,7299856860,235.35154017205005,False
+osm12265571312,Nawan Shehar,,village,OpenStreetMap,11861,11048790326,121.67340888360995,False
+osm12265571330,Chak 46 HF,,village,OpenStreetMap,4486,11053232625,727.49958025614,True
+osm12265571331,Dera Mahar Noor Budhwana,,village,OpenStreetMap,2954,8398878266,1081.5244761777064,True

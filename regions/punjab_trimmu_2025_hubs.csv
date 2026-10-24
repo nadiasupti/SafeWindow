@@ -1,0 +1,4 @@
+shelter_id,name,type,lat,lon,verified_by,notes
+hub_shorkot,Shorkot town centre,town_hub,30.8349,72.0764,,"Tehsil headquarters; assumed service hub, not a verified relief camp (OSM Nominatim point)"
+hub_athara_hazari,Athara Hazari town centre,town_hub,31.1662,72.0972,,"Tehsil headquarters; assumed service hub, not a verified relief camp (OSM Nominatim point)"
+hub_garh_maharaja,Garh Maharaja town centre,town_hub,30.8335,71.9037,,"Local town; assumed service hub, not a verified relief camp (OSM Nominatim point)"

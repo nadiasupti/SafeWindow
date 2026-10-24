@@ -1,0 +1,181 @@
+{
+  "name": "SafeWindow flood-extent benchmark, Trimmu, Jhang, Punjab, Pakistan: August-September 2025 flood",
+  "region": "punjab_trimmu_2025",
+  "event_code": "EMSR838",
+  "publisher": "Copernicus Emergency Management Service (European Commission)",
+  "license": "Copernicus EMS products, free and open with attribution",
+  "archives": [
+    {
+      "url": "https://rapidmapping.emergency.copernicus.eu/backend/EMSR838/AOI05/DEL_PRODUCT/EMSR838_AOI05_DEL_PRODUCT_v1.zip"
+    },
+    {
+      "url": "https://rapidmapping.emergency.copernicus.eu/backend/EMSR838/AOI05/DEL_MONIT01/EMSR838_AOI05_DEL_MONIT01_v1.zip"
+    },
+    {
+      "url": "https://rapidmapping.emergency.copernicus.eu/backend/EMSR838/AOI05/DEL_MONIT02/EMSR838_AOI05_DEL_MONIT02_v1.zip"
+    },
+    {
+      "url": "https://rapidmapping.emergency.copernicus.eu/backend/EMSR838/AOI05/DEL_MONIT03/EMSR838_AOI05_DEL_MONIT03_v1.zip"
+    },
+    {
+      "url": "https://rapidmapping.emergency.copernicus.eu/backend/EMSR838/AOI05/DEL_MONIT04/EMSR838_AOI05_DEL_MONIT04_v1.zip"
+    }
+  ],
+  "independence_note": "No reference was used to build or tune SafeWindow; the method and thresholds are unchanged from the 2022 study.",
+  "tiers": {
+    "radar": "different radar satellite (ICEYE X-band), within 1-3 days",
+    "same_sensor": "same Sentinel-1 image, Copernicus EMS method; tests the method, not the data"
+  },
+  "references": [
+    {
+      "id": "ems_iceye_20250830",
+      "tier": "radar",
+      "sensor": "ICEYE (X-band SAR), 30 Aug 2025 23:54 UTC",
+      "date": "2025-08-30",
+      "dir": "DEL_MONIT01",
+      "flood": "EMSR838_AOI05_DEL_MONIT01_observedEventA_v1",
+      "analysis": "EMSR838_AOI05_DEL_MONIT01_areaOfInterestA_v1",
+      "exclude": "EMSR838_AOI05_DEL_MONIT01_imageFootprintA_v1",
+      "exclude_where": {
+        "obj_type": "Not Analysed - No data"
+      },
+      "tier_meaning": "different radar satellite (ICEYE X-band), within 1-3 days",
+      "reference_raster": "benchmark/ems_iceye_20250830_reference.tif",
+      "reference_sha256": "28862d50ffc6216fe36f8ff124afb35798f3c5b8a0b5a581f37da794b3d499f8",
+      "predictions": [
+        {
+          "pred_date": "2025-09-01",
+          "files": [
+            "processed/flood/sentinel1_20250901.tif"
+          ],
+          "sha256": [
+            "b885b7392caa9613ba4534e4f035ad034f3d4837d04ce75adb2018d7ca214179"
+          ]
+        },
+        {
+          "pred_date": "2025-08-28",
+          "files": [
+            "processed/flood/sentinel1_20250828.tif"
+          ],
+          "sha256": [
+            "db9af6e59a2a78e20450a4828b03cdf2b461bd8f47df46a7bfe4818318bc1dfb"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 77.9
+    },
+    {
+      "id": "ems_iceye_20250831",
+      "tier": "radar",
+      "sensor": "ICEYE (X-band SAR), 31 Aug 2025 17:28 UTC",
+      "date": "2025-08-31",
+      "dir": "DEL_MONIT02",
+      "flood": "EMSR838_AOI05_DEL_MONIT02_observedEventA_v1",
+      "analysis": "EMSR838_AOI05_DEL_MONIT02_areaOfInterestA_v1",
+      "exclude": "EMSR838_AOI05_DEL_MONIT02_imageFootprintA_v1",
+      "exclude_where": {
+        "obj_type": "Not Analysed - No data"
+      },
+      "tier_meaning": "different radar satellite (ICEYE X-band), within 1-3 days",
+      "reference_raster": "benchmark/ems_iceye_20250831_reference.tif",
+      "reference_sha256": "6eb6e0b6e0ef641dcc38b05d5c6fc572f215deaabd6c33079e55be08b201d12a",
+      "predictions": [
+        {
+          "pred_date": "2025-09-01",
+          "files": [
+            "processed/flood/sentinel1_20250901.tif"
+          ],
+          "sha256": [
+            "b885b7392caa9613ba4534e4f035ad034f3d4837d04ce75adb2018d7ca214179"
+          ]
+        },
+        {
+          "pred_date": "2025-08-28",
+          "files": [
+            "processed/flood/sentinel1_20250828.tif"
+          ],
+          "sha256": [
+            "db9af6e59a2a78e20450a4828b03cdf2b461bd8f47df46a7bfe4818318bc1dfb"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 84.7
+    },
+    {
+      "id": "ems_s1_20250828",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, 28 Aug 2025 01:07 UTC",
+      "date": "2025-08-28",
+      "dir": "DEL_PRODUCT",
+      "flood": "EMSR838_AOI05_DEL_PRODUCT_observedEventA_v1",
+      "analysis": "EMSR838_AOI05_DEL_PRODUCT_areaOfInterestA_v1",
+      "tier_meaning": "same Sentinel-1 image, Copernicus EMS method; tests the method, not the data",
+      "reference_raster": "benchmark/ems_s1_20250828_reference.tif",
+      "reference_sha256": "376e03baea405d1e746504db62cfc45fd9def7ea27e961c8bc3541d632a6ec68",
+      "predictions": [
+        {
+          "pred_date": "2025-08-28",
+          "files": [
+            "processed/flood/sentinel1_20250828.tif"
+          ],
+          "sha256": [
+            "db9af6e59a2a78e20450a4828b03cdf2b461bd8f47df46a7bfe4818318bc1dfb"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 89.6
+    },
+    {
+      "id": "ems_s1_20250901",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, 1 Sep 2025 13:12 UTC",
+      "date": "2025-09-01",
+      "dir": "DEL_MONIT03",
+      "flood": "EMSR838_AOI05_DEL_MONIT03_observedEventA_v1",
+      "analysis": "EMSR838_AOI05_DEL_MONIT03_areaOfInterestA_v1",
+      "tier_meaning": "same Sentinel-1 image, Copernicus EMS method; tests the method, not the data",
+      "reference_raster": "benchmark/ems_s1_20250901_reference.tif",
+      "reference_sha256": "865cbdac9595384bdcbb27864c092cf2190229484268decbec45356472fb7ad3",
+      "predictions": [
+        {
+          "pred_date": "2025-09-01",
+          "files": [
+            "processed/flood/sentinel1_20250901.tif"
+          ],
+          "sha256": [
+            "b885b7392caa9613ba4534e4f035ad034f3d4837d04ce75adb2018d7ca214179"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 100.0
+    },
+    {
+      "id": "ems_s1_20250902",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, 2 Sep 2025 01:16 UTC",
+      "date": "2025-09-02",
+      "dir": "DEL_MONIT04",
+      "flood": "EMSR838_AOI05_DEL_MONIT04_observedEventA_v1",
+      "analysis": "EMSR838_AOI05_DEL_MONIT04_areaOfInterestA_v1",
+      "exclude": "EMSR838_AOI05_DEL_MONIT04_imageFootprintA_v1",
+      "exclude_where": {
+        "obj_type": "Not Analysed - No data"
+      },
+      "tier_meaning": "same Sentinel-1 image, Copernicus EMS method; tests the method, not the data",
+      "reference_raster": "benchmark/ems_s1_20250902_reference.tif",
+      "reference_sha256": "1bb04d67caa9ecfb411cd766437b7d2797a089866232082c413dd6f49964b398",
+      "predictions": [
+        {
+          "pred_date": "2025-09-02",
+          "files": [
+            "processed/flood/sentinel1_20250902.tif"
+          ],
+          "sha256": [
+            "b13a5a0b847fbe21c839255c187cd8cc0d7f6f9d95c8fa0911d3f7099a1e62d9"
+          ]
+        }
+      ],
+      "analysed_share_of_study_area_pct": 100.0
+    }
+  ]
+}

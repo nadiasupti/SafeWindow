@@ -44,6 +44,31 @@ def test_retry_osm_call_raises_after_attempts(monkeypatch):
     assert calls == 3
 
 
+def test_retry_osm_call_waits_out_a_busy_server_but_not_other_errors(monkeypatch):
+    waits = []
+    monkeypatch.setattr(osm_pipeline.time, "sleep", waits.append)
+    busy = osm_pipeline.ox._errors.ResponseStatusCodeError("'overpass-api.de' responded: 502 Bad Gateway")
+    calls = 0
+
+    def query():
+        nonlocal calls
+        calls += 1
+        if calls < 3:
+            raise busy
+        return "result"
+
+    assert osm_pipeline.retry_osm_call(query, attempts=3, delay_seconds=0) == "result"
+    assert waits == [60, 120]
+
+    bad = osm_pipeline.ox._errors.ResponseStatusCodeError("'overpass-api.de' responded: 400 Bad Request")
+
+    def bad_query():
+        raise bad
+
+    with pytest.raises(osm_pipeline.ox._errors.ResponseStatusCodeError, match="400"):
+        osm_pipeline.retry_osm_call(bad_query, attempts=3, delay_seconds=0)
+
+
 def test_main_configures_integer_osm_timeout(monkeypatch):
     class Area:
         def buffer(self, _m):

@@ -1,0 +1,60 @@
+# SafeWindow region: the August-September 2025 Chenab-Jhelum flood around
+# Trimmu Barrage, Jhang District, Punjab, Pakistan (Copernicus EMS EMSR838, AOI 5).
+# Same method and thresholds as Sunamganj; nothing was tuned for Pakistan.
+# Chosen in docs/phase3b_event_selection.md.
+
+id: punjab_trimmu_2025
+name: "Trimmu, Jhang, Punjab, Pakistan: August-September 2025 flood"
+
+area:
+  boundary_file: punjab_trimmu_2025_aoi.geojson   # EMSR838 AOI05 extent, 1,014 km2
+  parent: Jhang
+  parent_unit: District
+  country: Pakistan
+  iso3: PAK
+  bbox: [71.827, 30.720, 72.214, 31.289]
+
+# The area straddles 72E, the border of UTM zones 42 and 43, so "auto" warns.
+# Zone 43 holds the centre; over 40 km the scale error stays near 0.1%.
+crs: "EPSG:32643"
+
+dates:
+  flood: ["2025-08-10", "2025-09-20"]          # 9 Sentinel-1 dates, all 100% coverage
+  dry_reference: ["2025-04-01", "2025-05-31"]  # pre-monsoon dry season, 15 Sentinel-1 dates
+  app: ["2025-08-10", "2025-09-20"]
+
+# Daily rainfall boxes, lon/lat: west, south, east, north.
+rain_boxes:
+  trimmu: [71.8, 30.7, 72.25, 31.3]
+  # Upper Chenab and Jhelum catchments (Jammu and Kashmir hills), where most of
+  # the flood water comes from. A coarse box: it shows timing, not totals.
+  chenab_jhelum_upstream: [73.5, 32.5, 76.5, 34.5]
+
+rain_labels:
+  trimmu: {en: "Trimmu (Jhang)"}
+  chenab_jhelum_upstream: {en: "Chenab and Jhelum hills (upstream)"}
+
+settlements: osm
+shelters_csv: null
+
+supply_days: {default: 7, min: 2, max: 14}
+
+languages: ["en"]
+agencies: ["PDMA Punjab", "NDMA", "PMD Flood Forecasting Division"]
+
+references:
+  copernicus_ems: EMSR838
+  benchmark: punjab_trimmu_2025_benchmark.yaml
+
+# Dated news report (Dawn, 30 Aug 2025). The breaches were cut into the road;
+# event_date is the publication date. Town points from OSM Nominatim.
+road_reports:
+  - id: shorkot_garh_maharaja
+    route: points
+    from: [72.0764, 30.8349]   # Shorkot
+    to: [71.9037, 30.8335]     # Garh Maharaja
+    event_date: "2025-08-30"
+    published: "2025-08-30"
+    source: "Dawn, 'Rail track blasted to save Trimmu Headworks, Jhang city', 30 Aug 2025"
+    url: "https://www.dawn.com/news/1938251/rail-track-blasted-to-save-trimmu-headworks-jhang-city"
+    quote: "Another two breaches were created on a road which leads from Tehsil Chowk of Shorkot to Garh Maharaja."

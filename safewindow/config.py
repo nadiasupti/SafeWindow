@@ -4,26 +4,34 @@ Every pipeline step and the app read paths from here, so the folder layout
 lives in one place. Set the environment variable SAFEWINDOW_DATA_DIR to point
 the whole project at another data folder (the synthetic demo uses
 ``data_demo``).
+
+Settings that change from one flood to the next (area, projection, dates,
+rainfall boxes, supply days) come from a region file in regions/, chosen with
+SAFEWINDOW_REGION (default: sunamganj_2022). Method settings below the region
+block are the same for every region.
 """
 from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from datetime import date
 from pathlib import Path
+
+from . import region as _region
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DATA_DIR = "data/live"
 
-# --- Study area (Step 1) -----------------------------------------------------
-# Upazilas to analyse. Change after checking OSM road coverage
-# (pipeline/01_study_area.py --rank).
-UPAZILAS = ["Sunamganj Sadar", "Chhatak", "Dowarabazar"]
-DISTRICT = "Sunamganj"
-COUNTRY = "Bangladesh"
+REGION = _region.load(os.environ.get("SAFEWINDOW_REGION", _region.DEFAULT_REGION))
 
-# One projection for everything: UTM zone 46N, units in metres.
-CRS = "EPSG:32646"
+# --- Study area (Step 1) -----------------------------------------------------
+# Admin units to analyse. Change them in the region file after checking OSM
+# road coverage (pipeline/01_study_area.py --rank).
+UPAZILAS = REGION.admin_names
+DISTRICT = REGION.parent
+COUNTRY = REGION.country
+
+# One projection for everything, units in metres.
+CRS = REGION.crs
 CRS_WGS84 = "EPSG:4326"
 
 # Common flood-map grid. Every flood source is written onto this grid so that
@@ -31,9 +39,9 @@ CRS_WGS84 = "EPSG:4326"
 GRID_RES_M = 20
 
 # --- Time window --------------------------------------------------------------
-DRY_REF_START, DRY_REF_END = "2022-02-01", "2022-03-31"   # haor is dry
-FLOOD_START, FLOOD_END = date(2022, 5, 15), date(2022, 7, 15)
-APP_START, APP_END = date(2022, 5, 20), date(2022, 6, 30)
+DRY_REF_START, DRY_REF_END = REGION.dry_start, REGION.dry_end
+FLOOD_START, FLOOD_END = REGION.flood_start, REGION.flood_end
+APP_START, APP_END = REGION.app_start, REGION.app_end
 
 # --- Flood raster encoding ---------------------------------------------------
 DRY, FLOODED, UNKNOWN = 0, 1, 255
@@ -59,15 +67,11 @@ SHELTER_EXCLUDE_TYPES = ("pharmacy",)
 # ASSUMPTION, not a measurement: days of food/water a household has on hand.
 # Replace with a sourced figure (e.g. a household survey from the haor region)
 # and cite it in the README and pitch.
-DEFAULT_SUPPLY_DAYS = 7
-SUPPLY_DAYS_RANGE = (2, 14)
+DEFAULT_SUPPLY_DAYS = REGION.default_supply_days
+SUPPLY_DAYS_RANGE = REGION.supply_days_range
 
 # --- Rainfall boxes (Step 4), lon/lat: (west, south, east, north) ---------------
-RAIN_BOXES = {
-    "sunamganj": (90.95, 24.85, 91.75, 25.25),
-    # Southern Meghalaya slopes around Cherrapunji (Sohra), upstream of Sunamganj.
-    "meghalaya_upstream": (91.30, 25.15, 92.10, 25.45),
-}
+RAIN_BOXES = REGION.rain_boxes
 
 
 @dataclass(frozen=True)

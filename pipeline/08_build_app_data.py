@@ -103,6 +103,7 @@ def main():
             shutil.copy(src, app / name)
 
     meta = {
+        "region": config.REGION.id,
         "data_label": (paths.data / "DATA_LABEL").read_text().strip() if (paths.data / "DATA_LABEL").exists() else "",
         "dates": dates,
         "flood_bounds": bounds,

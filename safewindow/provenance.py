@@ -31,6 +31,8 @@ def build_manifest(data_dir: Path, model_path: Path | None = None) -> dict[str, 
         "data_files": [],
         "model": None,
         "configuration": {
+            "region": config.REGION.id,
+            "crs": config.CRS,
             "grid_res_m": config.GRID_RES_M,
             "cut_threshold": config.CUT_THRESHOLD,
             "boat_dependent_m": config.BOAT_DEPENDENT_M,

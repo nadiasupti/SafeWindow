@@ -1,0 +1,235 @@
+== pipeline\02e_merge_flood.py --sources sentinel1
+      date   sources  flooded_pct  dry_pct  unknown_pct
+2022-05-16 sentinel1         3.65    43.72        52.62
+2022-05-18                   0.00     0.00       100.00
+2022-05-23 sentinel1        37.82    62.18         0.00
+2022-05-25 sentinel1        35.17    64.83         0.00
+2022-05-28 sentinel1         6.09    41.28        52.63
+2022-05-30 sentinel1        11.70    46.55        41.75
+2022-06-04 sentinel1        33.45    66.55         0.00
+2022-06-06 sentinel1        35.67    64.33         0.00
+2022-06-09 sentinel1         6.14    41.10        52.76
+2022-06-11                   0.00     0.00       100.00
+2022-06-16 sentinel1        33.36    66.64         0.00
+2022-06-18 sentinel1        41.24    58.76         0.00
+2022-06-21 sentinel1         7.05    40.27        52.68
+2022-06-23                   0.00     0.00       100.00
+2022-06-28 sentinel1        39.22    60.78         0.00
+2022-06-30 sentinel1        39.47    60.53         0.00
+2022-07-03 sentinel1         6.85    40.48        52.67
+2022-07-05                   0.00     0.00       100.00
+2022-07-12 sentinel1        32.08    67.92         0.00
+
+usable dates (<50% unknown): 10; peak 18 Jun ; before peak: True; after peak: True
+GO/NO-GO: GO
+== pipeline\05_cut_roads.py
+24947 roads, 286523 check-points (1331 on bridges), 19 dates
+      date  cut_km_10  cut_km_20  cut_km_40  unknown_km
+2022-05-16      193.4      144.7      104.9      3713.7
+2022-05-18        0.0        0.0        0.0      4988.3
+2022-05-23     1691.5     1463.6     1149.4        26.5
+2022-05-25     1639.7     1391.1     1091.4        26.5
+2022-05-28      341.5      299.5      241.1      3712.9
+2022-05-30      695.6      607.4      493.7      2915.9
+2022-06-04     1617.7     1356.3     1004.9        26.5
+2022-06-06     1578.1     1348.3     1055.6        26.5
+2022-06-09      324.7      291.5      227.7      3725.8
+2022-06-11        0.0        0.0        0.0      4988.3
+2022-06-16     1708.4     1471.0     1095.0        26.5
+2022-06-18     1921.2     1676.1     1283.5        26.5
+2022-06-21      408.8      367.4      286.6      3717.4
+2022-06-23        0.0        0.0        0.0      4988.3
+2022-06-28     1820.8     1556.5     1221.8        26.5
+2022-06-30     1869.5     1615.8     1250.5        26.5
+2022-07-03      383.3      340.8      274.5      3715.2
+2022-07-05        0.0        0.0        0.0      4988.3
+2022-07-12     1357.8     1162.5      932.6        26.5
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\live\results\road_status.csv
+== pipeline\06_isolation.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:899
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$s - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+16 villages (2 boat-dependent, > 500 m from a road); 48 shelters
+ threshold       date  boat_dependent  connected  isolated  uncertain
+       0.1 2022-05-16               2          3         1         10
+       0.1 2022-05-18               2          0         0         14
+       0.1 2022-05-23               2          9         5          0
+       0.1 2022-05-25               2          9         5          0
+       0.1 2022-05-28               2          1         4          9
+       0.1 2022-05-30               2          1         5          8
+       0.1 2022-06-04               2          9         5          0
+       0.1 2022-06-06               2          9         5          0
+       0.1 2022-06-09               2          1         4          9
+       0.1 2022-06-11               2          0         0         14
+       0.1 2022-06-16               2          9         5          0
+       0.1 2022-06-18               2          9         5          0
+       0.1 2022-06-21               2          1         4          9
+       0.1 2022-06-23               2          0         0         14
+       0.1 2022-06-28               2          9         5          0
+       0.1 2022-06-30               2          9         5          0
+       0.1 2022-07-03               2          1         4          9
+       0.1 2022-07-05               2          0         0         14
+       0.1 2022-07-12               2          9         5          0
+       0.2 2022-05-16               2          3         1         10
+       0.2 2022-05-18               2          0         0         14
+       0.2 2022-05-23               2          9         5          0
+       0.2 2022-05-25               2          9         5          0
+       0.2 2022-05-28               2          1         4          9
+       0.2 2022-05-30               2          1         5          8
+       0.2 2022-06-04               2          9         5          0
+       0.2 2022-06-06               2          9         5          0
+       0.2 2022-06-09               2          1         4          9
+       0.2 2022-06-11               2          0         0         14
+       0.2 2022-06-16               2          9         5          0
+       0.2 2022-06-18               2          9         5          0
+       0.2 2022-06-21               2          1         4          9
+       0.2 2022-06-23               2          0         0         14
+       0.2 2022-06-28               2          9         5          0
+       0.2 2022-06-30               2          9         5          0
+       0.2 2022-07-03               2          1         4          9
+       0.2 2022-07-05               2          0         0         14
+       0.2 2022-07-12               2          9         5          0
+       0.4 2022-05-16               2          4         1          9
+       0.4 2022-05-18               2          0         0         14
+       0.4 2022-05-23               2         10         4          0
+       0.4 2022-05-25               2          9         5          0
+       0.4 2022-05-28               2          1         4          9
+       0.4 2022-05-30               2          3         3          8
+       0.4 2022-06-04               2         12         2          0
+       0.4 2022-06-06               2          9         5          0
+       0.4 2022-06-09               2          1         3         10
+       0.4 2022-06-11               2          0         0         14
+       0.4 2022-06-16               2          9         5          0
+       0.4 2022-06-18               2          9         5          0
+       0.4 2022-06-21               2          1         4          9
+       0.4 2022-06-23               2          0         0         14
+       0.4 2022-06-28               2          9         5          0
+       0.4 2022-06-30               2         10         4          0
+       0.4 2022-07-03               2          1         4          9
+       0.4 2022-07-05               2          0         0         14
+       0.4 2022-07-12               2          9         5          0
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\live\results\village_status.csv
+== pipeline\07_timeline.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:899
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$s - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+outcome
+connected_when_seen    9
+isolated               5
+boat_dependent         2
+
+Top 10 most urgent:
+ urgency_rank                           name  population                    isolation_range aid_deadline             exit_shelter
+            1                Paschim Birgaon       13387       isolated on or before 16 May   2022-05-23                      NaN
+            2              Dholkotob village       20302 isolated between 17 May and 23 May   2022-05-24 Pangaon Community clinic
+            3                       Patharia       15866 isolated between 17 May and 23 May   2022-05-24 Pangaon Community clinic
+            4                       Boromuha      119104       isolated on or before 23 May   2022-05-30                      NaN
+            5                  Purba Birgaon       19141       isolated on or before 23 May   2022-05-30                      NaN
+         <NA> BR 28, 29 rice (Vatipara Haor)        2604                                             NaT                      NaN
+         <NA>                      Banshtala       11560                                             NaT                      NaN
+         <NA>                      Dholposhi        1370                                             NaT                      NaN
+         <NA>             Jawa Bazar, Dergaw       89460                                             NaT                      NaN
+         <NA>                        Kusiura       52517                                             NaT                      NaN
+
+Sensitivity:
+ threshold  villages_isolated  people_isolated  mean_shift_days_vs_main  villages_changed_outcome
+       0.1                  5           187800                      0.0                         0
+       0.2                  5           187800                      0.0                         0
+       0.4                  5           187800                      0.4                         0
+== scripts\road_reports_check.py
+Sunamganj-Sylhet Highway inside the study area: 49.3 km in 361 segments
+Route status per date at cut thresholds 10% / 20% / 40%:
+      date     chhatak_dowarabazar sunamganj_sylhet_highway  highway_km_cut
+2022-05-16 unknown/unknown/unknown  unknown/unknown/unknown             0.1
+2022-05-18 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-05-23            cut/cut/open            cut/open/open             0.2
+2022-05-25          open/open/open             cut/cut/open             1.5
+2022-05-28 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-05-30 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-06-04          open/open/open             cut/cut/open             1.6
+2022-06-06           cut/open/open           open/open/open             0.0
+2022-06-09 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-06-11 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-06-16             cut/cut/cut              cut/cut/cut             2.2
+2022-06-18            cut/cut/open              cut/cut/cut             2.6
+2022-06-21 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-06-23 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-06-28            cut/cut/open             cut/cut/open             1.0
+2022-06-30          open/open/open             cut/cut/open             1.8
+2022-07-03 unknown/unknown/unknown  unknown/unknown/unknown             0.3
+2022-07-05 unknown/unknown/unknown  unknown/unknown/unknown             0.0
+2022-07-12          open/open/open            cut/open/open             0.2
+
+Against the reports (10% / 20% / 40%):
+                  report event_date last_observation_before               route_before first_observation_after  route_after
+     chhatak_dowarabazar 2022-05-19                    none no radar view of the route              2022-05-23 cut/cut/open
+sunamganj_sylhet_highway 2022-06-16              2022-06-06             open/open/open              2022-06-16  cut/cut/cut
+== pipeline\08_build_app_data.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (guide Step 3).
+At line:1 char:899
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$s - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid...(guide Step 3).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\rasterio\__init__.py:379: 
+NotGeoreferencedWarning: Dataset has no geotransform, gcps, or rpcs. The identity matrix will be returned.
+  dataset = DatasetReader(path, driver=driver, sharing=sharing, thread_safe=thread_safe, **kwargs)
+app data written to D:\mern\olympid\nasa_app_challeng\SafeWindow\data\live\app (14.2 MB)
+validated app package: 29 files
+== scripts\build_benchmark.py --check
+            reference tier    iou  published_iou  precision  recall  matches
+     chaohu1_20220525    A 0.8346         0.8346     0.9299  0.8907     True
+        rcm1_20220618    A 0.8080         0.8080     0.9530  0.8415     True
+     rcm1_20220619_ne    B 0.8893         0.8893     0.9275  0.9558     True
+unosat_s1_20220525_ne    C 0.8946         0.8946     0.9776  0.9132     True
+All published benchmark metrics reproduced.
+== scripts\otsu_fallback_check.py data/live
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\scripts\otsu_fallback_check.py:41: RuntimeWarning: Mean of 
+empty slice
+At line:1 char:899
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$s - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid... of empty slice:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  out["common_flood_pct"] = [round(float((maps[d][common] == config.FLOODED).mean() * 100), 1) for d in out["date"]]
+D:\mern\olympid\nasa_app_challeng\SafeWindow\.venv\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: 
+invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+
+data\live  (area seen on every date: 0.0 km2)
+      date  relative_orbit  otsu_db  fallback  covered_pct  common_flood_pct  neighbour_mean_pct
+2022-05-16             114   -15.13     False         47.4               NaN                 NaN
+2022-05-18             150   -10.88      True          0.0               NaN                 NaN
+2022-05-23              41   -15.62     False        100.0               NaN                 NaN
+2022-05-25              77   -15.13     False        100.0               NaN                 NaN
+2022-05-28             114   -16.63     False         47.4               NaN                 NaN
+2022-05-30             150   -12.38     False         58.2               NaN                 NaN
+2022-06-04              41   -13.12     False        100.0               NaN                 NaN
+2022-06-06              77   -15.13     False        100.0               NaN                 NaN
+2022-06-09             114   -18.11     False         47.2               NaN                 NaN
+2022-06-11             150   -11.38      True          0.0               NaN                 NaN
+2022-06-16              41   -14.13     False        100.0               NaN                 NaN
+2022-06-18              77   -16.63     False        100.0               NaN                 NaN
+2022-06-21             114   -18.14     False         47.3               NaN                 NaN
+2022-06-23             150   -11.25      True          0.0               NaN                 NaN
+2022-06-28              41   -14.62     False        100.0               NaN                 NaN
+2022-06-30              77   -14.87     False        100.0               NaN                 NaN
+2022-07-03             114   -17.62     False         47.3               NaN                 NaN
+2022-07-05             150   -11.87      True          0.0               NaN                 NaN
+2022-07-12              77   -15.62     False        100.0               NaN                 NaN

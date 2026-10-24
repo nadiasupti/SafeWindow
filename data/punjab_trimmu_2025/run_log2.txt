@@ -1,0 +1,71 @@
+== 03_osm_roads_places.py --osm-attempts 6
+downloading roads (network_type='all' so village paths are included)...
+  1057 junctions, 1327 road segments, 805 km
+  road types: {'residential': 690, 'tertiary': 205, 'unclassified': 154, 'primary': 124, 'secondary': 54, 'trunk': 46, 'path': 45, 'service': 4, 'primary_link': 2, 'track': 2}
+downloading villages...
+  Overpass busy ('overpass-api.de' responded: 502 Bad Gateway # 502 Gateway T), waiting 60s
+  26 villages/hamlets: {'village': 24, 'town': 1, 'hamlet': 1}
+  Few OSM villages - consider 03b_population.py --buildings (Google Open Buildings).
+downloading shelter candidates...
+  Overpass busy ('overpass-api.de' responded: 502 Bad Gateway # 502 Gateway T), waiting 60s
+  Overpass busy ('overpass-api.de' responded: 502 Bad Gateway # 502 Gateway T), waiting 120s
+  3 shelter candidates: {'hospital': 2, 'school': 1}
+Now hand-check shelters -> data/processed/shelters_verified.csv (see docstring).
+== 03b_population.py --worldpop-gee
+total population in villages' areas: 438,723
+          name  population
+ Garh Maharaja      122078
+       Malkana       69021
+  Bela Surbana       52144
+   بستی نوہانی       38441
+     Munirabad       25815
+بستی محرم سیال       23195
+  Kho Ratiwala       21839
+        ہسوالی       13783
+     Pabanwala       13001
+  Nawan Shehar       11861
+== 03c_bridges.py --osm-attempts 6
+42 road bridges, 6.5 km, saved to D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\processed\bridges.gpkg
+  bridge types: {'yes': 42}
+== 04_rainfall_gpm.py
+trimmu (71.8, 30.7, 72.25, 31.3) ...
+chenab_jhelum_upstream (73.5, 32.5, 76.5, 34.5) ...
+       trimmu_mm  chenab_jhelum_upstream_mm
+count       42.0                       42.0
+mean         3.1                       11.2
+std          8.6                       18.6
+min          0.0                        0.1
+25%          0.0                        1.0
+50%          0.0                        3.2
+75%          0.7                       12.1
+max         37.6                       94.5
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2025\processed\rainfall_daily.csv
+== 02a_sentinel1_gee.py
+      date  relative_orbit     passes  scenes
+2025-08-16             107 DESCENDING       1
+2025-08-20             173  ASCENDING       1
+2025-08-21               5 DESCENDING       2
+2025-08-28             107 DESCENDING       1
+2025-09-01             173  ASCENDING       1
+2025-09-02               5 DESCENDING       2
+2025-09-09             107 DESCENDING       1
+2025-09-13             173  ASCENDING       1
+2025-09-14               5 DESCENDING       2
+2025-08-16: orbit 107
+  otsu: threshold -14.87dB, flooded 0.0% of grid
+2025-08-20: orbit 173
+  otsu: threshold -14.12dB, flooded 0.0% of grid
+2025-08-21: orbit 5
+  otsu: threshold -13.62dB, flooded 0.0% of grid
+2025-08-28: orbit 107
+  otsu: threshold -14.37dB, flooded 0.0% of grid
+2025-09-01: orbit 173
+  otsu: threshold -15.37dB, flooded 0.0% of grid
+2025-09-02: orbit 5
+  otsu: threshold -12.63dB, flooded 0.0% of grid
+2025-09-09: orbit 107
+  otsu: threshold -14.62dB, flooded 0.0% of grid
+2025-09-13: orbit 173
+  otsu: threshold -13.87dB, flooded 0.0% of grid
+2025-09-14: orbit 5
+  otsu: threshold -12.37dB, flooded 0.0% of grid

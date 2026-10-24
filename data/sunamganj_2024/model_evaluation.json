@@ -1,0 +1,301 @@
+{
+  "task": "per-pixel flood / not-flood agreement of SafeWindow Sentinel-1 maps with independent flood analyses",
+  "region": "sunamganj_2024",
+  "tiers": {
+    "optical": "different sensor (very-high-resolution optical); misses water under vegetation and cloud",
+    "radar": "different radar satellite and band",
+    "unknown": "sensor not named by UNOSAT ('GLOBAL Satellite')",
+    "same_sensor": "same Sentinel-1 data, UNOSAT's own method; tests the method, not the data"
+  },
+  "details": [
+    {
+      "reference": "pleiades_20240626_sadar",
+      "tier": "optical",
+      "sensor": "Pleiades (PHR), optical",
+      "date": "2024-06-26",
+      "pred_date": "2024-06-29",
+      "gap_days": 3,
+      "zone": "all",
+      "area_km2": 140.3,
+      "pixels_compared": 350810,
+      "tp": 167046,
+      "fp": 4809,
+      "fn": 70456,
+      "tn": 108499,
+      "iou": 0.6894,
+      "precision": 0.972,
+      "recall": 0.7033,
+      "f1": 0.8161,
+      "accuracy": 0.7855,
+      "iou_ci95": [
+        0.6582,
+        0.7208
+      ],
+      "precision_ci95": [
+        0.9589,
+        0.9816
+      ],
+      "recall_ci95": [
+        0.6726,
+        0.7327
+      ],
+      "f1_ci95": [
+        0.7939,
+        0.8378
+      ]
+    },
+    {
+      "reference": "saocom_20240626_chhatak",
+      "tier": "radar",
+      "sensor": "SAOCOM, L-band SAR",
+      "date": "2024-06-26",
+      "pred_date": "2024-06-29",
+      "gap_days": 3,
+      "zone": "all",
+      "area_km2": 25.3,
+      "pixels_compared": 63367,
+      "tp": 25966,
+      "fp": 2861,
+      "fn": 8465,
+      "tn": 26075,
+      "iou": 0.6963,
+      "precision": 0.9008,
+      "recall": 0.7541,
+      "f1": 0.821,
+      "accuracy": 0.8213,
+      "iou_ci95": [
+        0.6438,
+        0.7446
+      ],
+      "precision_ci95": [
+        0.8785,
+        0.9182
+      ],
+      "recall_ci95": [
+        0.7039,
+        0.7994
+      ],
+      "f1_ci95": [
+        0.7833,
+        0.8536
+      ]
+    },
+    {
+      "reference": "saocom_20240626_chhatak",
+      "tier": "radar",
+      "sensor": "SAOCOM, L-band SAR",
+      "date": "2024-06-26",
+      "pred_date": "2024-06-19",
+      "gap_days": -7,
+      "zone": "all",
+      "area_km2": 25.3,
+      "pixels_compared": 63367,
+      "tp": 29343,
+      "fp": 5089,
+      "fn": 5088,
+      "tn": 23847,
+      "iou": 0.7425,
+      "precision": 0.8522,
+      "recall": 0.8522,
+      "f1": 0.8522,
+      "accuracy": 0.8394,
+      "iou_ci95": [
+        0.7062,
+        0.7745
+      ],
+      "precision_ci95": [
+        0.816,
+        0.8829
+      ],
+      "recall_ci95": [
+        0.8292,
+        0.8737
+      ],
+      "f1_ci95": [
+        0.8278,
+        0.8729
+      ]
+    },
+    {
+      "reference": "global_20240626_chhatak",
+      "tier": "unknown",
+      "sensor": "GLOBAL Satellite (not named)",
+      "date": "2024-06-26",
+      "pred_date": "2024-06-29",
+      "gap_days": 3,
+      "zone": "all",
+      "area_km2": 32.0,
+      "pixels_compared": 80003,
+      "tp": 23328,
+      "fp": 4273,
+      "fn": 15946,
+      "tn": 36456,
+      "iou": 0.5357,
+      "precision": 0.8452,
+      "recall": 0.594,
+      "f1": 0.6977,
+      "accuracy": 0.7473,
+      "iou_ci95": [
+        0.4718,
+        0.5971
+      ],
+      "precision_ci95": [
+        0.7818,
+        0.8897
+      ],
+      "recall_ci95": [
+        0.531,
+        0.6556
+      ],
+      "f1_ci95": [
+        0.6411,
+        0.7477
+      ]
+    },
+    {
+      "reference": "global_20240626_chhatak",
+      "tier": "unknown",
+      "sensor": "GLOBAL Satellite (not named)",
+      "date": "2024-06-26",
+      "pred_date": "2024-06-19",
+      "gap_days": -7,
+      "zone": "all",
+      "area_km2": 32.0,
+      "pixels_compared": 80003,
+      "tp": 28078,
+      "fp": 9086,
+      "fn": 11196,
+      "tn": 31643,
+      "iou": 0.5806,
+      "precision": 0.7555,
+      "recall": 0.7149,
+      "f1": 0.7347,
+      "accuracy": 0.7465,
+      "iou_ci95": [
+        0.5101,
+        0.6481
+      ],
+      "precision_ci95": [
+        0.6816,
+        0.8108
+      ],
+      "recall_ci95": [
+        0.6457,
+        0.7848
+      ],
+      "f1_ci95": [
+        0.6755,
+        0.7865
+      ]
+    },
+    {
+      "reference": "unosat_s1_20240619_22_sylhet",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",
+      "date": "2024-06-19+2024-06-22",
+      "pred_date": "2024-06-19+2024-06-22",
+      "gap_days": 3,
+      "zone": "all",
+      "area_km2": 1261.7,
+      "pixels_compared": 3154144,
+      "tp": 456488,
+      "fp": 1624872,
+      "fn": 90427,
+      "tn": 982357,
+      "iou": 0.2102,
+      "precision": 0.2193,
+      "recall": 0.8347,
+      "f1": 0.3474,
+      "accuracy": 0.4562,
+      "iou_ci95": [
+        0.1983,
+        0.2242
+      ],
+      "precision_ci95": [
+        0.2065,
+        0.2345
+      ],
+      "recall_ci95": [
+        0.828,
+        0.8407
+      ],
+      "f1_ci95": [
+        0.331,
+        0.3663
+      ]
+    },
+    {
+      "reference": "unosat_s1_20240619_22_sylhet",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June",
+      "date": "2024-06-19+2024-06-22",
+      "pred_date": "2024-06-19",
+      "gap_days": -3,
+      "zone": "all",
+      "area_km2": 1261.7,
+      "pixels_compared": 3154144,
+      "tp": 455662,
+      "fp": 1621923,
+      "fn": 91253,
+      "tn": 985306,
+      "iou": 0.2101,
+      "precision": 0.2193,
+      "recall": 0.8331,
+      "f1": 0.3472,
+      "accuracy": 0.4568,
+      "iou_ci95": [
+        0.1982,
+        0.2241
+      ],
+      "precision_ci95": [
+        0.2065,
+        0.2345
+      ],
+      "recall_ci95": [
+        0.8266,
+        0.8393
+      ],
+      "f1_ci95": [
+        0.3309,
+        0.3662
+      ]
+    },
+    {
+      "reference": "unosat_s1_water_20240619_22_sylhet",
+      "tier": "same_sensor",
+      "sensor": "Sentinel-1, UNOSAT machine learning, cumulative of 19 and 22 June (total water extent)",
+      "date": "2024-06-19+2024-06-22",
+      "pred_date": "2024-06-19+2024-06-22",
+      "gap_days": 3,
+      "zone": "all",
+      "area_km2": 1261.7,
+      "pixels_compared": 3154144,
+      "tp": 2076231,
+      "fp": 5129,
+      "fn": 211392,
+      "tn": 861392,
+      "iou": 0.9056,
+      "precision": 0.9975,
+      "recall": 0.9076,
+      "f1": 0.9504,
+      "accuracy": 0.9314,
+      "iou_ci95": [
+        0.9005,
+        0.9109
+      ],
+      "precision_ci95": [
+        0.9973,
+        0.9977
+      ],
+      "recall_ci95": [
+        0.9026,
+        0.9129
+      ],
+      "f1_ci95": [
+        0.9476,
+        0.9534
+      ]
+    }
+  ],
+  "caveat": "References are preliminary satellite analyses, not field-validated ground truth. Scores against references from another date include real flood change."
+}

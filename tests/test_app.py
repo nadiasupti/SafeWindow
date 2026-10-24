@@ -1,7 +1,42 @@
 import pandas as pd
 
-from app.streamlit_app import is_default_data_dir, route_for_date
+from app.streamlit_app import T, app_languages, fmt_date, is_default_data_dir, local_num, route_for_date, sms_text, texts
 from safewindow import config
+from safewindow.region import rain_label
+
+
+def test_every_locale_has_the_same_keys_as_english():
+    for lang, t in T.items():
+        assert set(t) == set(T["en"]), f"{lang}.json differs: {set(t) ^ set(T['en'])}"
+
+
+def test_region_languages_and_agencies_reach_the_app_text():
+    assert app_languages() == ["en", "bn"]
+    assert "(BMD, FFWC, DDM)" in texts("en")["limits_text"]
+    assert "(BMD, FFWC, DDM)" in texts("bn")["limits_text"]
+
+
+def test_rain_box_labels_come_from_the_region():
+    assert rain_label(config.REGION, "meghalaya_upstream", "bn") == "মেঘালয় পাহাড় (উজান)"
+    assert rain_label(config.REGION, "sunamganj", "en") == "Sunamganj"
+    assert rain_label(config.REGION, "sunamganj", "ur") == "Sunamganj"      # falls back to English
+    assert rain_label(config.REGION, "unknown_box", "en") == "unknown_box"
+
+
+def test_local_digits_and_dates():
+    assert local_num("1,234", "bn") == "১,২৩৪" and local_num("1,234", "en") == "1,234"
+    assert fmt_date("2022-06-16", "bn") == "১৬ জুন" and fmt_date("2022-06-16", "en") == "16 Jun"
+
+
+def test_sms_uses_the_locale_template():
+    v = {"name": "Boromuha", "name_bn": "বড়মুহা", "isolated_from_earliest": pd.Timestamp("2022-05-19"),
+         "first_isolated": pd.Timestamp("2022-05-23"), "last_connected": pd.Timestamp("2022-05-18")}
+    assert sms_text(v, 8.276, "Unnamed hospital", "en") == (
+        "Provisional: Boromuha may be isolated during 19 May - 23 May. "
+        "Last safe route: 8.3 km by road to Unnamed hospital. Follow official flood alerts.")
+    bn = sms_text({**v, "last_connected": pd.NaT}, None, None, "bn")
+    assert bn.startswith("সতর্কতা (পরীক্ষামূলক): বড়মুহা এর সড়ক যোগাযোগ ২৩ মে বা তার আগে")
+    assert "নিরাপদ পথ: জানা নেই" in bn
 
 
 def test_is_default_data_dir_uses_environment_selection(monkeypatch):

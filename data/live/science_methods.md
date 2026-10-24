@@ -24,7 +24,10 @@ Script: `pipeline/02a_sentinel1_gee.py`. The method follows the UN-SPIDER recomm
 1. **Input:** Sentinel-1 GRD, IW mode, VV polarisation. There are 19 acquisition dates between 16 May and 12 July 2022.
 2. **Speckle filter:** a 30 m focal median.
 3. **Dry reference:** the median of February–March 2022, from the same relative orbit where available.
-4. **Flood rule:** a pixel is flooded when VV is below an Otsu threshold computed from that date's histogram (fallback −18 dB if Otsu falls outside −26 to −12 dB). It must also be at least 3 dB darker than the dry reference, which leaves out permanent rivers and lakes.
+4. **Flood rule:** a pixel is flooded when VV is below an Otsu threshold computed from that date's histogram. It must also be at least 3 dB darker than the dry reference, which leaves out permanent rivers and lakes.
+   - **When Otsu fails** (it falls outside −26 to −12 dB, or the histogram has too few pixels), the whole map for that date is set to **unknown**.
+   - This happens on 4 dates: 18 May, 11 June, 23 June and 5 July, all orbit 150. On those dates the water peak sits near −15 dB instead of about −22 dB, consistent with wind-roughened haor water. No fixed threshold separates it from land.
+   - Until 24 October 2026 a fixed −18 dB was used on these dates. It marked almost no water: 2–6% of the area seen on every date, against 11–15% on the neighbouring dates. That created false "connected" observations. See `docs/phase3a_report.md`, section 5, and `scripts/otsu_fallback_check.py`.
 5. **Slope mask:** pixels on slopes above 5° are set to dry. Slope comes from NASA's NASADEM and removes radar-shadow false floods.
 6. **Coverage gaps:** pixels outside the radar swath stay unknown. On 10 of the 19 dates the swath misses part of the area, leaving 42–53% of the grid unknown.
 
@@ -165,11 +168,15 @@ Two reports are a small sample. They support the method but do not validate ever
 | Outcome | Villages |
 |---|---|
 | Isolated at some point | 5 |
-| Connected whenever its roads were observed (9 of 19 dates), unobserved on the other 10 | 8 |
+| Connected whenever its roads were observed, unknown on the other dates | 9 |
 | Boat-dependent | 2 |
-| Never isolated (connected on all 19 dates) | 1 |
 
-- **Who and when.** The five isolated villages have a combined catchment population of about 187,800 (WorldPop 2020). Four were first seen isolated on 23 May; the fifth was already isolated on the first observation, 16 May. They were isolated on 10–16 of the 19 dates.
+- **Who and when.** The five isolated villages have a combined catchment population of about 187,800 (WorldPop 2020).
+  - Four were first seen isolated on 23 May; the fifth, Paschim Birgaon, was already isolated on the first observation, 16 May.
+  - Dholkotob and Patharia were last seen connected on 16 May.
+  - Boromuha and Purba Birgaon were never seen connected, because their roads were unobserved before 23 May.
+  - The five were isolated on 10–15 of the 19 dates, and none was seen reconnected.
+- **Change on 24 October 2026.** Before the Otsu-failure rule, the 18 May map made four villages look connected, which gave a "19–23 May" isolation range. The 11 June map made them look reconnected. Both came from maps that showed almost no water. The previous results are in `data/archive/live_v1_2026-10-12/`.
 - **Sensitivity.** The same five villages are isolated at the 10%, 20% and 40% cut thresholds. The mean shift in first isolation date is 0 days at 10% and 0.4 days at 40%.
 - **Effect of the bridge rule.** Excluding water under bridges changes no village outcome.
 - **Not field-checked.** The village results have not been checked against field reports of specific villages. `pipeline/09_validate.py` supports that once a hand-collected `validation/news_reports.csv` exists.
@@ -181,6 +188,8 @@ Two reports are a small sample. They support the method but do not validate ever
 - **Raised roads:** 20 m radar pixels can mark a raised road as flooded when water reaches its foot. The 40% threshold in the sensitivity test bounds this effect.
 - **Supply days:** an assumption, not a measured value.
 - **Partial swaths:** on 10 of the 19 dates the radar misses part of the area. Villages whose roads lie there are reported as `connected_when_seen`, not `never_isolated`.
+- **Unclassifiable dates:** on 4 of the 19 dates Otsu finds no dark-water threshold, and the whole map is unknown. VV radar cannot see wind-roughened open water; VH polarisation, which is less sensitive to wind, is a possible improvement.
+- **Roads date:** the OSM roads are a snapshot from October 2026, so roads built after 2022 are included.
 - **Population:** catchment population, not the number of people living in the village itself.
 - **Review:** no independent scientific review of this work has taken place yet.
 

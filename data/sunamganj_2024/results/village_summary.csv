@@ -1,0 +1,17 @@
+village_id,name,population,outcome,last_connected,first_isolated,isolated_from_earliest,reconnected,safe_exit_date,n_dates_isolated,n_dates_connected,n_dates_uncertain,aid_deadline,urgency_rank,isolation_range,exit_shelter_id,exit_shelter,exit_route_m
+osm3642870480,Purba Birgaon,19141,isolated,2024-05-12,2024-05-14,2024-05-13,2024-05-19,2024-05-12,8,4,12,2024-05-20,1,isolated between 13 May and 14 May,osm2616255489,Khaled General Hospital,5791.0
+osm5506312223,Boromuha,119104,isolated,2024-05-29,2024-05-31,2024-05-30,,2024-05-29,13,6,5,2024-06-06,2,isolated between 30 May and 31 May,osm6124539669,Pangaon Community clinic,11044.0
+osm3642867917,Patharia,15866,isolated,2024-05-29,2024-05-31,2024-05-30,,2024-05-29,13,6,5,2024-06-06,3,isolated between 30 May and 31 May,osm6124539669,Pangaon Community clinic,4980.0
+osm3642877016,Paschim Birgaon,13387,isolated,2024-05-29,2024-05-31,2024-05-30,,2024-05-29,13,6,5,2024-06-06,4,isolated between 30 May and 31 May,osm6124539669,Pangaon Community clinic,11540.0
+osm6123937356,Dholkotob village,20302,isolated,2024-06-12,2024-06-19,2024-06-13,,2024-06-12,8,11,5,2024-06-20,5,isolated between 13 Jun and 19 Jun,osm6124539669,Pangaon Community clinic,3045.0
+osm6123937357,"BR 28, 29 rice (Vatipara Haor)",2604,boat_dependent,,,,,,0,0,0,,,,,,
+osm9843505110,Banshtala,11560,connected_when_seen,,,,,,0,9,15,,,,,,
+osm6123937355,Dholposhi,1370,connected_when_seen,,,,,,0,19,5,,,,,,
+osm822959784,"Jawa Bazar, Dergaw",89460,connected_when_seen,,,,,,0,9,15,,,,,,
+osm9835676256,Kusiura,52517,connected_when_seen,,,,,,0,9,15,,,,,,
+osm6720358434,Liakatganj,165780,connected_when_seen,,,,,,0,9,15,,,,,,
+osm3642877017,Paschim Pagla,79861,boat_dependent,,,,,,0,0,0,,,,,,
+osm822959785,Tarchoka - তারচুকা,123583,connected_when_seen,,,,,,0,9,15,,,,,,
+osm9843505109,Thabali,5051,connected_when_seen,,,,,,0,9,15,,,,,,
+osm1472175218,ছাতক,185980,connected_when_seen,,,,,,0,9,15,,,,,,
+osm2481972070,দোয়ারাবাজার,105714,connected_when_seen,,,,,,0,9,15,,,,,,
