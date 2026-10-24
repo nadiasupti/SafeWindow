@@ -34,6 +34,21 @@ def test_clean_candidates_drops_shops_and_labels_unnamed_sites():
     assert out.loc["d", "name"] == "Unnamed community centre"
 
 
+def test_candidates_answered_no_are_dropped_and_unchecked_ones_kept(tmp_path):
+    import pandas as pd
+
+    from safewindow.places import drop_rejected
+
+    s = gpd.GeoDataFrame({"shelter_id": ["a", "b", "c", "d"]},
+                         geometry=[Point(0, i) for i in range(4)], crs=config.CRS)
+    checklist = tmp_path / "shelter_checklist.csv"
+    pd.DataFrame({"shelter_id": ["a", "b", "c", "d"], "exists": ["yes", "no", "", ""],
+                  "flood_safe": ["", "", "No", ""]}).to_csv(checklist, index=False)
+
+    assert drop_rejected(s, checklist)["shelter_id"].tolist() == ["a", "d"]
+    assert len(drop_rejected(s, tmp_path / "missing.csv")) == 4
+
+
 def test_shelter_checklist_keeps_only_confirmed_rows():
     import pandas as pd
 

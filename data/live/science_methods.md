@@ -54,7 +54,11 @@ Script: `pipeline/06_isolation.py`.
 - **Snapping:** villages and shelters are snapped to their nearest road junction.
 - **Boat-dependent villages:** a village more than 500 m from any road.
 - **Distant shelters:** a shelter more than 1 km from any road is ignored.
-- **Shelters used:** 48 OSM shelter candidates (schools, colleges, clinics, hospitals, community centres). Pharmacies are excluded because they are shops, not places people can shelter in.
+- **Shelters used:** 43 OSM shelter candidates (schools, colleges, clinics, hospitals, community centres).
+  - **Pharmacies:** excluded, because they are shops, not places people can shelter in.
+  - **Desk check:** a remote check on 12 October 2026 (`shelter_checklist.csv`) excluded five more sites: a primary health centre across the border in India, and four government engineering and utility offices. It confirmed 9 sites exist from independent sources.
+  - **Flood safety:** confirmed for none, because it needs local knowledge.
+  - **Effect on results:** none. No village outcome changed when the five were excluded.
 
 For each date the road network is solved twice:
 
@@ -183,7 +187,7 @@ Two reports are a small sample. They support the method but do not validate ever
 
 ## 9. Known limitations
 
-- **Shelters:** 48 unverified OpenStreetMap candidates, not confirmed flood shelters.
+- **Shelters:** 43 OpenStreetMap candidates. 9 are confirmed to exist, and none is confirmed as a flood shelter.
 - **Villages:** only 16 OSM village and town points exist in the area. OSM roads are incomplete, and some bridges may not be mapped.
 - **Raised roads:** 20 m radar pixels can mark a raised road as flooded when water reaches its foot. The 40% threshold in the sensitivity test bounds this effect.
 - **Supply days:** an assumption, not a measured value.

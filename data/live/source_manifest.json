@@ -92,7 +92,7 @@
       "name": "OpenStreetMap",
       "provider": "OpenStreetMap contributors",
       "identifier": "OSM via osmnx (network_type='all'); upazila boundaries via osmnx geocoding",
-      "used_for": "Road network (21,542 junctions, 24,947 segments), road bridges (534, 18.7 km), 16 village/town points, 50 shelter candidates (48 used: pharmacies excluded), study-area boundary",
+      "used_for": "Road network (21,542 junctions, 24,947 segments), road bridges (534, 18.7 km), 16 village/town points, 50 shelter candidates (43 used: 2 pharmacies and 5 desk-check rejections excluded), study-area boundary",
       "dates": "snapshot committed 2026-10-09 (commit e736108)",
       "license": "ODbL 1.0",
       "processing": {
@@ -102,7 +102,8 @@
           "pipeline/03c_bridges.py"
         ],
         "note": "Shelter candidates are unverified OSM schools, clinics and offices",
-        "bridges": "Road ways tagged bridge=* except 'no' and 'low_water_crossing'; flooded pixels at check-points within 3 m of a bridge are treated as dry, unknown stays unknown"
+        "bridges": "Road ways tagged bridge=* except 'no' and 'low_water_crossing'; flooded pixels at check-points within 3 m of a bridge are treated as dry, unknown stays unknown",
+        "shelter_desk_check": "data/live/shelter_checklist.csv, 12 Oct 2026: 9 sites confirmed to exist from independent sources; 5 rejected; flood safety not yet confirmed"
       }
     },
     {

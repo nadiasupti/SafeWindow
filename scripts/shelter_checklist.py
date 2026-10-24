@@ -16,6 +16,9 @@
 3. `apply` copies rows with exists=yes and flood_safe=yes into
    processed/shelters_verified.csv with verified=yes. From then on the pipeline
    uses only those shelters. Rerun steps 06, 07 and 08 to update the results.
+
+Before `apply`, the pipeline already leaves out any candidate answered "no"
+(safewindow.places.drop_rejected) and keeps the unchecked ones.
 """
 from __future__ import annotations
 
@@ -31,7 +34,7 @@ YES = {"yes", "y", "true", "1"}
 
 
 def make(paths) -> None:
-    out = paths.data / "shelter_checklist.csv"
+    out = paths.shelter_checklist
     if out.exists():
         raise SystemExit(f"{out} already exists - not overwriting your answers.")
     s = clean_candidates(shelters_from_csv(paths.shelter_candidates))
@@ -53,7 +56,7 @@ def confirmed(checklist: pd.DataFrame) -> pd.DataFrame:
 
 
 def apply(paths) -> None:
-    src = paths.data / "shelter_checklist.csv"
+    src = paths.shelter_checklist
     if not src.exists():
         raise SystemExit(f"{src} not found - run `make` first.")
     checklist = pd.read_csv(src, dtype=str, encoding="utf-8-sig")

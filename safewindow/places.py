@@ -68,8 +68,20 @@ def load_shelters(paths=None) -> gpd.GeoDataFrame:
             raise ValueError(f"No rows marked verified=yes in {paths.shelters_verified}")
         return s
     warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
-                  "Hand-check 15-30 shelters before the demo (scripts/shelter_checklist.py).")
-    return clean_candidates(shelters_from_csv(paths.shelter_candidates))
+                  "Hand-check them in shelter_checklist.csv (scripts/shelter_checklist.py).")
+    return drop_rejected(clean_candidates(shelters_from_csv(paths.shelter_candidates)), paths.shelter_checklist)
+
+
+def drop_rejected(s: gpd.GeoDataFrame, checklist_path) -> gpd.GeoDataFrame:
+    """Leave out candidates the shelter checklist marks as not existing or not
+    flood-safe. Unchecked candidates stay in until the checklist is applied."""
+    if not checklist_path.exists():
+        return s
+    c = pd.read_csv(checklist_path, dtype=str, encoding="utf-8-sig").fillna("")
+    no = {"no", "n", "false", "0"}
+    rejected = c.loc[c["exists"].str.strip().str.lower().isin(no)
+                     | c["flood_safe"].str.strip().str.lower().isin(no), "shelter_id"]
+    return s[~s["shelter_id"].isin(set(rejected))]
 
 
 def clean_candidates(s: gpd.GeoDataFrame) -> gpd.GeoDataFrame:

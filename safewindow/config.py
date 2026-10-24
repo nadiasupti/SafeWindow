@@ -113,6 +113,8 @@ class Paths:
     @property
     def shelters_verified(self) -> Path: return self.processed / "shelters_verified.csv"
     @property
+    def shelter_checklist(self) -> Path: return self.data / "shelter_checklist.csv"
+    @property
     def rainfall(self) -> Path: return self.processed / "rainfall_daily.csv"
     @property
     def modis_timeline(self) -> Path: return self.processed / "modis_flood_area.csv"

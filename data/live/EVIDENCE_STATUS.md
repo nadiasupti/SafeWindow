@@ -35,7 +35,7 @@ The earlier Sentinel-1 rasters were corrupt: every 800 × 800 pixel tile held th
 - `processed/grid.json`: 2,473 × 2,081 pixels at 20 m.
 - `processed/roads.graphml`: 21,542 junctions and 24,947 road segments.
 - `processed/villages.gpkg`: 16 OSM villages, hamlets or towns. Each has a WorldPop 2020 catchment population.
-- `processed/shelters_candidates.csv`: 50 OSM shelter candidates, of which 48 are used (pharmacies excluded). These are **not** verified shelters.
+- `processed/shelters_candidates.csv`: 50 OSM shelter candidates, of which 43 are used: 2 pharmacies are excluded, plus 5 sites rejected in `shelter_checklist.csv` (one in India, four offices). 9 are confirmed to exist; none is yet confirmed as a flood shelter.
 - `processed/bridges.gpkg`: 534 OSM road bridges, 18.7 km.
 - `processed/rainfall_daily.csv`: NASA GPM IMERG V07, 42 days from 20 May to 30 June 2022.
 - `processed/flood/sentinel1_*.tif`: 19 Sentinel-1 flood maps, 16 May to 12 July 2022.
