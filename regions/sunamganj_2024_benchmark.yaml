@@ -1,6 +1,6 @@
 # Flood-extent references for the 2024 Sunamganj flood (UNOSAT event FL20240502BGD).
 # Used by scripts/benchmark_region.py. None of these was used to build or tune
-# SafeWindow; the method is unchanged from 2022. See docs/phase1b_2024_data_check.md.
+# SafeWindow; the method is unchanged from 2022.
 #
 # Each reference is scored against one or more SafeWindow dates. The date gap
 # is reported because the flood can change between two images. A prediction

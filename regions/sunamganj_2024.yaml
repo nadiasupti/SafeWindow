@@ -17,7 +17,7 @@ area:
 crs: "EPSG:32646"
 
 dates:
-  flood: ["2024-05-01", "2024-07-31"]          # 24 Sentinel-1 dates (docs/phase1b_2024_data_check.md)
+  flood: ["2024-05-01", "2024-07-31"]          # 24 Sentinel-1 dates
   dry_reference: ["2024-02-01", "2024-03-31"]  # same season as 2022
   app: ["2024-05-01", "2024-07-31"]
 
@@ -41,7 +41,7 @@ references:
   unosat_event: FL20240502BGD
   benchmark: sunamganj_2024_benchmark.yaml
 
-# Dated news reports (docs/phase1b_2024_data_check.md). The report says the
+# Dated news reports. The report says the
 # road "has been inundated" as of publication, so event_date is the publication date.
 road_reports:
   - id: chhatak_dowarabazar_2024

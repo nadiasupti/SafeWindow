@@ -243,5 +243,5 @@ data/experiments/
 data/sources/
 data/archive/
 
-# Local reproduction of data/live (pixel-identical; see docs/phase1_report.md)
+# Local reproduction of data/live (pixel-identical)
 data/rerun/

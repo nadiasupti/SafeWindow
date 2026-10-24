@@ -1,0 +1,168 @@
+== pipeline\02a_sentinel1_gee.py
+      date  relative_orbit     passes  scenes
+2026-07-01             107 DESCENDING       1
+2026-07-05             173  ASCENDING       1
+2026-07-06               5 DESCENDING       2
+2026-07-13             107 DESCENDING       1
+2026-07-17             173  ASCENDING       1
+2026-07-18               5 DESCENDING       2
+2026-07-25             107 DESCENDING       1
+2026-07-29             173  ASCENDING       1
+2026-07-30               5 DESCENDING       2
+2026-08-06             107 DESCENDING       1
+2026-08-10             173  ASCENDING       1
+2026-08-11               5 DESCENDING       2
+2026-07-01: orbit 107
+  otsu: threshold -14.62dB, flooded 1.8% of grid
+2026-07-05: orbit 173
+  otsu: threshold -15.12dB, flooded 2.6% of grid
+2026-07-06: orbit 5
+  otsu: threshold -13.37dB, flooded 2.4% of grid
+2026-07-13: orbit 107
+  otsu: threshold -13.87dB, flooded 1.3% of grid
+2026-07-17: orbit 173
+  otsu: threshold -12.87dB, flooded 3.4% of grid
+2026-07-18: orbit 5
+  otsu_failed (Otsu -11.9 dB): water not separable, map set unknown
+  otsu_failed: threshold -11.87dB, flooded 0.0% of grid
+2026-07-25: orbit 107
+  otsu: threshold -15.37dB, flooded 2.4% of grid
+2026-07-29: orbit 173
+  otsu: threshold -14.37dB, flooded 2.7% of grid
+2026-07-30: orbit 5
+  otsu: threshold -13.37dB, flooded 2.5% of grid
+2026-08-06: orbit 107
+  otsu: threshold -14.87dB, flooded 1.3% of grid
+2026-08-10: orbit 173
+  otsu: threshold -16.12dB, flooded 2.0% of grid
+2026-08-11: orbit 5
+  otsu: threshold -13.87dB, flooded 1.7% of grid
+== pipeline\04_rainfall_gpm.py
+trimmu (71.8, 30.7, 72.25, 31.3) ...
+chenab_jhelum_upstream (73.5, 32.5, 76.5, 34.5) ...
+       trimmu_mm  chenab_jhelum_upstream_mm
+count       46.0                       46.0
+mean         1.8                        6.5
+std          5.2                        6.0
+min          0.0                        0.3
+25%          0.0                        2.4
+50%          0.0                        5.6
+75%          1.1                        7.6
+max         32.2                       28.8
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2026\processed\rainfall_daily.csv
+== pipeline\02e_merge_flood.py --sources sentinel1
+      date   sources  flooded_pct  dry_pct  unknown_pct
+2026-07-01 sentinel1         1.82    98.18         0.00
+2026-07-05 sentinel1         2.56    97.44         0.00
+2026-07-06 sentinel1         2.35    97.64         0.01
+2026-07-13 sentinel1         1.30    98.70         0.00
+2026-07-17 sentinel1         3.44    96.56         0.00
+2026-07-18                   0.00     0.00       100.00
+2026-07-25 sentinel1         2.36    97.64         0.00
+2026-07-29 sentinel1         2.70    97.30         0.00
+2026-07-30 sentinel1         2.46    97.53         0.01
+2026-08-06 sentinel1         1.32    98.68         0.00
+2026-08-10 sentinel1         1.98    98.02         0.00
+2026-08-11 sentinel1         1.74    98.25         0.01
+
+usable dates (<50% unknown): 11; peak 17 Jul ; before peak: True; after peak: True
+GO/NO-GO: GO
+== pipeline\05_cut_roads.py
+1327 roads, 42247 check-points (361 on bridges), 12 dates
+      date  cut_km_10  cut_km_20  cut_km_40  unknown_km
+2026-07-01        3.9        2.1        0.0         4.2
+2026-07-05       11.8        4.3        0.6         4.2
+2026-07-06       14.7        2.6        0.3         4.2
+2026-07-13        5.1        1.3        0.0         4.2
+2026-07-17       51.4        9.8        0.6         4.2
+2026-07-18        0.0        0.0        0.0       805.2
+2026-07-25        1.1        0.0        0.0         4.2
+2026-07-29       11.2        3.7        0.2         4.2
+2026-07-30        3.4        0.8        0.0         4.2
+2026-08-06        0.3        0.0        0.0         4.2
+2026-08-10        2.3        1.5        0.1         4.2
+2026-08-11        5.7        2.2        0.2         4.2
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2026\results\road_status.csv
+== pipeline\06_isolation.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (scripts/shelter_checklist.py).
+At line:1 char:1392
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$($a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid..._checklist.py).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+26 villages (4 boat-dependent, > 500 m from a road); 3 shelters
+ threshold       date  boat_dependent  connected  isolated  uncertain
+       0.1 2026-07-01               4         18         4          0
+       0.1 2026-07-05               4         22         0          0
+       0.1 2026-07-06               4         22         0          0
+       0.1 2026-07-13               4         22         0          0
+       0.1 2026-07-17               4         22         0          0
+       0.1 2026-07-18               4          1         0         21
+       0.1 2026-07-25               4         22         0          0
+       0.1 2026-07-29               4         21         1          0
+       0.1 2026-07-30               4         21         1          0
+       0.1 2026-08-06               4         22         0          0
+       0.1 2026-08-10               4         18         4          0
+       0.1 2026-08-11               4         22         0          0
+       0.2 2026-07-01               4         22         0          0
+       0.2 2026-07-05               4         22         0          0
+       0.2 2026-07-06               4         22         0          0
+       0.2 2026-07-13               4         22         0          0
+       0.2 2026-07-17               4         22         0          0
+       0.2 2026-07-18               4          1         0         21
+       0.2 2026-07-25               4         22         0          0
+       0.2 2026-07-29               4         21         1          0
+       0.2 2026-07-30               4         21         1          0
+       0.2 2026-08-06               4         22         0          0
+       0.2 2026-08-10               4         22         0          0
+       0.2 2026-08-11               4         22         0          0
+       0.4 2026-07-01               4         22         0          0
+       0.4 2026-07-05               4         22         0          0
+       0.4 2026-07-06               4         22         0          0
+       0.4 2026-07-13               4         22         0          0
+       0.4 2026-07-17               4         22         0          0
+       0.4 2026-07-18               4          1         0         21
+       0.4 2026-07-25               4         22         0          0
+       0.4 2026-07-29               4         22         0          0
+       0.4 2026-07-30               4         22         0          0
+       0.4 2026-08-06               4         22         0          0
+       0.4 2026-08-10               4         22         0          0
+       0.4 2026-08-11               4         22         0          0
+saved D:\mern\olympid\nasa_app_challeng\SafeWindow\data\punjab_trimmu_2026\results\village_status.csv
+== pipeline\07_timeline.py
+python.exe : D:\mern\olympid\nasa_app_challeng\SafeWindow\safewindow\places.py:70: UserWarning: shelters_verified.csv 
+not found - using unverified OSM candidates. Hand-check 15-30 shelters before the demo (scripts/shelter_checklist.py).
+At line:1 char:1392
++ ... ntent $log; & .venv\Scripts\python.exe $a[0] $a[1..9] *>> $log; "$($a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (D:\mern\olympid..._checklist.py).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(f"{paths.shelters_verified.name} not found - using unverified OSM candidates. "
+outcome
+connected_when_seen    20
+boat_dependent          4
+isolated                1
+never_isolated          1
+
+Top 10 most urgent:
+ urgency_rank                     name  population                    isolation_range aid_deadline                        exit_shelter
+            1                بستی منگن        1185 isolated between 26 Jul and 29 Jul   2026-08-02 Govt Elementary School Basti Nohani
+         <NA>             Bela Surbana       52144                                             NaT                                 NaN
+         <NA>               Chak 46 HF        4486                                             NaT                                 NaN
+         <NA> Dera Mahar Noor Budhwana        2954                                             NaT                                 NaN
+         <NA>            Garh Maharaja      122078                                             NaT                                 NaN
+         <NA>                    Ghagh        1503                                             NaT                                 NaN
+         <NA>             Kho Ratiwala       21839                                             NaT                                 NaN
+         <NA>                    Mahay        1870                                             NaT                                 NaN
+         <NA>                  Malkana       69021                                             NaT                                 NaN
+         <NA>                Munirabad       25815                                             NaT                                 NaN
+
+Sensitivity:
+ threshold  villages_isolated  people_isolated  mean_shift_days_vs_main  villages_changed_outcome
+       0.1                  5           224140                      0.0                         4
+       0.2                  1             1185                      0.0                         0
+       0.4                  0                0                      NaN                         1

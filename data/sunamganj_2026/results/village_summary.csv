@@ -1,0 +1,17 @@
+village_id,name,population,outcome,last_connected,first_isolated,isolated_from_earliest,reconnected,safe_exit_date,n_dates_isolated,n_dates_connected,n_dates_uncertain,aid_deadline,urgency_rank,isolation_range,exit_shelter_id,exit_shelter,exit_route_m
+osm5506312223,Boromuha,119104,isolated,,2026-06-07,2026-06-07,,,22,0,4,2026-06-14,1,isolated on or before 07 Jun,,,
+osm3642867917,Patharia,15866,isolated,,2026-06-07,2026-06-07,2026-06-09,,13,9,4,2026-06-14,2,isolated on or before 07 Jun,,,
+osm3642877016,Paschim Birgaon,13387,isolated,,2026-06-07,2026-06-07,,,22,0,4,2026-06-14,3,isolated on or before 07 Jun,,,
+osm3642870480,Purba Birgaon,19141,isolated,2026-06-07,2026-06-09,2026-06-08,2026-06-26,2026-06-07,14,2,10,2026-06-15,4,isolated between 08 Jun and 09 Jun,osm2616255489,Khaled General Hospital,6667.0
+osm6123937356,Dholkotob village,20302,isolated,2026-06-12,2026-06-19,2026-06-13,,2026-06-12,19,3,4,2026-06-20,5,isolated between 13 Jun and 19 Jun,osm6124539669,Pangaon Community clinic,3045.0
+osm6123937357,"BR 28, 29 rice (Vatipara Haor)",2604,boat_dependent,,,,,,0,0,0,,,,,,
+osm9843505110,Banshtala,11560,connected_when_seen,,,,,,0,13,13,,,,,,
+osm6123937355,Dholposhi,1370,connected_when_seen,,,,,,0,22,4,,,,,,
+osm822959784,"Jawa Bazar, Dergaw",89460,connected_when_seen,,,,,,0,13,13,,,,,,
+osm9835676256,Kusiura,52517,connected_when_seen,,,,,,0,13,13,,,,,,
+osm6720358434,Liakatganj,165780,connected_when_seen,,,,,,0,13,13,,,,,,
+osm3642877017,Paschim Pagla,79861,boat_dependent,,,,,,0,0,0,,,,,,
+osm822959785,Tarchoka - তারচুকা,123583,connected_when_seen,,,,,,0,13,13,,,,,,
+osm9843505109,Thabali,5051,connected_when_seen,,,,,,0,12,14,,,,,,
+osm1472175218,ছাতক,185980,connected_when_seen,,,,,,0,13,13,,,,,,
+osm2481972070,দোয়ারাবাজার,105714,connected_when_seen,,,,,,0,13,13,,,,,,

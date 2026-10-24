@@ -37,7 +37,7 @@ APPROVED = {"approved", "approved with changes"}
 
 
 def review_errors(review: Any) -> list[str]:
-    """A structured review (see docs/REVIEW.md) must be filled in and must approve."""
+    """A structured review must be filled in and must approve."""
     if not isinstance(review, dict):
         return []          # a missing or empty review is reported with the other required keys
     missing = [k for k in REVIEW_FIELDS if not str(review.get(k, "")).strip()]

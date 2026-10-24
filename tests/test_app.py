@@ -5,6 +5,23 @@ from safewindow import config
 from safewindow.region import rain_label
 
 
+def test_flood_packages_list_the_published_study_first(tmp_path):
+    import json
+    from app.streamlit_app import flood_packages
+
+    def package(folder, meta):
+        (tmp_path / folder / "app").mkdir(parents=True)
+        (tmp_path / folder / "app" / "meta.json").write_text(meta, encoding="utf-8")
+
+    package("a_2024", json.dumps({"region": "sunamganj_2024"}))
+    package("live", json.dumps({"region": "sunamganj_2022"}))
+    package("half_built", "{")                                      # unreadable meta.json
+    package("unknown_region", json.dumps({"region": "no_such_region"}))
+    packages = flood_packages(tmp_path)
+    assert [(rid, folder.name) for rid, folder in packages] == [
+        ("sunamganj_2022", "live"), ("sunamganj_2024", "a_2024")]
+
+
 def test_every_locale_has_the_same_keys_as_english():
     for lang, t in T.items():
         assert set(t) == set(T["en"]), f"{lang}.json differs: {set(t) ^ set(T['en'])}"

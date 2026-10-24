@@ -27,7 +27,7 @@ Script: `pipeline/02a_sentinel1_gee.py`. The method follows the UN-SPIDER recomm
 4. **Flood rule:** a pixel is flooded when VV is below an Otsu threshold computed from that date's histogram. It must also be at least 3 dB darker than the dry reference, which leaves out permanent rivers and lakes.
    - **When Otsu fails** (it falls outside −26 to −12 dB, or the histogram has too few pixels), the whole map for that date is set to **unknown**.
    - This happens on 4 dates: 18 May, 11 June, 23 June and 5 July, all orbit 150. On those dates the water peak sits near −15 dB instead of about −22 dB, consistent with wind-roughened haor water. No fixed threshold separates it from land.
-   - Until 24 October 2026 a fixed −18 dB was used on these dates. It marked almost no water: 2–6% of the area seen on every date, against 11–15% on the neighbouring dates. That created false "connected" observations. See `docs/phase3a_report.md`, section 5, and `scripts/otsu_fallback_check.py`.
+   - Until 24 October 2026 a fixed −18 dB was used on these dates. It marked almost no water: 2–6% of the area seen on every date, against 11–15% on the neighbouring dates. That created false "connected" observations. See `scripts/otsu_fallback_check.py`.
 5. **Slope mask:** pixels on slopes above 5° are set to dry. Slope comes from NASA's NASADEM and removes radar-shadow false floods.
 6. **Coverage gaps:** pixels outside the radar swath stay unknown. On 10 of the 19 dates the swath misses part of the area, leaving 42–53% of the grid unknown.
 

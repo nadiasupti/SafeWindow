@@ -1,4 +1,6 @@
-# SafeWindow ML training
+# SafeWindow ML training (experimental)
+
+> **Not part of SafeWindow's results.** No flood map, road cut, isolation date or benchmark score in this repository uses these models. SafeWindow's flood maps come from the rule-based Sentinel-1 method in `pipeline/02a_sentinel1_gee.py`.
 
 This directory contains a compact temporal U-Net for predicting the next flood map from recent flood observations, rainfall, and DEM data.
 

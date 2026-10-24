@@ -23,6 +23,7 @@ from streamlit_folium import st_folium
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from safewindow import config  # noqa: E402
+from safewindow import region as regions  # noqa: E402
 from safewindow.region import rain_label  # noqa: E402
 from safewindow.validation import validate_app_dataset  # noqa: E402
 
@@ -35,17 +36,36 @@ LOCALES_DIR = config.ROOT / "locales"
 T = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in sorted(LOCALES_DIR.glob("*.json"))}
 
 
-def app_languages() -> list[str]:
+def app_languages(reg: regions.Region | None = None) -> list[str]:
     """The region's languages that have a locale file, English first if present."""
-    langs = [lang for lang in config.REGION.languages if lang in T]
+    langs = [lang for lang in (reg or config.REGION).languages if lang in T]
     return langs or ["en"]
 
 
-def texts(lang: str) -> dict:
+def texts(lang: str, reg: regions.Region | None = None) -> dict:
     """Locale text with the region's warning agencies filled in."""
     t = dict(T[lang])
-    t["limits_text"] = t["limits_text"].format(agencies=", ".join(config.REGION.agencies))
+    t["limits_text"] = t["limits_text"].format(agencies=", ".join((reg or config.REGION).agencies))
     return t
+
+
+def flood_packages(data_root: Path | None = None) -> list[tuple[str, Path]]:
+    """Built app packages under data/ (one per flood), the published 2022 study first.
+    Each is (region id, data folder); the region comes from the package's meta.json.
+    A package whose meta.json or region file cannot be read (e.g. half-built) is
+    skipped, so it never stops the other floods from opening."""
+    found = []
+    for meta_path in sorted((data_root or config.ROOT / "data").glob("*/app/meta.json")):
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            rid = meta.get("region") or regions.DEFAULT_REGION
+            start = regions.load(rid).flood_start
+        except Exception:      # unreadable JSON, missing or invalid region file
+            continue
+        found.append((rid, meta_path.parent.parent, start))
+    live = config.DEFAULT_DATA_DIR.split("/")[-1]
+    found.sort(key=lambda p: (p[1].name != live, p[2], p[0]))
+    return [(rid, folder) for rid, folder, _ in found]
 
 
 def local_num(x, lang: str) -> str:
@@ -131,6 +151,13 @@ def is_default_data_dir(paths: config.Paths) -> bool:
 def main():
     st.set_page_config(page_title="SafeWindow", page_icon="🛶", layout="wide")
     paths = config.get_paths()
+    # Without SAFEWINDOW_DATA_DIR the viewer can switch between every built flood.
+    packages = flood_packages() if is_default_data_dir(paths) else []
+    if len(packages) > 1:
+        folders = {f"{regions.load(rid).name} ({folder.name})": folder for rid, folder in packages}
+        with st.sidebar:
+            choice = st.selectbox("Flood / বন্যা", list(folders), key="flood")
+        paths = config.Paths(folders[choice])
     if not (paths.app / "meta.json").exists():
         if is_default_data_dir(paths):
             st.error("No live app data has been built. Run `python pipeline/10_build_live_data.py` "
@@ -145,12 +172,14 @@ def main():
             st.warning(error)
         st.stop()
     meta, villages, status, shelters, routes, cut, opt = load(str(paths.app))
+    # Labels, languages and agencies follow the flood being shown.
+    reg = regions.load(meta["region"]) if meta.get("region") and len(packages) > 1 else config.REGION
 
     with st.sidebar:
-        langs = app_languages()
+        langs = app_languages(reg)
         by_name = {T[code]["language_name"]: code for code in langs}
         lang = by_name[st.radio(" / ".join(T[code]["language"] for code in langs), list(by_name), horizontal=True)]
-        t = texts(lang)
+        t = texts(lang, reg)
         lo, hi = meta["supply_days_range"]
         supply = st.slider(t["supply"], lo, hi, meta["default_supply_days"], help=t["supply_help"])
         st.markdown("---")
@@ -165,9 +194,9 @@ def main():
     st.caption(t["tagline"])
     if meta.get("data_label"):
         st.warning(f"⚠️ {meta['data_label']}")
-    if meta.get("region", config.REGION.id) != config.REGION.id:
+    if meta.get("region", reg.id) != reg.id:
         st.error(f"This data was built for region {meta['region']!r}, but SAFEWINDOW_REGION is "
-                 f"{config.REGION.id!r}: labels, languages and agencies may not match the data.")
+                 f"{reg.id!r}: labels, languages and agencies may not match the data.")
     if is_default_data_dir(paths):
         st.caption(t["source_caption"])
 
@@ -198,6 +227,8 @@ def main():
     ranked = villages.sort_values(["urgency_rank", "name"], na_position="last")
     ids = [None] + ranked["village_id"].tolist()
     label = dict(zip(villages["village_id"], villages["name"]))
+    if st.session_state.get("village") not in ids:     # e.g. a village of the previously viewed flood
+        st.session_state.village = None
     if "village" not in st.session_state:
         st.session_state.village = None
 
@@ -278,7 +309,7 @@ def main():
     with st.expander(t["how"]):
         st.markdown(t["how_text"])
 
-    charts(opt, meta, pd.Timestamp(day), lang, t)
+    charts(opt, meta, pd.Timestamp(day), lang, t, reg)
 
     c1, c2 = st.columns(2)
     if "sens" in opt:
@@ -335,7 +366,7 @@ def village_panel(villages, routes, vid, day: pd.Timestamp, lang, t):
         st.info(t["uncertain_note"])
 
 
-def charts(opt, meta, day: pd.Timestamp, lang, t):
+def charts(opt, meta, day: pd.Timestamp, lang, t, reg):
     c1, c2 = st.columns(2)
     rule = alt.Chart(pd.DataFrame({"date": [day]})).mark_rule(color="#d7263d", strokeWidth=2).encode(x="date:T")
     obs = alt.Chart(pd.DataFrame({"date": pd.to_datetime(meta["dates"])})).mark_tick(
@@ -345,7 +376,7 @@ def charts(opt, meta, day: pd.Timestamp, lang, t):
         r["date"] = pd.to_datetime(r["date"])
         r = r[(r["date"] >= meta["app_start"]) & (r["date"] <= meta["app_end"])]
         long = r.melt("date", var_name="box", value_name="mm")
-        long["box"] = [rain_label(config.REGION, c.removesuffix("_mm"), lang) for c in long["box"]]
+        long["box"] = [rain_label(reg, c.removesuffix("_mm"), lang) for c in long["box"]]
         bars = alt.Chart(long).mark_bar(opacity=0.85).encode(
             x=alt.X("date:T", title=None), xOffset="box:N",
             y=alt.Y("mm:Q", title="mm/day"),

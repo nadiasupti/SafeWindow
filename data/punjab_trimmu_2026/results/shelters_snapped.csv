@@ -1,0 +1,4 @@
+shelter_id,name,type,lat,lon,source,verified,notes,node_id,snap_dist_m,road_reachable
+osm12265543362,Govt Elementary School Basti Nohani,school,30.855481,72.070188,OpenStreetMap,,,11347831991,202.37883842701365,True
+osm1157710621,Zafar Ullah Sheikh,hospital,30.831177,72.073404,OpenStreetMap,,,12801893504,26.732911088384352,True
+osm1157710637,EPI Center BHU Kakki Nou,hospital,30.83381,72.075396,OpenStreetMap,,,10766521222,31.155752370574998,True

@@ -156,7 +156,7 @@
       "change": "Otsu-failure dates set unknown instead of a fixed -18 dB threshold",
       "reason": "the -18 dB maps showed almost no water (wind-roughened haor water peaks near -15 dB) and created false connected/reconnected observations",
       "previous_version": "data/archive/live_v1_2026-10-12",
-      "evidence": "docs/phase3a_report.md section 5; scripts/otsu_fallback_check.py"
+      "evidence": "scripts/otsu_fallback_check.py"
     }
   ]
 }

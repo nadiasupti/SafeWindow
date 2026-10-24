@@ -1,0 +1,46 @@
+# SafeWindow region (NISAR test): the July 2026 high water, after the August-September 2025 Chenab-Jhelum flood around
+# Trimmu Barrage, Jhang District, Punjab, Pakistan (Copernicus EMS EMSR838, AOI 5).
+# Same method and thresholds as Sunamganj; nothing was tuned for Pakistan.
+
+id: punjab_trimmu_2026
+name: "Trimmu, Jhang, Punjab, Pakistan: July 2026 high water (NISAR test)"
+
+area:
+  boundary_file: punjab_trimmu_2025_aoi.geojson   # EMSR838 AOI05 extent, 1,014 km2
+  parent: Jhang
+  parent_unit: District
+  country: Pakistan
+  iso3: PAK
+  bbox: [71.827, 30.720, 72.214, 31.289]
+
+# The area straddles 72E, the border of UTM zones 42 and 43, so "auto" warns.
+# Zone 43 holds the centre; over 40 km the scale error stays near 0.1%.
+crs: "EPSG:32643"
+
+dates:
+  flood: ["2026-07-01", "2026-08-15"]          # Sentinel-1A until June, Sentinel-1D from July 2026
+  dry_reference: ["2026-04-01", "2026-05-31"]  # pre-monsoon dry season
+  app: ["2026-07-01", "2026-08-15"]
+
+# Daily rainfall boxes, lon/lat: west, south, east, north.
+rain_boxes:
+  trimmu: [71.8, 30.7, 72.25, 31.3]
+  # Upper Chenab and Jhelum catchments (Jammu and Kashmir hills), where most of
+  # the flood water comes from. A coarse box: it shows timing, not totals.
+  chenab_jhelum_upstream: [73.5, 32.5, 76.5, 34.5]
+
+rain_labels:
+  trimmu: {en: "Trimmu (Jhang)"}
+  chenab_jhelum_upstream: {en: "Chenab and Jhelum hills (upstream)"}
+
+settlements: osm
+shelters_csv: null
+
+supply_days: {default: 7, min: 2, max: 14}
+
+languages: ["en"]
+agencies: ["PDMA Punjab", "NDMA", "PMD Flood Forecasting Division"]
+
+references:
+  copernicus_ems: EMSR838
+  nisar: NISAR_L2_GCOV_PROVISIONAL_V1 (no independent EMS or UNOSAT map found for July 2026)

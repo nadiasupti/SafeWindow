@@ -1,7 +1,6 @@
 # SafeWindow region: the August-September 2025 Chenab-Jhelum flood around
 # Trimmu Barrage, Jhang District, Punjab, Pakistan (Copernicus EMS EMSR838, AOI 5).
 # Same method and thresholds as Sunamganj; nothing was tuned for Pakistan.
-# Chosen in docs/phase3b_event_selection.md.
 
 id: punjab_trimmu_2025_hubs
 name: "Trimmu 2025 (variant: town centres as destinations)"

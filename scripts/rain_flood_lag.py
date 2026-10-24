@@ -1,4 +1,4 @@
-"""How many days after NASA GPM IMERG rain does the flooded area respond? (docs/phase4_report.md, section 4.3)
+"""How many days after NASA GPM IMERG rain does the flooded area respond?
 
     python scripts/rain_flood_lag.py <flood data dir> <rainfall_daily.csv>
 

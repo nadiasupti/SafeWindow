@@ -1,0 +1,4 @@
+threshold,villages_isolated,people_isolated,mean_shift_days_vs_main,villages_changed_outcome
+0.1,7,113898,0.0,5
+0.2,2,75339,0.0,0
+0.4,2,75339,0.0,0

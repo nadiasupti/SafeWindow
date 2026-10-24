@@ -1,6 +1,6 @@
 {
   "project": "SafeWindow",
-  "generated_at_utc": "2026-10-24T11:58:06.757744+00:00",
+  "generated_at_utc": "2026-10-24T15:05:57.901451+00:00",
   "python": "3.12.10",
   "platform": "Windows-11-10.0.26200-SP0",
   "data_dir": "D:\\mern\\olympid\\nasa_app_challeng\\SafeWindow\\data\\live",
@@ -188,8 +188,8 @@
     },
     {
       "path": "EVIDENCE_STATUS.md",
-      "sha256": "81b8ad9a0bd422b86b4b6ef9e1721ebf5d098eeb0fc11c865455c33061c39231",
-      "bytes": 3151
+      "sha256": "aa795f71d2a38245e307d43ed7abf0623fdf1f4a915b94f94b3c2b8969262917",
+      "bytes": 4178
     },
     {
       "path": "model_evaluation.csv",
@@ -838,13 +838,23 @@
     },
     {
       "path": "rebuild_2026-10-24_log.txt",
-      "sha256": "c92a2b24407d8182284601248abe7ad700f20365ad00b27d75195424da592071",
-      "bytes": 13017
+      "sha256": "df5b5814b70d24e31075c5ef1afa9fe03a220a105fd4c956e5a7b3409a522e06",
+      "bytes": 16753
     },
     {
       "path": "results\\exit_routes.gpkg",
       "sha256": "81510ece9b71bd41941b617b695e2f474db9a85b896bdbaf7d35e59e2141b716",
       "bytes": 106496
+    },
+    {
+      "path": "results\\otsu_fallback_check.csv",
+      "sha256": "c1cfe9d93b1d920e78aadfa52baeb5909a4c80bb26bfd57563d6a4e212aac47e",
+      "bytes": 854
+    },
+    {
+      "path": "results\\rain_flood_lag.csv",
+      "sha256": "ebee3fe3728281ccf185acd5a7016f1d103835a91d8f7972393c34825e1cfe94",
+      "bytes": 2411
     },
     {
       "path": "results\\road_cut_summary.csv",
@@ -898,8 +908,8 @@
     },
     {
       "path": "science_methods.md",
-      "sha256": "2107069b095e8ad08b4903a85df189516f929e1a8444dbce747eb2b332a01559",
-      "bytes": 13738
+      "sha256": "e94f670e5eba6a7ef643c44db294d47e43966d53d3be9ee25b7a47eb4d527ef6",
+      "bytes": 14995
     },
     {
       "path": "shelter_checklist.csv",
@@ -908,8 +918,8 @@
     },
     {
       "path": "source_manifest.json",
-      "sha256": "f18c2b9ab3e0d074c982c26f616525c285c2fc95bd1777a6db0521594ae0211a",
-      "bytes": 6652
+      "sha256": "de36e259ec03dbb6eeeca9c7bdcdd23394d838c28bd4dcfb72ae2789554855c7",
+      "bytes": 7129
     },
     {
       "path": "submission_evidence.json",

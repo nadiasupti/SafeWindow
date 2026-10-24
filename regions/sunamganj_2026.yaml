@@ -1,0 +1,41 @@
+# SafeWindow region (NISAR test): the June-August 2026 monsoon in Sunamganj, Bangladesh.
+# Same area and the same method as sunamganj_2022; only the dates differ. No
+# threshold was changed for this year, so it is an unseen test of the method.
+
+id: sunamganj_2026
+name: "Sunamganj, Bangladesh: June-August 2026 monsoon (NISAR test)"
+
+area:
+  admin_names: ["Sunamganj Sadar", "Chhatak", "Dowarabazar"]
+  admin_unit: Upazila
+  parent: Sunamganj
+  parent_unit: District
+  country: Bangladesh
+  iso3: BGD
+  bbox: [91.25, 24.80, 91.75, 25.18]
+
+crs: "EPSG:32646"
+
+dates:
+  flood: ["2026-06-01", "2026-08-15"]          # NISAR GCOV public from 17 June 2026
+  dry_reference: ["2026-02-01", "2026-03-31"]  # same season as 2022 and 2024
+  app: ["2026-06-01", "2026-08-15"]
+
+rain_boxes:
+  sunamganj: [90.95, 24.85, 91.75, 25.25]
+  meghalaya_upstream: [91.30, 25.15, 92.10, 25.45]
+
+rain_labels:
+  sunamganj: {en: Sunamganj, bn: সুনামগঞ্জ}
+  meghalaya_upstream: {en: "Meghalaya hills (upstream)", bn: "মেঘালয় পাহাড় (উজান)"}
+
+settlements: osm
+shelters_csv: null
+
+supply_days: {default: 7, min: 2, max: 14}
+
+languages: ["en", "bn"]
+agencies: ["BMD", "FFWC", "DDM"]
+
+references:
+  nisar: NISAR_L2_GCOV_PROVISIONAL_V1 (cross-sensor test; no independent flood map)

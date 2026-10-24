@@ -1,4 +1,4 @@
-"""Put NASA OPERA DSWx-S1 water maps on the SafeWindow grid, as "new water" maps (docs/phase4_report.md, section 4.4).
+"""Put NASA OPERA DSWx-S1 water maps on the SafeWindow grid, as "new water" maps.
 
     python scripts/opera_compare.py <out dir> --dates 2025-08-28 2025-09-01 --dry-start 2025-04-01 --dry-end 2025-05-31
     python scripts/ablation_compare.py <region data dir> <out dir> --label "NASA OPERA DSWx-S1"

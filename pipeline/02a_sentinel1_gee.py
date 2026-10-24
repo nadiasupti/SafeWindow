@@ -12,7 +12,7 @@ Method (after the UN-SPIDER Recommended Practice for Sentinel-1 flood mapping):
      day (typically wind-roughened haor water near -15 dB) and no fixed
      threshold can separate it: the whole map is set to UNKNOWN instead.
      (Until 24 Oct 2026 a fixed -18 dB was used; it caught only a small tail of
-     the water. See docs/phase3a_report.md, section 5.)
+     the water. See scripts/otsu_fallback_check.py.)
   5. Steep slopes (> 5 deg, radar shadow) are set to dry. Areas without
      coverage on that date stay UNKNOWN.
 
@@ -59,7 +59,7 @@ def choose_threshold(counts: np.ndarray | None, centers: np.ndarray | None) -> t
     return t, ("otsu" if lo <= t <= hi else "otsu_failed")
 
 
-def save_histogram(counts, centers, threshold, day, out, usable=True):
+def save_histogram(counts, centers, threshold, day, out, usable=True, sensor="Sentinel-1 VV"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -67,7 +67,7 @@ def save_histogram(counts, centers, threshold, day, out, usable=True):
     ax.bar(centers, counts, width=centers[1] - centers[0], color="#4a7db3")
     label = f"Otsu threshold {threshold:.1f} dB" + ("" if usable else " (implausible: map set unknown)")
     ax.axvline(threshold, color="#c0392b", lw=2, ls="-" if usable else "--", label=label)
-    ax.set(xlabel="Sentinel-1 VV backscatter (dB)", ylabel="pixels", title=f"Sentinel-1 VV histogram, {day}")
+    ax.set(xlabel=f"{sensor} backscatter (dB)", ylabel="pixels", title=f"{sensor} histogram, {day}")
     ax.legend()
     fig.tight_layout()
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -115,7 +115,7 @@ def flood_map(ee, aoi, day: str, rel_orbit: int, hist_out, dry_start: str, dry_e
         return None, t, status
 
     flooded = flood_img.lt(t).And(flood_img.subtract(dry).lt(DIFF_DB))
-    if slope_mask:   # off only for the NASADEM ablation test (docs/phase4_report.md, 4.1)
+    if slope_mask:   # off only for the NASADEM ablation test
         slope = ee.Terrain.slope(ee.Image("NASA/NASADEM_HGT/001").select("elevation"))
         flooded = flooded.And(slope.lte(SLOPE_MAX_DEG))
     # Where the classification is masked (outside the radar swath, or no dry
