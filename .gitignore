@@ -245,3 +245,12 @@ data/archive/
 
 # Local reproduction of data/live (pixel-identical)
 data/rerun/
+
+# private docs (kept local only)
+data/live/science_methods.md
+data/live/EVIDENCE_STATUS.md
+NASA_SUBMISSION.md
+PROJECT_GUIDE.md
+REVIEW.md
+SUBMISSION_STATUS.md
+*.pptx
