@@ -197,7 +197,7 @@ Run the steps in order for one region and one data folder. Steps marked † need
 | Compare road cuts with an independent flood-affected road map | `python scripts/road_reference_check.py <roads.shp> <extent.shp> --dates 2024-06-29 2024-06-19` |
 | Find dates whose Otsu threshold failed | `python scripts/otsu_fallback_check.py data/live data/sunamganj_2024` |
 | Check the scientific evidence of a release | `python scripts/verify_submission.py data/live` |
-| Run the test suite (72 tests) | `python -m pytest -q` |
+| Run the test suite (73 tests) | `python -m pytest -q` |
 
 ### NASA data comparisons
 

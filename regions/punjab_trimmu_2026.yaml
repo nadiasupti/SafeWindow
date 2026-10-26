@@ -38,9 +38,13 @@ shelters_csv: null
 
 supply_days: {default: 7, min: 2, max: 14}
 
-languages: ["en"]
+languages: ["en", "ur"]   # Urdu is a draft translation: the app shows a notice until a native speaker reviews it
 agencies: ["PDMA Punjab", "NDMA", "PMD Flood Forecasting Division"]
 
 references:
   copernicus_ems: EMSR838
   nisar: NISAR_L2_GCOV_PROVISIONAL_V1 (no independent EMS or UNOSAT map found for July 2026)
+
+# Numbers shown on the evacuation card. Check each one with local partners before use.
+emergency_contacts:
+  - {name: "Punjab Emergency Service (Rescue)", number: "1122"}

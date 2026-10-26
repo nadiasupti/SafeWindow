@@ -1,0 +1,37 @@
+{
+ "source": "Natural Earth",
+ "version": "5.1.1",
+ "license": "public domain",
+ "files": {
+  "land.geojson": {
+   "bytes": 3036784,
+   "features": 11,
+   "sha256": "0933cb101f5fbd8473b0c6c90de131e4e1517506fbf08e26397b00143608b875"
+  },
+  "countries.geojson": {
+   "bytes": 3629031,
+   "features": 258,
+   "sha256": "12e3475fec378587df5f1f4fef1aa3c3d938066f1d7b5fc7fe9fba478920d807"
+  },
+  "admin1_lines.geojson": {
+   "bytes": 2992385,
+   "features": 9,
+   "sha256": "90bb611a21da9e5f3c095052c1d01e3a04fe5b6ea1ee64d8d7487930d82b8d85"
+  },
+  "lakes.geojson": {
+   "bytes": 1350418,
+   "features": 7,
+   "sha256": "6a66944b9aeb3861bc5cb69518b0be0c6a593471d5d44e4b24760f7f53662eec"
+  },
+  "rivers.geojson": {
+   "bytes": 1661632,
+   "features": 6,
+   "sha256": "7d7ccc61df2540f5c3cc46ce9a40d415cf07c13057cdbc229724fbe31fb0ee16"
+  },
+  "places.geojson": {
+   "bytes": 1419085,
+   "features": 7342,
+   "sha256": "be666737a93d48e17a15a3742d98b5217c84214ae1fe5fc1d2b927ca75879ef4"
+  }
+ }
+}

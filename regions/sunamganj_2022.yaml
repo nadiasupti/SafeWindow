@@ -72,3 +72,7 @@ road_reports:
     source: "The Daily Star, '40 lakh people stranded in Sylhet, Sunamganj'"
     url: "https://www.thedailystar.net/environment/climate-crisis/natural-disaster/news/40-lakh-people-stranded-sylhet-sunamganj-floodwater-3050221"
     quote: "Due to the flood situation, road communication with Sunamganj has been cut off from other parts of the country since Thursday."
+
+# Numbers shown on the evacuation card. Check each one with local partners before use.
+emergency_contacts:
+  - {name: "National Emergency Service", name_bn: "জাতীয় জরুরি সেবা", number: "999"}

@@ -75,7 +75,7 @@ def test_punjab_region_loads():
     r = region.load("punjab_trimmu_2025")
     assert (r.iso3, r.crs) == ("PAK", "EPSG:32643")
     assert r.boundary_file.exists()
-    assert r.languages == ["en"]
+    assert r.languages == ["en", "ur"]          # Urdu is offered as a draft, with a visible notice
 
 
 def test_shelters_csv_is_relative_to_the_region_file(tmp_path):

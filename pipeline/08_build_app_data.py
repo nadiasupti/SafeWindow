@@ -5,6 +5,7 @@
 Writes data/app/ (commit this folder; keep it well under 100 MB):
   meta.json                dates, sources per date, data label, defaults
   villages.geojson         village points + summary fields
+  roads.geojson, study_area.geojson   offline base map (optional)
   village_status.csv       status per observed date (main threshold)
   shelters.geojson, exit_routes.geojson, cut_roads.geojson
   flood/YYYYMMDD.png       flood overlay per date (blue flooded, grey unknown)
@@ -94,6 +95,17 @@ def main():
     col = f"status_{round(config.CUT_THRESHOLD * 100)}"
     cut = rs[rs[col] == "cut"][["date", "edge_id"]].merge(edges[["edge_id", "highway", "geometry"]], on="edge_id")
     write_geojson(gpd.GeoDataFrame(cut, geometry="geometry", crs=config.CRS), app / "cut_roads.geojson", simplify_m=10)
+
+    # hospitals and clinics for the evacuation cards: a local list, OpenStreetMap, or the shelter list
+    from safewindow import health
+    area = gpd.read_file(paths.study_area).to_crs(config.CRS_WGS84).total_bounds
+    got = health.build(app, config.REGION, load_shelters(paths), tuple(config.REGION.bbox or area))
+    print(f"  health.geojson: {got['n']} facilities from {got['source'] or 'no source'}")
+
+    # the offline base map: every road by class, and the study-area outline (optional files)
+    from safewindow import offline_basemap
+    for name, size in offline_basemap.build(paths.processed, app).items():
+        print(f"  {name}: {size / 1e6:.2f} MB")
 
     for src, name in [(paths.rainfall, "rainfall_daily.csv"), (paths.modis_timeline, "modis_flood_area.csv"),
                       (paths.results / "sensitivity_summary.csv", "sensitivity_summary.csv"),

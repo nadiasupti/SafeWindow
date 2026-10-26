@@ -37,12 +37,25 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--buffer-m", type=float, default=1000, help="same buffer as step 3 uses for roads")
     ap.add_argument("--osm-attempts", type=int, default=4)
+    ap.add_argument("--pbf", help="read an OpenStreetMap country extract (.osm.pbf) instead of asking Overpass")
     args = ap.parse_args()
     ox.settings.overpass_url = os.environ.get("SAFEWINDOW_OSM_OVERPASS_URL", ox.settings.overpass_url)
 
     paths = config.get_paths().ensure()
     poly = load_study_area(paths).buffer(args.buffer_m).to_crs(config.CRS_WGS84).union_all()
-    f = download(poly, args.osm_attempts).reset_index()
+    if args.pbf:
+        from shapely.geometry import LineString
+
+        from safewindow import osm_pbf
+        found = osm_pbf.bridges(args.pbf, tuple(poly.bounds))
+        f = gpd.GeoDataFrame(
+            [{"id": b["id"], "highway": b["tags"]["highway"], "bridge": b["tags"]["bridge"], "name": b["tags"].get("name")}
+             for b in found], geometry=[LineString(b["coords"]) for b in found], crs=config.CRS_WGS84)
+        f = f[f.intersects(poly)] if len(f) else f
+        if not len(f):
+            raise SystemExit("No road bridges found in the extract for this area.")
+    else:
+        f = download(poly, args.osm_attempts).reset_index()
     if "highway" not in f:
         raise SystemExit("No road bridges found in OpenStreetMap for this area.")
     # A low-water crossing is built to go under water, so it is not an elevated bridge.

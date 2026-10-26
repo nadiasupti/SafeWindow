@@ -38,7 +38,7 @@ shelters_csv: punjab_trimmu_2025_hubs.csv   # VARIANT: town centres as assumed s
 
 supply_days: {default: 7, min: 2, max: 14}
 
-languages: ["en"]
+languages: ["en", "ur"]   # Urdu is a draft translation: the app shows a notice until a native speaker reviews it
 agencies: ["PDMA Punjab", "NDMA", "PMD Flood Forecasting Division"]
 
 references:
@@ -57,3 +57,7 @@ road_reports:
     source: "Dawn, 'Rail track blasted to save Trimmu Headworks, Jhang city', 30 Aug 2025"
     url: "https://www.dawn.com/news/1938251/rail-track-blasted-to-save-trimmu-headworks-jhang-city"
     quote: "Another two breaches were created on a road which leads from Tehsil Chowk of Shorkot to Garh Maharaja."
+
+# Numbers shown on the evacuation card. Check each one with local partners before use.
+emergency_contacts:
+  - {name: "Punjab Emergency Service (Rescue)", number: "1122"}
