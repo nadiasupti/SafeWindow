@@ -386,3 +386,63 @@ def test_gemini_moves_on_from_a_busy_or_retired_model():
     import pytest
     with pytest.raises(urllib.error.HTTPError):
         watch.ai_ping(watch.ai_provider({"GEMINI_API_KEY": "k"}), bad_key)
+
+
+# --- running on its own: no repeats, the admin is told, the maps come from the published app ---------------
+
+def test_a_village_is_not_drafted_again_for_the_same_satellite_date_unless_the_level_rises(report):
+    flagged = {r["village"]: r["level"] for r in report["villages"] if r["level"] != "none"}
+    assert flagged
+    village, level = next(iter(flagged.items()))
+    assert watch.villages_to_draft(report, []) == set(flagged)
+    same = {"reason": "ai_watch", "flood": FLOOD, "village": village, "date": report["issue_date"], "level": level}
+    for status in ("pending", "cancelled", "published"):               # rejected or already sent: still not again
+        assert village not in watch.villages_to_draft(report, [{**same, "status": status}])
+    assert village in watch.villages_to_draft(report, [{**same, "date": "2024-06-12"}])          # a newer pass
+    assert village in watch.villages_to_draft(report, [{**same, "reason": "roads"}])             # a hand-made alert
+    if level != "watch":
+        assert village in watch.villages_to_draft(report, [{**same, "level": "watch"}])          # the level rose
+
+
+def test_the_admins_phones_are_told_what_waits_and_no_village_is(report):
+    drafts = watch.draft_alerts(report, "Tester")
+    subs = [{"uid": "admin1", "flood": FLOOD, "village": drafts[0]["village"], "token": "t", "lang": "bn"},
+            {"uid": "villager", "flood": FLOOD, "village": drafts[0]["village"], "token": "u", "lang": "bn"}]
+    got = []
+
+    def send(chosen, data, ttl):
+        got.append(([s["uid"] for s in chosen], data))
+        return len(chosen), 0
+    assert alerts.notify_admins(drafts, subs, {"admin1"}, send) == (1, 0)
+    (uids, data), = got
+    assert uids == ["admin1"]
+    for lang in ("bn", "en"):
+        d = data[lang]
+        assert d["kind"] == "admin" and d["village"] == "" and d["id"].startswith("admin-")
+        assert all(isinstance(v, str) for v in d.values())
+    assert f"{len(drafts)} alert(s) waiting" in data["en"]["title"] and "approve or reject" in data["en"]["body"]
+    assert "replay" in data["en"]["body"]                               # an old flood day is not called live
+    assert "অনুমোদনের অপেক্ষায়" in data["bn"]["title"]
+    assert alerts.notify_admins([], subs, {"admin1"}, send) == (0, 0)  # nothing new: nobody is woken up
+    assert alerts.notify_admins(drafts, subs, set(), send) == (0, 0)   # no admin phone registered
+    assert len(got) == 1
+
+
+def test_the_flood_maps_are_copied_from_the_published_app_and_the_apps_page_is_not_taken_for_a_map(tmp_path):
+    src = alerts.APP_DATA
+    page = b"<!doctype html><html>SafeWindow</html>"                  # what the hosting answers for a missing file
+    missing = {"20240617"}
+
+    def get_bytes(url):
+        rel = url.split("/data/", 1)[1]
+        if any(day in rel for day in missing):
+            return page
+        path = src / rel
+        return path.read_bytes() if path.exists() else page
+    out = watch.mirror_app_data("https://example.test/data/", [FLOOD], tmp_path / "copy", get_bytes)
+    assert (out / "index.json").exists() and (out / FLOOD / "villages.json").exists()
+    assert not (out / FLOOD / "flood" / "20240617.png").exists()
+    assert (out / FLOOD / "flood" / "20240612.png").read_bytes() == (src / FLOOD / "flood" / "20240612.png").read_bytes()
+    assert "2024-06-17" not in watch.usable_dates(FLOOD, out)
+    with pytest.raises(FileNotFoundError, match="not in the published app"):
+        watch.mirror_app_data("https://example.test/data", ["no_such_flood"], tmp_path / "x", get_bytes)

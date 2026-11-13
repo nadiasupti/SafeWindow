@@ -77,9 +77,11 @@ def village_picker(key: str, flood: str, default: str | None = None) -> dict:
                            format_func=lambda i: f"{alerts.village_name(vs[i], lang())} · {t('outcome_' + vs[i]['outcome'])}")]
 
 
-def flood_picker(key: str) -> str:
+def flood_picker(key: str, default: str | None = None) -> str:
     fl = alerts.floods()
-    return fl[st.selectbox(t("flood"), range(len(fl)), key=key, format_func=lambda i: fl[i]["name"])]["id"]
+    ids = [f["id"] for f in fl]
+    index = ids.index(default) if default in ids else 0
+    return fl[st.selectbox(t("flood"), range(len(fl)), index=index, key=key, format_func=lambda i: fl[i]["name"])]["id"]
 
 
 def tab_new(admin: str) -> None:
@@ -233,6 +235,51 @@ def tab_demo(admin: str) -> None:
         alerts.submit(rec, admin)
         alerts.save(db(), alerts.publish(rec, admin, subs, test_ids, alerts.fcm_sender(db()), verified=True))
         flash(t("demo_sent", n=rec["sent"]))
+        st.rerun()
+
+
+TEST_REASONS = ("ai_watch", "roads", "isolated", "rain")
+
+
+def tab_test(admin: str) -> None:
+    """One click: a SIMULATION warning to the test phones that have alerts on for one village. It goes through the
+    normal log (marked Demo), so it can be cancelled like any other alert. It never reaches a non-test phone."""
+    st.caption(t("test_help"))
+    subs, test_ids = alerts.load_subscriptions(db()), alerts.load_test_ids(db())
+    # a phone has alerts on for one flood AND one village: start on the newest test phone's choice
+    tested = sorted((s for s in subs if s["uid"] in test_ids), key=lambda s: str(s.get("updated", "")), reverse=True)
+    flood = flood_picker("test_flood", default=tested[0]["flood"] if tested else None)
+    on_test = [s["village"] for s in tested if s.get("flood") == flood]
+    v = village_picker("test_village", flood, default=on_test[0] if on_test else None)
+    c1, c2 = st.columns(2)
+    level = c1.radio(t("level"), alerts.LEVELS, index=1, format_func=lambda x: t("level_" + x), horizontal=True, key="test_level")
+    reason = c2.selectbox(t("reason"), TEST_REASONS, format_func=lambda x: t("reason_" + x), key="test_reason")
+    day = alerts.flood_status(flood)["dates"][-1]
+    rec = alerts.new_alert(flood, v["id"], level, reason, admin, date=day, hours=6, simulation=True, demo=True)
+    st.markdown(f"##### {t('preview')}")
+    preview(rec)
+    chosen = alerts.recipients(subs, flood, v["id"], test_ids)
+    if chosen:
+        st.caption(t("test_goes_to", n=len(chosen)))
+    else:
+        flood_names = {f["id"]: f["name"] for f in alerts.floods()}
+        where = []
+        for s in tested:
+            try:
+                name = alerts.village_name(alerts.village_record(s["flood"], s["village"]), lang())
+            except (KeyError, FileNotFoundError):
+                name = s["village"]
+            where.append(f"{flood_names.get(s['flood'], s['flood'])} · {name}")
+        st.warning(t("test_nobody", on="; ".join(dict.fromkeys(where)) or t("none")))
+    again = not_a_repeat(rec, "test_repeat")
+    if st.button(t("test_send"), type="primary", key="test_send", disabled=not (chosen and again)):
+        try:
+            alerts.submit(rec, admin)
+            alerts.save(db(), alerts.publish(rec, admin, subs, test_ids, alerts.fcm_sender(db()), verified=True))
+            flash(t("test_sent", sent=rec["sent"], failed=rec["failed"])
+                  + (" " + t("test_failed_why") if rec["failed"] else ""), "warning" if rec["failed"] else "success")
+        except ValueError as exc:
+            flash(str(exc), "error")
         st.rerun()
 
 
@@ -441,6 +488,23 @@ def tab_phones() -> None:
             flash(t("removed"), "info")
             st.rerun()
 
+    st.subheader(t("admin_phones"))
+    st.caption(t("admin_phones_help"))
+    admins = sorted(alerts.load_admin_ids(d))
+    st.dataframe(pd.DataFrame([{t("col_admin_phone"): uid, t("col_alerts_for"): subs.get(uid, {}).get("village", t("not_on"))}
+                               for uid in admins]), hide_index=True)
+    new_admin = st.text_input(t("new_admin_phone"))
+    if st.button(t("add_admin")) and new_admin.strip():
+        d.collection("admin_devices").document(new_admin.strip()).set({"added": pd.Timestamp.utcnow().to_pydatetime()})
+        flash(t("added"))
+        st.rerun()
+    if admins:
+        gone_admin = st.selectbox(t("remove_admin"), admins)
+        if st.button(t("remove_admin")):
+            d.collection("admin_devices").document(gone_admin).delete()
+            flash(t("removed"), "info")
+            st.rerun()
+
 
 def main() -> None:
     icon = Path(__file__).resolve().parent.parent / "pwa" / "public" / "icons" / "favicon-64.png"
@@ -460,8 +524,11 @@ def main() -> None:
         st.error(t("firebase_failed", e=exc))
         st.stop()
     waiting = sum(r["status"] == "pending" for r in all_alerts)
+    if waiting:
+        st.warning(t("waiting_banner", n=waiting,
+                     ai=sum(r["status"] == "pending" and r.get("reason") == "ai_watch" for r in all_alerts)))
     tabs = st.tabs([t("tab_new"), t("tab_approve", n=waiting), t("tab_log"), t("tab_monitor"), t("tab_forecast"),
-                    t("tab_watch"), t("tab_demo"), t("tab_phones")])
+                    t("tab_watch"), t("tab_demo"), t("tab_test"), t("tab_phones")])
     with tabs[0]:
         tab_new(admin)
     with tabs[1]:
@@ -477,6 +544,8 @@ def main() -> None:
     with tabs[6]:
         tab_demo(admin)
     with tabs[7]:
+        tab_test(admin)
+    with tabs[8]:
         tab_phones()
 
 

@@ -10,6 +10,10 @@ from the admin panel.
     python scripts/send_alert.py --list-test-devices
     python scripts/send_alert.py --remove-test-device <id>
 
+    python scripts/send_alert.py --add-admin-device <id>     # this phone is told when alerts wait for approval
+    python scripts/send_alert.py --list-admin-devices
+    python scripts/send_alert.py --remove-admin-device <id>
+
     python scripts/send_alert.py --simulation --flood sunamganj_2022 --village osm6123937356 \\
         --level warning --reason roads --radar-date 2022-05-23 --by "Nadia"
     python scripts/send_alert.py ... --dry-run               # show the message and the recipients, send nothing
@@ -32,6 +36,9 @@ def main() -> None:
     ap.add_argument("--add-test-device")
     ap.add_argument("--remove-test-device")
     ap.add_argument("--list-test-devices", action="store_true")
+    ap.add_argument("--add-admin-device", help="a phone that is told when alerts wait for approval")
+    ap.add_argument("--remove-admin-device")
+    ap.add_argument("--list-admin-devices", action="store_true")
     ap.add_argument("--simulation", action="store_true", help="a test alert, to registered test phones only")
     ap.add_argument("--flood")
     ap.add_argument("--village")
@@ -58,6 +65,19 @@ def main() -> None:
             print(f"removed test phone {a.remove_test_device}")
         if a.list_test_devices:
             print("\n".join(d.id for d in db.stream()) or "(no test phones)")
+        return
+
+    if a.add_admin_device or a.remove_admin_device or a.list_admin_devices:
+        db = alerts.firestore_client().collection("admin_devices")
+        if a.add_admin_device:
+            db.document(a.add_admin_device).set({"added": datetime.now(timezone.utc)})
+            print(f"added admin phone {a.add_admin_device}: it is told when new alerts wait for approval "
+                  "(alerts must be switched on in the app on that phone)")
+        if a.remove_admin_device:
+            db.document(a.remove_admin_device).delete()
+            print(f"removed admin phone {a.remove_admin_device}")
+        if a.list_admin_devices:
+            print("\n".join(d.id for d in db.stream()) or "(no admin phones)")
         return
 
     if not a.simulation:

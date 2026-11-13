@@ -136,7 +136,7 @@ The app for villagers is a Progressive Web App in [pwa/](pwa/) (React and Vite),
 - **Wording.** The app says "possibly flooded road", "last seen passable", "supplies may run out (estimate)" and "possible route, not checked on the ground". It never says "safe route" or gives a relief arrival time.
 - **Languages.** Bangla (default) and English, switched in the top bar.
 
-Alerts are written and approved in a separate **admin panel** (`app/admin_app.py`) that opens only on the admin's own computer and needs the Firebase Admin key, which is kept outside the repository. Every alert goes through draft, approval (with a "source and date checked" box), sending, and cancellation or expiry, and every step is logged. Test alerts are marked SIMULATION and go only to registered test phones. Real alerts stay switched off unless `SAFEWINDOW_ALLOW_LIVE=1` is set.
+Alerts are written and approved in a separate **admin panel** (`app/admin_app.py`) that opens only on the admin's own computer and needs the Firebase Admin key, which is kept outside the repository. Every alert goes through draft, approval (with a "source and date checked" box), sending, and cancellation or expiry, and every step is logged. Test alerts are marked SIMULATION and go only to registered test phones. The 🔔 Test notification tab sends one with a single click to the test phones that have alerts on for a chosen village (logged as Demo, valid for 6 hours). Real alerts stay switched off unless `SAFEWINDOW_ALLOW_LIVE=1` is set.
 
 A **daily check** runs on GitHub Actions at 06:00 Bangladesh time ([.github/workflows/daily-check.yml](.github/workflows/daily-check.yml)): it looks for new Sentinel-1 images and NASA GPM IMERG rain over the monitored 2026 regions and writes `data/monitor/`. Rain is counted only for complete days (all 48 half-hour images), so a day NASA has not finished publishing is never under-counted. It sends no alert and does not turn rain into a forecast.
 
@@ -179,6 +179,8 @@ A role-based response layer on top of the village app. The flood results, the vi
 - **At least two independent signals must agree.** The level is then the second-highest vote, the cautious choice. The AI reader is one vote and can never raise an alert alone.
 - **The thresholds are working assumptions, not validated values.** So the watch's alerts are SIMULATION (test phones only). Real phones need two deliberate switches, `SAFEWINDOW_ALLOW_LIVE=1` and `SAFEWINDOW_ALLOW_UNVALIDATED_FORECAST=1`.
 - **The AI key never touches a file.** It is read only from `GEMINI_API_KEY` in the user's environment. Several Gemini models are tried in turn, in case one is busy or retired. `python scripts/watch.py --check-ai` tests the key with one tiny request and reports the reason if it fails, without showing the key.
+- **It can run on GitHub Actions** with the "Run workflow" button ([.github/workflows/watch.yml](.github/workflows/watch.yml); no schedule for now, the file says how to add one). It reads the flood maps from the published app, saves the flagged villages as **pending** alerts and sends nothing to any village. A village is not drafted again for the same satellite date (even after the admin rejected it) unless its level rises. It needs the repository secret `FIREBASE_ADMIN_KEY_JSON` (the Firebase Admin key file's text); `GEMINI_API_KEY` is an optional second secret for the AI reader.
+- **The admin is told.** When new alerts wait for approval, the phones registered as admin phones (`python scripts/send_alert.py --add-admin-device <id>`, or the admin panel's phones tab) get one notification with the number of alerts and the villages. It is shown, not kept as a village alert. The admin panel also shows a banner while alerts wait. The admin then opens the ✅ Approval tab and publishes each alert (after ticking "source and date checked") or rejects it with a reason.
 
 **Which forecasting method is most accurate?** (`scripts/benchmark_forecasts.py`, results in `data/benchmark/`). We tested 24 methods on four rivers (Surma at Sunamganj, Brahmaputra at Kurigram, Chenab at Trimmu, a small Terai stream at Bara-Parsa) at 1, 3 and 7 days ahead. The data was 29 years of free GloFAS discharge and ERA5 rain, and the test years were 2020–2025, which no model saw in training.
 - **Tree ensembles came first.** Random Forest and Extra Trees led, with GRU/LSTM networks and gradient boosting close behind. The top ten are practically tied (NSE within about 0.01).
@@ -386,6 +388,8 @@ They read only the pipeline's results and write new files next to them in `resul
 | Give an account the government role (Firebase Admin key) | `python scripts/provision_government.py <email>` |
 | Automated watch, now or replaying a past day | `python scripts/watch.py --flood sunamganj_2024`, or add `--as-of 2024-06-17` |
 | Check the AI key and model | `python scripts/watch.py --check-ai` |
+| Watch and put pending alerts in front of the admin (tells the admin phones) | `python scripts/watch.py --flood sunamganj_2024 --drafts --by "Name"` |
+| Register or list admin phones (told when alerts wait for approval) | `python scripts/send_alert.py --add-admin-device <id>`, `--list-admin-devices` |
 | River-flow forecast for each river | `python scripts/flow_forecast.py` |
 | Forecast benchmark (24 methods; `pip install -r requirements-benchmark.txt`) | `python scripts/benchmark_forecasts.py fetch`, `run`, `report` |
 | The app's own tests, and the security-rule tests (Firebase emulator) | `cd pwa; npm test`; `cd pwa/rules-tests; npm test` |
@@ -743,7 +747,7 @@ Further reading on NISAR for floods (background, not data inputs): the NISAR App
 - NISAR in both polarizations over the 2026 monsoon, with water only NISAR sees around each village;
 - the rescue platform for citizens, NGOs and government, with its rules enforced and tested on the server side;
 - the automated watch, the river-flow forecast and a 24-method forecast benchmark;
-- tests: 299 pytest tests, the app's own unit tests (14), security-rule tests against the Firebase emulator, and browser checks of the mobile app (main flow 34, flood replay 42, analyses 29, NISAR 29, buildings 21, profile 11).
+- tests: 305 pytest tests, the app's own unit tests (14), security-rule tests against the Firebase emulator, and browser checks of the mobile app (main flow 34, flood replay 42, analyses 29, NISAR 29, buildings 21, profile 11).
 
 **Open:**
 - an independent scientific review;

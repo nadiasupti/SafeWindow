@@ -506,6 +506,59 @@ def load_report(flood: str, report_dir: Path = REPORT_DIR) -> dict | None:
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
+def villages_to_draft(report: dict, existing: list[dict]) -> set[str]:
+    """Flagged villages that need a new draft. A village is skipped while an automated alert for the same flood and
+    satellite date already exists at the same or a higher level, whatever its status: one the admin rejected or
+    already sent does not come back every day, but it does come back if the level rises."""
+    have: dict[tuple, int] = {}
+    for a in existing:
+        if a.get("reason") == "ai_watch":
+            key = (a.get("flood"), a.get("village"), a.get("date"))
+            have[key] = max(have.get(key, 0), LEVEL_NUM.get(a.get("level"), 0))
+    return {r["village"] for r in report.get("villages", []) if r["level"] != "none"
+            and LEVEL_NUM[r["level"]] > have.get((report["flood"], r["village"], report["issue_date"]), 0)}
+
+
+# --- the app's data from the published app (for a run without the local pipeline output, e.g. GitHub Actions) ---
+
+PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+
+
+def _http_get_bytes(url: str, timeout: int = 60) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "SafeWindow-watch"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:        # noqa: S310 - the app's own https address
+        return r.read()
+
+
+def mirror_app_data(base_url: str, floods: list[str], dest: Path, get_bytes=None) -> Path:
+    """Copy what the watch reads (index.json; per flood villages.json, metadata.json and the flood maps) from the
+    published app into `dest`, and return `dest` to use as data_dir. The hosting answers a missing file with the
+    app's page, so a flood map is kept only if it really is a PNG, and a JSON file only if it parses."""
+    get_bytes = get_bytes or _http_get_bytes
+    base = base_url.rstrip("/")
+
+    def fetch_json(rel: str) -> bytes:
+        raw = get_bytes(f"{base}/{rel}")
+        try:
+            json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise FileNotFoundError(f"{base}/{rel} is not in the published app") from exc
+        return raw
+
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / "index.json").write_bytes(fetch_json("index.json"))
+    for flood in floods:
+        (dest / flood / "flood").mkdir(parents=True, exist_ok=True)
+        for name in ("villages.json", "metadata.json"):
+            (dest / flood / name).write_bytes(fetch_json(f"{flood}/{name}"))
+        meta = json.loads((dest / flood / "metadata.json").read_text(encoding="utf-8"))
+        for day in meta.get("dates", []):
+            png = get_bytes(f"{base}/{flood}/flood/{day.replace('-', '')}.png")
+            if png.startswith(PNG_MAGIC):
+                (dest / flood / "flood" / f"{day.replace('-', '')}.png").write_bytes(png)
+    return dest
+
+
 def draft_alerts(report: dict, by: str, *, simulation: bool = True, hours: int = 24, villages: set[str] | None = None,
                  data_dir: Path = alerts.APP_DATA) -> list[dict]:
     """Draft alerts (nothing sent) for the villages the watch flagged. The admin still approves each one."""

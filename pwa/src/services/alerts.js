@@ -8,7 +8,7 @@ import { getApp, getApps, initializeApp } from 'firebase/app'
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import { deleteToken, getMessaging, getToken, isSupported, onMessage } from 'firebase/messaging'
 import { VAPID_KEY, firebaseConfig } from '../firebaseConfig.js'
-import { alertFromData, saveAlert } from '../lib/alertStore.js'
+import { alertFromData, isAdminNotice, saveAlert } from '../lib/alertStore.js'
 
 const DOCS = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents`
 const TIMEOUT_MS = 60000         // a phone's first push registration can take a while
@@ -114,7 +114,7 @@ export async function listenInApp(onAlert) {
   return onMessage(getMessaging(firebase()), async ({ data }) => {
     if (!data?.id) return
     const alert = alertFromData(data)
-    await saveAlert(alert)
+    if (!isAdminNotice(alert)) await saveAlert(alert)      // an admin notice is only shown, not kept
     onAlert(alert)
   })
 }

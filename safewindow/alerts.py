@@ -296,6 +296,60 @@ def load_test_ids(db) -> set[str]:
     return {d.id for d in db.collection("test_devices").stream()}
 
 
+def load_admin_ids(db) -> set[str]:
+    """Phones of the people who approve alerts: told when new alerts wait for approval (admin_devices/{phone id})."""
+    return {d.id for d in db.collection("admin_devices").stream()}
+
+
+# --- telling the admin that alerts are waiting -------------------------------------------------------------
+
+ADMIN_TEXT = {
+    "bn": {"title": "🛡️ SafeWindow Admin · {n}টি সতর্কতা অনুমোদনের অপেক্ষায়",
+           "body": "স্বয়ংক্রিয় নজরদারি ({mode}, {d}): {list}। Admin panel খুলে যাচাই করুন, তারপর অনুমোদন বা বাতিল করুন। "
+                   "আপনি অনুমোদন না দিলে কোনো গ্রামে কিছু যাবে না।",
+           "level": {"watch": "পর্যবেক্ষণ", "warning": "সতর্কতা", "critical": "জরুরি"},
+           "mode": {"live": "সরাসরি", "replay": "অতীতের দিন"}, "more": "আরও {n}টি"},
+    "en": {"title": "🛡️ SafeWindow Admin · {n} alert(s) waiting for approval",
+           "body": "Automated watch ({mode}, {d}): {list}. Open the admin panel, check them, then approve or reject. "
+                   "No village is told anything until you approve.",
+           "level": {"watch": "watch", "warning": "warning", "critical": "critical"},
+           "mode": {"live": "live", "replay": "replay of a past day"}, "more": "{n} more"},
+}
+ADMIN_LIST_MAX = 4               # villages named in the notification; the rest are counted
+
+
+def admin_notice(drafts: list[dict], lang: str, now: datetime | None = None) -> dict:
+    """The FCM data message that tells an admin's phone how many alerts wait for approval. `kind: admin` lets the app
+    show it without keeping it as a village alert. All values are strings, like message_data."""
+    t, now = ADMIN_TEXT[lang], now or _now()
+    ranked = sorted(drafts, key=lambda r: -LEVELS.index(r["level"]))
+    names = [f"{r['preview'][lang]['title'].rsplit(' · ', 1)[-1]} ({t['level'][r['level']]})" for r in ranked[:ADMIN_LIST_MAX]]
+    if len(ranked) > ADMIN_LIST_MAX:
+        names.append(t["more"].format(n=len(ranked) - ADMIN_LIST_MAX))
+    first = ranked[0] if ranked else {}
+    mode = "live" if (first.get("forecast") or {}).get("mode") == "live" else "replay"
+    date = first.get("date")
+    n = len(drafts)
+    return {"id": f"admin-{uuid.uuid4().hex}", "kind": "admin", "level": first.get("level", "watch"),
+            "flood": first.get("flood", ""), "village": "",
+            "title": t["title"].format(n=str(n).translate(BN_DIGITS) if lang == "bn" else n),
+            "body": t["body"].format(mode=t["mode"][mode], d=day_text(date, lang) if date else "", list=", ".join(names)),
+            "simulation": "1", "cancelled": "0", "sent_at": _iso(now), "expires_at": _iso(now + timedelta(hours=24)),
+            "link": "/"}
+
+
+def notify_admins(drafts: list[dict], subscriptions: list[dict], admin_ids: set[str], sender,
+                  now: datetime | None = None) -> tuple[int, int]:
+    """Tell the admins' phones that `drafts` wait for approval. Nothing goes to any village. Returns (sent, failed).
+    An admin phone receives it only if alerts are switched on in the app on that phone (it then has a push address)."""
+    if not drafts:
+        return 0, 0
+    chosen = [s for s in subscriptions if s["uid"] in admin_ids]
+    if not chosen:
+        return 0, 0
+    return sender(chosen, {lang: admin_notice(drafts, lang, now) for lang in ("bn", "en")}, 24 * 3600)
+
+
 def save(db, rec: dict) -> dict:
     db.collection("alerts").document(rec["id"]).set(rec)
     return rec

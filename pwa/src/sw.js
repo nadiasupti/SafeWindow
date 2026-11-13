@@ -7,7 +7,7 @@ import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { NetworkFirst } from 'workbox-strategies'
 import { firebaseConfig } from './firebaseConfig.js'
-import { alertFromData, saveAlert } from './lib/alertStore.js'
+import { alertFromData, isAdminNotice, notificationTag, saveAlert } from './lib/alertStore.js'
 
 self.skipWaiting()
 clientsClaim()
@@ -29,12 +29,12 @@ const messaging = getMessaging(initializeApp(firebaseConfig))
 onBackgroundMessage(messaging, async ({ data }) => {
   if (!data?.id) return
   const alert = alertFromData(data)
-  await saveAlert(alert)
+  if (!isAdminNotice(alert)) await saveAlert(alert)      // an admin notice is only shown, not kept
   await self.registration.showNotification(alert.title, {
     body: alert.body,
     icon: '/icons/icon-192.png',
     badge: '/icons/maskable-192.png',
-    tag: `${alert.flood}-${alert.village}`,      // a newer alert for the same village replaces the old one
+    tag: notificationTag(alert),                 // a newer alert for the same village replaces the old one
     renotify: true,
     data: { link: alert.link },
   })

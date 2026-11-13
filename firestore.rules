@@ -3,7 +3,7 @@ rules_version = '2';
 // SafeWindow security rules.
 //
 // 1. Village alerts (app plan, step 2). Phones are anonymous Firebase users. Each may keep exactly one
-//    subscription, subscriptions/{its own uid}, and nothing else. `alerts` and `test_devices` are reachable only by
+//    subscription, subscriptions/{its own uid}, and nothing else. `alerts`, `test_devices` and `admin_devices` are reachable only by
 //    the Admin SDK (scripts/send_alert.py), which bypasses these rules.
 //
 // 2. Rescue platform (docs/ROLES_AND_RESCUE.md). Three roles on one platform:

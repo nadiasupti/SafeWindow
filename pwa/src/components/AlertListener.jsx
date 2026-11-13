@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ALERT_EVENT } from '../lib/alertStore.js'
+import { ALERT_EVENT, notificationTag } from '../lib/alertStore.js'
 import { listenInApp } from '../services/alerts.js'
 
 /**
@@ -16,7 +16,7 @@ export default function AlertListener() {
         const registration = await navigator.serviceWorker.ready
         await registration.showNotification(alert.title, {
           body: alert.body, icon: '/icons/icon-192.png', badge: '/icons/maskable-192.png',
-          tag: `${alert.flood}-${alert.village}`, renotify: true, data: { link: alert.link },
+          tag: notificationTag(alert), renotify: true, data: { link: alert.link },
         })
       } catch {
         // no permission to show it: the alert card still has it

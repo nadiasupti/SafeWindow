@@ -1,4 +1,4 @@
-import { Bell, Copy, Download, Languages, LocateFixed, MapPin, Package, Settings } from 'lucide-react'
+import { Bell, ChevronDown, Copy, Download, Languages, LocateFixed, MapPin, Package, Settings, Smartphone } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AlertSubscribe from '../components/AlertSubscribe.jsx'
@@ -20,14 +20,22 @@ import { useAppState } from '../state/appState.js'
 function Notifications() {
   const t = useT()
   const [id, setId] = useState(null)
+  const [state, setState] = useState('idle')       // idle | loading | ready | unavailable
   const [copied, setCopied] = useState(false)
 
   async function show() {
-    if ((await alertsAvailability()) !== 'ready') return
+    if (id) return
+    setState('loading')
+    if ((await alertsAvailability()) !== 'ready') {
+      setState('unavailable')
+      return
+    }
     try {
       setId(await deviceId())
+      setState('ready')
     } catch {
       setId(null)
+      setState('unavailable')
     }
   }
 
@@ -44,15 +52,26 @@ function Notifications() {
     <div className="card">
       <h2><Bell size={20} aria-hidden="true" /> {t('notif_title')}</h2>
       <AlertSubscribe />
-      <details>
-        <summary onClick={show}>{t('device_id_title')}</summary>
-        <p className="muted small">{t('device_id_help')}</p>
-        {id && (
-          <div className="row">
-            <code className="device-id">{id}</code>
-            <button className="btn secondary" onClick={copy}><Copy size={16} aria-hidden="true" /> {copied ? t('copied') : t('copy')}</button>
-          </div>
-        )}
+      <details className="device-box">
+        <summary className="device-summary" onClick={show}>
+          <span className="device-icon"><Smartphone size={20} aria-hidden="true" /></span>
+          <span className="device-text">
+            <strong>{t('device_id_title')}</strong>
+            <small>{t('device_id_tap')}</small>
+          </span>
+          <ChevronDown size={20} className="chev" aria-hidden="true" />
+        </summary>
+        <div className="device-body">
+          <p className="muted small">{t('device_id_help')}</p>
+          {state === 'loading' && <p className="small">{t('device_id_loading')}</p>}
+          {state === 'unavailable' && <p className="small">{t('device_id_unavailable')}</p>}
+          {id && (
+            <div className="row">
+              <code className="device-id">{id}</code>
+              <button className="btn secondary" onClick={copy}><Copy size={16} aria-hidden="true" /> {copied ? t('copied') : t('copy')}</button>
+            </div>
+          )}
+        </div>
       </details>
     </div>
   )

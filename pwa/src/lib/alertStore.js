@@ -50,8 +50,18 @@ export function alertFromData(data) {
   return {
     id: data.id, level: data.level, flood: data.flood, village: data.village,
     title: data.title, body: data.body, simulation: data.simulation === '1', cancelled: data.cancelled === '1',
-    sent_at: data.sent_at, expires_at: data.expires_at, link: data.link,
+    sent_at: data.sent_at, expires_at: data.expires_at, link: data.link, kind: data.kind || 'village',
   }
+}
+
+/** An admin notice ("alerts wait for approval") is shown on the admin's phone but never kept as a village alert. */
+export function isAdminNotice(alert) {
+  return alert.kind === 'admin'
+}
+
+/** Notifications for one village replace each other; admin notices replace each other. */
+export function notificationTag(alert) {
+  return isAdminNotice(alert) ? 'safewindow-admin' : `${alert.flood}-${alert.village}`
 }
 
 export function isActive(alert, now = new Date()) {

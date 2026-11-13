@@ -1,0 +1,62 @@
+# Automated flood watch, run by hand (README: "Automated watch and river forecasts").
+# Satellite water maps + river and rain forecasts + the optional AI reader -> PENDING alerts for the admin, and a
+# notification to the admin's phone. It never sends anything to a village: only the admin's approval in the admin
+# panel does that, and the watch's alerts are SIMULATION (test phones only).
+#
+# The flood maps are read from the published app (pwa/public/data is not in the repository).
+#
+# Repository secrets:
+#   FIREBASE_ADMIN_KEY_JSON  required: the whole text of the Firebase Admin key file (safewindow-3b759)
+#   GEMINI_API_KEY           optional: the AI reader; without it the other signals still run
+# The key is written to a temporary file on the runner and deleted with it; it is never printed or committed.
+name: Automated watch
+
+# It does not run on a schedule: start it with the "Run workflow" button on GitHub (Actions > Automated watch).
+# To run it every morning, add under `on:`  schedule: [{cron: "30 0 * * *"}]  (06:30 in Bangladesh).
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read                # it saves nothing in the repository
+
+concurrency:
+  group: automated-watch
+  cancel-in-progress: false
+
+env:
+  WATCH_FLOODS: sunamganj_2024                      # comma-separated flood ids from the app
+  APP_DATA_URL: https://safewindow-3b759.web.app/data
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: false            # only the small river-flow models are needed, fetched below
+
+      - name: Fetch the river-flow models
+        run: git lfs pull --include "data/forecast/flow/*.npz"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install what the watch needs
+        run: python -m pip install --quiet numpy pandas Pillow firebase-admin
+
+      - name: Run the watch and put pending alerts in front of the admin
+        env:
+          FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_ADMIN_KEY_JSON }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          if [ -z "$FIREBASE_KEY_JSON" ]; then
+            echo "::error::Add the repository secret FIREBASE_ADMIN_KEY_JSON (the Firebase Admin key file's text)."
+            exit 1
+          fi
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-key.json"
+          printf '%s' "$FIREBASE_KEY_JSON" > "$GOOGLE_APPLICATION_CREDENTIALS"
+          python scripts/watch.py --flood "$WATCH_FLOODS" --data-url "$APP_DATA_URL" \
+            --drafts --by "automated watch (GitHub Actions)"

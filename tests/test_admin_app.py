@@ -60,3 +60,46 @@ def test_panel_needs_the_admin_key(monkeypatch):
     with pytest.raises(SystemExit):
         admin_app.guard()
     assert "Admin key" in stopped[0]
+
+
+def test_one_click_test_notification_reaches_only_the_test_phones_of_that_village(monkeypatch):
+    from streamlit.testing.v1 import AppTest
+
+    from safewindow import alerts
+    village = "osm6123937356"
+    subs = [{"uid": "tester", "flood": "sunamganj_2022", "village": village, "token": "a", "lang": "bn"},
+            {"uid": "villager", "flood": "sunamganj_2022", "village": village, "token": "b", "lang": "bn"},
+            {"uid": "tester2", "flood": "sunamganj_2022", "village": "elsewhere", "token": "c", "lang": "en"}]
+    saved, sent_to = [], []
+
+    def sender(db):
+        def send(chosen, data, ttl):
+            sent_to.append([s["uid"] for s in chosen])
+            return len(chosen), 0
+        return send
+    # the app runs in this process, so monkeypatch reaches it and puts everything back afterwards
+    monkeypatch.setattr(alerts, "load_subscriptions", lambda db: subs)
+    monkeypatch.setattr(alerts, "load_test_ids", lambda db: {"tester", "tester2"})
+    monkeypatch.setattr(alerts, "load_alerts", lambda db: [])
+    monkeypatch.setattr(alerts, "save", lambda db, rec: saved.append(rec) or rec)
+    monkeypatch.setattr(alerts, "fcm_sender", sender)
+    monkeypatch.setattr(admin_app, "db", lambda: None)
+    script = f"""
+import sys
+sys.path.insert(0, r"{ROOT / 'app'}")
+sys.path.insert(0, r"{ROOT}")
+import admin_app
+admin_app.tab_test("Tester")
+"""
+    at = AppTest.from_string(script, default_timeout=90).run()
+    assert not at.exception
+    box = at.selectbox(key="test_flood")
+    assert "2022" in box.options[box.index]                             # starts on the test phone's flood
+    assert at.selectbox(key="test_village").index == next(           # and on its village
+        i for i, o in enumerate(at.selectbox(key="test_village").options) if o.startswith("Dholkotob"))
+    at.button(key="test_send").click().run()
+    assert not at.exception
+    assert sent_to == [["tester"]]                                      # not the villager, not another village
+    rec, = saved
+    assert rec["status"] == "published" and rec["simulation"] and rec["demo"] and rec["village"] == village
+    assert rec["level"] == "warning" and rec["preview"]["en"]["title"].startswith("SIMULATION")
