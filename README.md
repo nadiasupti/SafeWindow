@@ -66,8 +66,8 @@ The same code and the same thresholds were used for all three floods. Nothing wa
 
 **NISAR through the 2026 monsoon** (details under [NASA-ISRO NISAR](#nasa-isro-nisar-polarizations-the-monsoon-season-and-hidden-water)):
 - **The haor drains.** On one NISAR orbit track over Sunamganj (track 069, every 12 days), HV water falls from 642 km² in June to 503 km² on 16 October.
-- **Newest NISAR data.** Four passes from NASA's validated NISAR product (`NISAR_L2_GCOV_V1`, released from 21 October 2026) extend Sunamganj to 9 November 2026. They are kept apart from the season series: the product changed, and three of them are on other orbit tracks.
-- **HV is the more robust polarization here.** It gives a water map on all 18 NISAR dates; HH does on 7. When both work they agree (IoU 0.63–0.93).
+- **Newest NISAR data.** Four passes from NASA's validated NISAR product (`NISAR_L2_GCOV_V1`, released from 21 October 2026) extend Sunamganj to 9 November 2026, and three more extend Trimmu to 6 November 2026. They are kept apart from the season series: the product changed, and three of them are on other orbit tracks.
+- **HV is the more robust polarization here.** It gives a water map on all 21 NISAR dates; HH does on 7. When both work they agree (IoU 0.63–0.93).
 - **Water under crops.** Around Trimmu's villages NISAR sees a median 37 points more water than Sentinel-1 on 12 July, when the rice paddies are flooded for transplanting.
 
 **Planning analyses** (from the same results, nothing re-tuned; details under [Planning analyses](#planning-analyses-road-criticality-and-relief-pre-positioning)):
@@ -531,7 +531,7 @@ A demonstration that the unchanged method runs in a third country (`regions/nepa
 
 | NASA data | Test | Result |
 |---|---|---|
-| **NISAR** (NASA-ISRO, L-band) | SafeWindow's flood vs NISAR water, 1–3 days apart, Sunamganj and Trimmu 2026, in HH and HV | 94.7–97.8% of SafeWindow's flood is also water in NISAR HH. HV gives a water map on all 18 dates; HH on only 7 (its threshold falls outside the rule on 11). NISAR also sees water under crops, which SafeWindow intentionally does not count. |
+| **NISAR** (NASA-ISRO, L-band) | SafeWindow's flood vs NISAR water, 1–3 days apart, Sunamganj and Trimmu 2026, in HH and HV | 94.7–97.8% of SafeWindow's flood is also water in NISAR HH. HV gives a water map on all 21 dates; HH on only 7 (its threshold falls outside the rule on 14). NISAR also sees water under crops, which SafeWindow intentionally does not count. |
 | **OPERA DSWx-S1** | Both maps against the same Copernicus EMS references, Trimmu 2025 | Where SafeWindow and OPERA agree, 84–92% of the flood is confirmed by EMS. This gives a high-confidence class. |
 | **GPM IMERG** | Which rain window best tracks the flooded area | Upstream rain leads the flood by about 5 days at Trimmu, and by 0–3 days in the haor. Exploratory: about 9 radar dates per flood. |
 | **NASADEM** slope mask | Benchmark with and without the mask, 3 floods | In these flat floodplains the mask lowers IoU by 0.006–0.054. Kept unchanged, to avoid tuning on test data. |
@@ -555,9 +555,11 @@ NISAR science data is public from 17 June 2026, so this uses the 2026 monsoon ov
 | Trimmu, 24 Jul | 25 Jul | 94.7% / 96.8% |
 | Trimmu, 12 Jul | 13 Jul | no HH map / 89.2% |
 
-**The season (Sunamganj, track 069, every 12 days).** HV water: 642 km² (18 Jun), 655 (30 Jun), 638 (12 Jul), 656 (24 Jul), 639 (17 Aug), 633 (29 Aug), 623 (10 Sep), 583 (22 Sep), 552 (4 Oct), 503 (16 Oct). The haor stays full through the monsoon and drains from September. HH gives a map on only 7 of the 18 NISAR dates in both areas, because its threshold falls outside the rule's range; HV does on all 18.
+**The season (Sunamganj, track 069, every 12 days).** HV water: 642 km² (18 Jun), 655 (30 Jun), 638 (12 Jul), 656 (24 Jul), 639 (17 Aug), 633 (29 Aug), 623 (10 Sep), 583 (22 Sep), 552 (4 Oct), 503 (16 Oct). The haor stays full through the monsoon and drains from September. HH gives a map on only 7 of the 21 NISAR dates in both areas, because its threshold falls outside the rule's range; HV does on all 21.
 
 **Newest passes (validated product V1, 21 October to 9 November 2026).** HV water: 779 km² (21 Oct, track 141), 813 (30 Oct, track 091), 805 (2 Nov, track 141) and 554 (9 Nov, track 069). Tracks 141 and 091 cover the whole study area, while track 069 loses about 152 km² at its frame edge, so only track 069 can be set beside the series above. There, 9 November (554 km²) is higher than 16 October (503 km²), yet almost no rain fell in early November (under 1 mm a day). The HV threshold is the same (−18.9 dB), but HH backscatter is about 1 dB lower in the new product, so the change is more likely the product (or fields flooded for winter rice) than a new flood. None of these four dates has a Sentinel-1 map within 3 days.
+
+**Trimmu, newest passes (V1).** HV water: 414 km² (25 Oct, track 012), 486 (28 Oct, track 063) and 503 (6 Nov, track 012). Only 28 October is on the track of the earlier Trimmu dates (453 km² on 12 Jul, 403 on 24 Jul); with the product change, that difference is not a measured change in flooding. A fourth pass (23 Oct) covered too little of the study area to map and is left out.
 
 **Water only NISAR sees, around each village** (`scripts/nisar_village_water.py`). L-band (about 24 cm) passes between plants; C-band (about 6 cm) stops at the leaves. So where NISAR sees water and Sentinel-1 does not, the likeliest cause is water under vegetation.
 - **Trimmu, 12 July:** the median village has 37 points more water within 3 km in NISAR than in Sentinel-1. The largest gaps are 45–62% water in NISAR against 2–3% in Sentinel-1, when the kharif rice paddies are flooded for transplanting.

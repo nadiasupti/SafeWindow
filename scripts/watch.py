@@ -86,10 +86,7 @@ def summary(report: dict, drafts: list[dict] | None) -> None:
         if drafts is not None:
             lines += ["", f"**{len(drafts)} new alert(s) wait for the admin's approval.** Nothing was sent to any village."]
     with open(path, "a", encoding="utf-8") as f:
-        f.write("
-".join(lines) + "
-
-")
+        f.write("\n".join(lines) + "\n\n")
 
 
 def check_ai() -> int:

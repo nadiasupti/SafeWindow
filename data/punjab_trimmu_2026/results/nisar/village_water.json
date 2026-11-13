@@ -458,6 +458,27 @@
    "hv_km2": 402.9,
    "s1_km2": 57.9,
    "s1_date": "2026-07-25"
+  },
+  {
+   "date": "2026-10-25",
+   "hh_km2": null,
+   "hv_km2": 414.3,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-10-28",
+   "hh_km2": null,
+   "hv_km2": 486.1,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-11-06",
+   "hh_km2": null,
+   "hv_km2": 503.2,
+   "s1_km2": null,
+   "s1_date": null
   }
  ]
 }

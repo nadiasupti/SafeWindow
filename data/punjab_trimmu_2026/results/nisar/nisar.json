@@ -1,6 +1,9 @@
 {
  "region": "punjab_trimmu_2026",
- "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
+ "product": [
+  "NISAR_L2_GCOV_PROVISIONAL_V1",
+  "NISAR_L2_GCOV_V1"
+ ],
  "bounds": [
   [
    30.7138179814381,
@@ -27,6 +30,7 @@
   {
    "date": "2026-06-18",
    "granule": "NISAR_L2_PR_GCOV_023_063_D_073_4005_DHDH_A_20260618T135557_20260618T135632_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -10.38,
     "status": "otsu_failed",
@@ -58,6 +62,7 @@
   {
    "date": "2026-07-12",
    "granule": "NISAR_L2_PR_GCOV_025_063_D_073_4005_DHDH_A_20260712T135556_20260712T135631_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.38,
     "status": "otsu_failed",
@@ -114,6 +119,7 @@
   {
    "date": "2026-07-24",
    "granule": "NISAR_L2_PR_GCOV_026_063_D_073_4005_DHDH_A_20260724T135555_20260724T135630_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -12.12,
     "status": "otsu",
@@ -180,6 +186,102 @@
     "hh_water": "20260724_hh_water.png",
     "hv_water": "20260724_hv_water.png",
     "s1_water": "20260724_s1_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-10-25",
+   "granule": "NISAR_L2_PR_GCOV_034_012_A_017_4005_DHDH_A_20261025T002948_20261025T003023_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -9.62,
+    "status": "otsu_failed",
+    "water_km2": 0.0
+   },
+   "hv": {
+    "threshold_db": -17.12,
+    "status": "otsu",
+    "water_km2": 414.3
+   },
+   "hh_vs_hv": {
+    "compared_km2": 0.0,
+    "a_km2": 0.0,
+    "b_km2": 0.0,
+    "iou": null,
+    "share_of_a_in_b": null,
+    "share_of_b_in_a": null
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261025_hh.webp",
+    "hv": "20261025_hv.webp",
+    "rgb": "20261025_rgb.webp",
+    "hv_water": "20261025_hv_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-10-28",
+   "granule": "NISAR_L2_PR_GCOV_034_063_D_073_4005_DHDH_A_20261028T135555_20261028T135629_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -9.62,
+    "status": "otsu_failed",
+    "water_km2": 0.0
+   },
+   "hv": {
+    "threshold_db": -16.62,
+    "status": "otsu",
+    "water_km2": 486.1
+   },
+   "hh_vs_hv": {
+    "compared_km2": 0.0,
+    "a_km2": 0.0,
+    "b_km2": 0.0,
+    "iou": null,
+    "share_of_a_in_b": null,
+    "share_of_b_in_a": null
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261028_hh.webp",
+    "hv": "20261028_hv.webp",
+    "rgb": "20261028_rgb.webp",
+    "hv_water": "20261028_hv_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-11-06",
+   "granule": "NISAR_L2_PR_GCOV_035_012_A_017_4005_DHDH_A_20261106T002949_20261106T003023_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -10.12,
+    "status": "otsu_failed",
+    "water_km2": 0.0
+   },
+   "hv": {
+    "threshold_db": -17.12,
+    "status": "otsu",
+    "water_km2": 503.2
+   },
+   "hh_vs_hv": {
+    "compared_km2": 0.0,
+    "a_km2": 0.0,
+    "b_km2": 0.0,
+    "iou": null,
+    "share_of_a_in_b": null,
+    "share_of_b_in_a": null
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261106_hh.webp",
+    "hv": "20261106_hv.webp",
+    "rgb": "20261106_rgb.webp",
+    "hv_water": "20261106_hv_water.png"
    },
    "frame_edge_removed_km2": 0.0
   }
