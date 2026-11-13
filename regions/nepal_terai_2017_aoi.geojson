@@ -1,0 +1,40 @@
+{
+ "type": "FeatureCollection",
+ "name": "nepal_terai_2017_aoi",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Bara-Parsa, Nepal: August 2017 Terai flood",
+    "source": "rectangle from bbox"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       84.7,
+       26.55
+      ],
+      [
+       85.25,
+       26.55
+      ],
+      [
+       85.25,
+       26.95
+      ],
+      [
+       84.7,
+       26.95
+      ],
+      [
+       84.7,
+       26.55
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

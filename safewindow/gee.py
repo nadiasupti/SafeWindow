@@ -46,9 +46,18 @@ def retry_ee_download(url: str, attempts: int = 4, delay_seconds: float = 2.0) -
 
 
 def init():
+    """Start Earth Engine with your own login, or, when EE_SERVICE_ACCOUNT_KEY points at a service-account key
+    file (used by the daily automation, kept outside the repository), with that account."""
+    import json
+
     import ee
     project = os.environ.get("EE_PROJECT")
+    key = os.environ.get("EE_SERVICE_ACCOUNT_KEY")
     try:
+        if key:
+            info = json.loads(Path(key).read_text(encoding="utf-8"))
+            ee.Initialize(ee.ServiceAccountCredentials(info["client_email"], key), project=project or info["project_id"])
+            return ee
         ee.Initialize(project=project)
     except Exception as exc:  # noqa: BLE001 - give a clear next step
         raise SystemExit(

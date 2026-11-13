@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
@@ -55,6 +55,8 @@ class Region:
     references: dict
     road_reports: list[dict]
     source: Path
+    emergency_contacts: list[dict] = field(default_factory=list)
+    health_csv: Path | None = None
 
 
 def utm_epsg(lon: float, lat: float) -> str:
@@ -162,6 +164,17 @@ def parse(raw: dict, source: Path) -> Region:
     if shelters_csv is not None and not shelters_csv.is_absolute():
         shelters_csv = source.parent / shelters_csv
 
+    contacts = []
+    for i, c in enumerate(raw.get("emergency_contacts") or []):
+        if not isinstance(c, dict) or not c.get("name") or not c.get("number"):
+            raise ValueError(f"{source}: emergency_contacts[{i}] needs a name and a number")
+        contacts.append({str(k): str(v) for k, v in c.items()})   # name_<lang> keys give a local name
+
+    # an optional local list of hospitals and clinics (name, lat, lon), relative to the region file
+    health_csv = Path(raw["health_csv"]) if raw.get("health_csv") else None
+    if health_csv is not None and not health_csv.is_absolute():
+        health_csv = source.parent / health_csv
+
     return Region(
         id=str(raw["id"]),
         name=str(raw.get("name", raw["id"])),
@@ -189,6 +202,8 @@ def parse(raw: dict, source: Path) -> Region:
         references=dict(raw.get("references") or {}),
         road_reports=reports,
         source=source,
+        emergency_contacts=contacts,
+        health_csv=health_csv,
     )
 
 

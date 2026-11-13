@@ -1,0 +1,42 @@
+# SafeWindow region for Bara-Parsa, Nepal: August 2017 Terai flood. Created by scripts/new_region.py.
+# Method thresholds are not here: every region is analysed with the same rules (safewindow/config.py).
+
+id: nepal_terai_2017
+name: "Bara-Parsa, Nepal: August 2017 Terai flood"
+
+area:
+  boundary_file: nepal_terai_2017_aoi.geojson     # a rectangle from the bbox; replace with the real outline if you have one
+  country: "Nepal"
+  iso3: NPL               # WorldPop country code
+  bbox: [84.7, 26.55, 85.25, 26.95]   # lon/lat: west, south, east, north
+
+crs: auto                            # UTM zone of the bbox centre; set an EPSG code by hand if it warns
+
+dates:
+  flood: ["2017-08-05", "2017-08-31"]
+  dry_reference: ["2017-02-01", "2017-04-15"]   # a dry, unflooded season for this area
+  app: ["2017-08-05", "2017-08-31"]
+
+rain_boxes:
+  area: [84.7, 26.55, 85.25, 26.95]
+  # Siwalik and Mahabharat hills north of the plain: heavy rain there feeds the Bakaiya, Lal Bakeya and Bagmati rivers.
+  hills_north: [84.60, 26.95, 85.40, 27.50]
+rain_labels:
+  area: {en: "Terai plain", ne: "तराई मैदान"}
+  hills_north: {en: "Hills to the north (upstream)", ne: "उत्तरका पहाड (उजान)"}
+
+settlements: osm
+shelters_csv: null                   # a local list (name, lat, lon) is better than OSM candidates
+
+supply_days: {default: 7, min: 2, max: 14}   # ASSUMPTION, not a measurement
+
+languages: ["en", "ne"]
+agencies: ["DHM", "NDRRMA"]
+
+# Numbers printed on the evacuation card. Without any, the card shows the international number 112.
+# Check every number with local partners before use.
+emergency_contacts:
+  - {name: "Police", number: "100"}
+  - {name: "Fire", number: "101"}
+  - {name: "Ambulance", number: "102"}
+

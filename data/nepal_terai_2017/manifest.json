@@ -1,0 +1,379 @@
+{
+  "project": "SafeWindow",
+  "generated_at_utc": "2026-10-25T17:14:33.110039+00:00",
+  "python": "3.14.6",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "data_dir": "I:\\Safewindow\\data\\nepal_terai_2017",
+  "data_label": "DEMONSTRATION ONLY - August 2017 Terai flood, Bara-Parsa, Nepal, from Sentinel-1 radar with the unchanged Sunamganj method. Only 3 of 8 radar dates could be mapped (16, 20 and 28 Aug); the main flood peak (11-14 Aug) could not, so the pipeline own check says NO-GO and no pre-peak map exists. The area was chosen where the radar showed the most flood water. NOT VALIDATED against an independent flood map; OSM shelter candidates are not verified shelters. Follow official flood alerts (DHM, NDRRMA).",
+  "data_files": [
+    {
+      "path": "app\\cut_roads.geojson",
+      "sha256": "2386533ef982adccb8a2d0126e1a733010843a887d663bf7c66d6ae6ede45c6b",
+      "bytes": 810787
+    },
+    {
+      "path": "app\\exit_routes.geojson",
+      "sha256": "48e2b5d2236e6a54d55cbe87dc1e220bf9ba47b08f9b9a80e8b3ff844159b2a4",
+      "bytes": 194
+    },
+    {
+      "path": "app\\flood\\20170808.png",
+      "sha256": "32ee3304e4052aa580e8dcec73489115cdd7b4350cd106b666f65d72d0f7e41b",
+      "bytes": 15818
+    },
+    {
+      "path": "app\\flood\\20170811.png",
+      "sha256": "32ee3304e4052aa580e8dcec73489115cdd7b4350cd106b666f65d72d0f7e41b",
+      "bytes": 15818
+    },
+    {
+      "path": "app\\flood\\20170813.png",
+      "sha256": "32ee3304e4052aa580e8dcec73489115cdd7b4350cd106b666f65d72d0f7e41b",
+      "bytes": 15818
+    },
+    {
+      "path": "app\\flood\\20170816.png",
+      "sha256": "42b6a13eddd5977aa413b4e4f820342576da8ead599a8c8279c451f2f28bce44",
+      "bytes": 271366
+    },
+    {
+      "path": "app\\flood\\20170820.png",
+      "sha256": "1c0c9751d74a14e3333a5e20efaf8108148ed333bddb71e041f0772bf24e24f1",
+      "bytes": 244246
+    },
+    {
+      "path": "app\\flood\\20170823.png",
+      "sha256": "32ee3304e4052aa580e8dcec73489115cdd7b4350cd106b666f65d72d0f7e41b",
+      "bytes": 15818
+    },
+    {
+      "path": "app\\flood\\20170825.png",
+      "sha256": "32ee3304e4052aa580e8dcec73489115cdd7b4350cd106b666f65d72d0f7e41b",
+      "bytes": 15818
+    },
+    {
+      "path": "app\\flood\\20170828.png",
+      "sha256": "081d0ff8de25bbce351cad0284ff20a2f8d2a9f177eaf95a27f52fb1e6cf26c1",
+      "bytes": 148768
+    },
+    {
+      "path": "app\\health.geojson",
+      "sha256": "cd784e514a82812959237826bb7935b4597374197caa67019033c6f9e8bc751d",
+      "bytes": 6824
+    },
+    {
+      "path": "app\\meta.json",
+      "sha256": "6bbf009833287116953416ac8e79573ffd6a4e320beeb86cf44d28b376705d4a",
+      "bytes": 2801
+    },
+    {
+      "path": "app\\rainfall_daily.csv",
+      "sha256": "18ee5bb70791f91d0799f46f572e4d3afaf07e8737e80922d8ae9c0023b55592",
+      "bytes": 588
+    },
+    {
+      "path": "app\\roads.geojson",
+      "sha256": "4076a9b441d25e67fb792efca5cdc2f73f36e29b8412533e276ed572e3e7ead6",
+      "bytes": 2202479
+    },
+    {
+      "path": "app\\sensitivity_summary.csv",
+      "sha256": "b779dc827d27bdab29f0a92e8e29f43c8a6d16bf7ae66cff75dd497f3b7d4ba9",
+      "bytes": 136
+    },
+    {
+      "path": "app\\shelters.geojson",
+      "sha256": "1560a48e4d26bd9900625db0896a5ccee76bbb70748a694b735b2d18a5943881",
+      "bytes": 55669
+    },
+    {
+      "path": "app\\study_area.geojson",
+      "sha256": "f85b1ac01d9eab10271369f2f25f19355075624f705053e21f565aabe3d968fc",
+      "bytes": 378
+    },
+    {
+      "path": "app\\village_status.csv",
+      "sha256": "6dd39bed9455a87644f87128a39531ad64f25efbf68b6e2472ac86e44f9975f9",
+      "bytes": 55219
+    },
+    {
+      "path": "app\\villages.geojson",
+      "sha256": "95117f6c261456369644a73fca499bafdc52dcaa3caa85ae08a845d039f27215",
+      "bytes": 95940
+    },
+    {
+      "path": "DATA_LABEL",
+      "sha256": "fddf24d4c9fe50c8e38d96ac72179301bd1526eeb8fea2b00fa88f9200cd160f",
+      "bytes": 499
+    },
+    {
+      "path": "processed\\bridges.gpkg",
+      "sha256": "8400571447aa6164f741fc7c9219687435bd19be532571f3750bfa05f3d725a0",
+      "bytes": 131072
+    },
+    {
+      "path": "processed\\flood\\manifest.csv",
+      "sha256": "264b48fb5d7a15040ccd9cc30c43679a7d18c3c661aafb72d243ccac36d0bd18",
+      "bytes": 774
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-08.png",
+      "sha256": "fc3f4eb0ad5e5024e8a002f514fb2b1726cd44ab44a89073ca7a67123890a26a",
+      "bytes": 27197
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-11.png",
+      "sha256": "ac150158675fc57e82b452ab539315827eec27be50815d2496bf367dff5f9554",
+      "bytes": 26629
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-13.png",
+      "sha256": "d9b994bd5e350cb8ca0eed101500685bfa9e91578dd41c1ddecbcb93d6545371",
+      "bytes": 26021
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-16.png",
+      "sha256": "e77bd1c4abdcdb1f29acfe39492ff290eb8f3d3480769e7a39c931311ff5957b",
+      "bytes": 22139
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-20.png",
+      "sha256": "eca5e4c35217161acf92a0bbc4458a9d89a2185183cc1fa5196a0160084c43a8",
+      "bytes": 22347
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-23.png",
+      "sha256": "6461a2555a629fba91df2ef3b847972273a09119ea16891e0041a0c3e4ea690e",
+      "bytes": 27823
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-25.png",
+      "sha256": "cd4e682a3f4bb96973816c6c455381d86dfe5cbbceb96e7de9fd4d1197501891",
+      "bytes": 26447
+    },
+    {
+      "path": "processed\\flood\\otsu\\otsu_2017-08-28.png",
+      "sha256": "3ffca9f965c1e290a9ff1f00816b433077853e041d6626ad879fe39d2d528cb6",
+      "bytes": 23949
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170808.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170811.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170813.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170816.tif",
+      "sha256": "500a6aa8f62459e132b02f87380c5d2f17dedccc3747d966b682c2a9d4913f36",
+      "bytes": 352000
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170820.tif",
+      "sha256": "27ecac91b2ddeb74f7cfca840f23826369a47fc727fc298058c1bc831b7b26d2",
+      "bytes": 321718
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170823.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170825.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood\\sentinel1_20170828.tif",
+      "sha256": "07041226b91a38d0849f850dfa70377c07ae6ee796eb84a4a3ba3207f7f4fb56",
+      "bytes": 210357
+    },
+    {
+      "path": "processed\\flood\\sentinel1_log.csv",
+      "sha256": "98ecf700578e9b76682ea1de579e3746c82679264625ebc0da7cb4282f906edb",
+      "bytes": 339
+    },
+    {
+      "path": "processed\\flood_merged\\20170808.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood_merged\\20170811.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood_merged\\20170813.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood_merged\\20170816.tif",
+      "sha256": "500a6aa8f62459e132b02f87380c5d2f17dedccc3747d966b682c2a9d4913f36",
+      "bytes": 352000
+    },
+    {
+      "path": "processed\\flood_merged\\20170820.tif",
+      "sha256": "27ecac91b2ddeb74f7cfca840f23826369a47fc727fc298058c1bc831b7b26d2",
+      "bytes": 321718
+    },
+    {
+      "path": "processed\\flood_merged\\20170823.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood_merged\\20170825.tif",
+      "sha256": "4b969fbf1921f7ae49416d0e3cacfd3af74e59f268d9e07459720b9388e9a093",
+      "bytes": 39654
+    },
+    {
+      "path": "processed\\flood_merged\\20170828.tif",
+      "sha256": "07041226b91a38d0849f850dfa70377c07ae6ee796eb84a4a3ba3207f7f4fb56",
+      "bytes": 210357
+    },
+    {
+      "path": "processed\\flood_merged\\summary.csv",
+      "sha256": "caabbb96537d91bde6b89a0e200a73ae2b8db97a84f2396fc21454c6fa4e8b1b",
+      "bytes": 294
+    },
+    {
+      "path": "processed\\grid.json",
+      "sha256": "055e4104a327014816d9ac1909dc41c344db1953104da5cfdc0c8ffe7726f4f9",
+      "bytes": 123
+    },
+    {
+      "path": "processed\\rainfall_daily.csv",
+      "sha256": "18ee5bb70791f91d0799f46f572e4d3afaf07e8737e80922d8ae9c0023b55592",
+      "bytes": 588
+    },
+    {
+      "path": "processed\\road_edges.gpkg",
+      "sha256": "df0b7a94bee6954abc79caecf20da25f9feb3092495c6dc7febb102966b5ff50",
+      "bytes": 14479360
+    },
+    {
+      "path": "processed\\road_nodes.gpkg",
+      "sha256": "4f04c55f07d324f2076b322035448524bcb36997cf05e030303937207619511d",
+      "bytes": 3649536
+    },
+    {
+      "path": "processed\\roads.graphml",
+      "sha256": "d58026c3572566b2a7dff5f0d6d4b424b2b648b5d0d57451c1ce9059f42c778d",
+      "bytes": 58579216
+    },
+    {
+      "path": "processed\\shelters_candidates.csv",
+      "sha256": "833cb71540a7a16dc1f1b63a57f82fe9d6dc78456343aeeea7daf46cf1a1c05c",
+      "bytes": 21686
+    },
+    {
+      "path": "processed\\study_area.gpkg",
+      "sha256": "1445ed6e69be57e9a71f5e7af60db8845ee1ed786ca22ad619c7dbd6da386b12",
+      "bytes": 98304
+    },
+    {
+      "path": "processed\\villages.gpkg",
+      "sha256": "9f45f21a22317ddbf3a0977d9a41c68abdf75352c1b7de283ef1449e6229979d",
+      "bytes": 122880
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-16_class.tif",
+      "sha256": "500a6aa8f62459e132b02f87380c5d2f17dedccc3747d966b682c2a9d4913f36",
+      "bytes": 352000
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-16_swath.tif",
+      "sha256": "957efa01c8f80d3e37043a768ce270919db565ab163bb1136dda6e274627cd8c",
+      "bytes": 56232
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-20_class.tif",
+      "sha256": "27ecac91b2ddeb74f7cfca840f23826369a47fc727fc298058c1bc831b7b26d2",
+      "bytes": 321718
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-20_swath.tif",
+      "sha256": "957efa01c8f80d3e37043a768ce270919db565ab163bb1136dda6e274627cd8c",
+      "bytes": 56232
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-28_class.tif",
+      "sha256": "07041226b91a38d0849f850dfa70377c07ae6ee796eb84a4a3ba3207f7f4fb56",
+      "bytes": 210357
+    },
+    {
+      "path": "raw\\sentinel1\\s1_2017-08-28_swath.tif",
+      "sha256": "957efa01c8f80d3e37043a768ce270919db565ab163bb1136dda6e274627cd8c",
+      "bytes": 56232
+    },
+    {
+      "path": "raw\\worldpop_2020.tif",
+      "sha256": "e51b9c02ad14e2f19e6239ad3f914b31a915c9f68ad43c0501ba00fb41f8b102",
+      "bytes": 119575
+    },
+    {
+      "path": "results\\exit_routes.gpkg",
+      "sha256": "8b048993fff9235631503c19091d3d7fb4ebe93b5497175008182b657436c67d",
+      "bytes": 98304
+    },
+    {
+      "path": "results\\road_cut_summary.csv",
+      "sha256": "b5d76bc38c9d6236a0f4f19f30cf30a7cd860ec8e5cd62f693b620221dfaa05b",
+      "bytes": 309
+    },
+    {
+      "path": "results\\road_status.csv",
+      "sha256": "0c4635b882fe18b2076c2b76469a164c2e333d504a1b90396d725e370c0d11d8",
+      "bytes": 21074369
+    },
+    {
+      "path": "results\\sensitivity.csv",
+      "sha256": "9f6bd972bbc990fa9dc236153cb2fa42b5660044f964e65686df7793cd9c8b09",
+      "bytes": 684
+    },
+    {
+      "path": "results\\sensitivity_summary.csv",
+      "sha256": "b779dc827d27bdab29f0a92e8e29f43c8a6d16bf7ae66cff75dd497f3b7d4ba9",
+      "bytes": 136
+    },
+    {
+      "path": "results\\shelters_snapped.csv",
+      "sha256": "5ef4fea4c7ac258a1aa8159df7d60060295d05e3b0bb8ca82e19225c84bc69f8",
+      "bytes": 30010
+    },
+    {
+      "path": "results\\village_status.csv",
+      "sha256": "c2674eac4793554825b915c2f9cfe27e9e332f812b0b44f7d35ffb4efd4a8869",
+      "bytes": 180136
+    },
+    {
+      "path": "results\\village_summary.csv",
+      "sha256": "dc987c3efd419aa4e6ae3e62d8a77243bd1bfb10f5f0e2798131d374bc66be45",
+      "bytes": 10500
+    },
+    {
+      "path": "results\\villages_snapped.csv",
+      "sha256": "3dc6b1560768004d21f76a5e9659982c4a3a0fcb297d825e80658951c03b6916",
+      "bytes": 13462
+    }
+  ],
+  "model": null,
+  "configuration": {
+    "region": "nepal_terai_2017",
+    "crs": "EPSG:32645",
+    "grid_res_m": 20,
+    "cut_threshold": 0.2,
+    "boat_dependent_m": 500,
+    "default_supply_days": 7
+  }
+}

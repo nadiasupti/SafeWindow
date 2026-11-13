@@ -51,3 +51,7 @@ road_reports:
     source: "The Daily Observer (observerbd.com), 18 June 2024"
     url: "https://observerbd.com/news.php?id=477288"
     quote: "Several sections of major roads such as ... Chhatak-Dowarabazar have been inundated."
+
+# Numbers shown on the evacuation card. Check each one with local partners before use.
+emergency_contacts:
+  - {name: "National Emergency Service", name_bn: "জাতীয় জরুরি সেবা", number: "999"}

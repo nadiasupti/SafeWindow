@@ -1,0 +1,527 @@
+rules_version = '2';
+
+// SafeWindow security rules.
+//
+// 1. Village alerts (app plan, step 2). Phones are anonymous Firebase users. Each may keep exactly one
+//    subscription, subscriptions/{its own uid}, and nothing else. `alerts` and `test_devices` are reachable only by
+//    the Admin SDK (scripts/send_alert.py), which bypasses these rules.
+//
+// 2. Rescue platform (docs/ROLES_AND_RESCUE.md). Three roles on one platform:
+//      citizen     any signed-in, non-anonymous account (two assistance profiles inside the role)
+//      NGO         an active member of an NGO that government has APPROVED (ngo_members + ngos)
+//      government  a custom claim role == "gov", set only by scripts/provision_government.py (Admin SDK)
+//    There is no backend server (free Spark plan), so these rules ARE the server-side enforcement: roles, ownership,
+//    the controlled rescue states, compare-and-swap versions, append-only history and "no government action without
+//    an audit event" are all checked here. pwa/rules-tests/rules.test.mjs proves each one on the Firestore emulator.
+//
+//    A request is split in three documents so each role reads only what it needs:
+//      rescue_requests/{id}   coarse (about 1 km) location, people, urgency, needs, priority, status
+//      rescue_private/{id}    exact location and phone: owner, government, and the assigned NGO if the citizen agreed
+//      rescue_sensitive/{id}  vulnerability flags and notes: the same, under a separate consent
+//    Every change to a request also writes rescue_requests/{id}/updates/v{version}: the history. It cannot be
+//    edited or deleted. Anything not matched below is denied.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- helpers ------------------------------------------------------------------------------------------
+
+    function isRegistered() {
+      return request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+    function isGov() {
+      return isRegistered() && request.auth.token.get('role', '') == 'gov';
+    }
+    function memberPath(uid) { return /databases/$(database)/documents/ngo_members/$(uid); }
+    function ngoPath(id) { return /databases/$(database)/documents/ngos/$(id); }
+    function invitePath(code) { return /databases/$(database)/documents/ngo_invites/$(code); }
+    function auditPath(id) { return /databases/$(database)/documents/audit_events/$(id); }
+    function requestPath(id) { return /databases/$(database)/documents/rescue_requests/$(id); }
+    function privatePath(id) { return /databases/$(database)/documents/rescue_private/$(id); }
+    function sensitivePath(id) { return /databases/$(database)/documents/rescue_sensitive/$(id); }
+    function logPath(id, version) {
+      return /databases/$(database)/documents/rescue_requests/$(id)/updates/$('v' + string(version));
+    }
+
+    function isActiveMember() {
+      return isRegistered() && exists(memberPath(request.auth.uid))
+        && get(memberPath(request.auth.uid)).data.active == true;
+    }
+    function myNgo() { return get(memberPath(request.auth.uid)).data.ngo_id; }
+    function ngoIsApproved(id) { return get(ngoPath(id)).data.status == 'approved'; }
+    // Active member of an organisation that government has approved. Suspended or rejected: no access.
+    function isApprovedMember() { return isActiveMember() && ngoIsApproved(myNgo()); }
+    function isManager() {
+      return isActiveMember() && get(memberPath(request.auth.uid)).data.member_role == 'manager';
+    }
+
+    function reasonOk(n) {
+      let r = n.get('status_reason', '');
+      return r is string && r.size() >= 3 && r.size() <= 300;
+    }
+
+    function changedKeys() { return request.resource.data.diff(resource.data).affectedKeys(); }
+
+    // ---- village alerts (unchanged) -----------------------------------------------------------------------
+
+    match /subscriptions/{uid} {
+      allow get, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid && validSubscription();
+    }
+
+    function validSubscription() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['token', 'flood', 'village', 'lang', 'updated'])
+        && d.keys().hasAll(['token', 'flood', 'village', 'lang', 'updated'])
+        && d.token is string && d.token.size() > 0 && d.token.size() < 4096
+        && d.flood is string && d.flood.matches('^[a-z0-9_]{1,64}$')
+        && d.village is string && d.village.size() > 0 && d.village.size() <= 64
+        && d.lang in ['bn', 'en']
+        && d.updated == request.time;
+    }
+
+    // ---- citizen profile ----------------------------------------------------------------------------------
+    // The role is not stored here and cannot be chosen: a client can only ever be a citizen.
+
+    match /users/{uid} {
+      allow get: if isRegistered() && request.auth.uid == uid;
+      allow create: if isRegistered() && request.auth.uid == uid && validProfile()
+        && request.resource.data.created_at == request.time;
+      allow update: if isRegistered() && request.auth.uid == uid && validProfile()
+        && request.resource.data.created_at == resource.data.created_at;
+    }
+
+    function validProfile() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'phone', 'lang', 'assistance_profile', 'created_at', 'updated_at'])
+        && d.keys().hasAll(['name', 'lang', 'assistance_profile', 'created_at', 'updated_at'])
+        && d.name is string && d.name.size() >= 1 && d.name.size() <= 80
+        && d.get('phone', '') is string && d.get('phone', '').size() <= 20
+        && d.lang in ['bn', 'en']
+        && d.assistance_profile in ['self_evacuation', 'needs_assistance']
+        && d.updated_at == request.time;
+    }
+
+    // ---- rescue requests ----------------------------------------------------------------------------------
+
+    match /rescue_requests/{id} {
+      // Citizens: their own. Government: all. Approved NGO members: the open queue and what is assigned to them.
+      allow read: if isRegistered() && (
+        resource.data.citizen_id == request.auth.uid
+        || isGov()
+        || (isApprovedMember()
+            && (resource.data.status in ['PENDING', 'TRIAGED'] || resource.data.get('assigned_ngo_id', null) == myNgo())));
+
+      // Any registered account may ask for help, whatever its assistance profile.
+      allow create: if isRegistered() && validNewRequest(id);
+
+      allow update: if isRegistered()
+        && request.resource.data.version == resource.data.version + 1
+        && request.resource.data.updated_at == request.time
+        && existsAfter(logPath(id, request.resource.data.version))
+        && (citizenCancel() || citizenConfirm() || ngoClaim() || ngoProgress() || ngoDecline() || govAction(id));
+
+      // History: written with every change, never edited, never deleted.
+      match /updates/{vid} {
+        allow read: if isRegistered() && (
+          get(requestPath(id)).data.citizen_id == request.auth.uid
+          || isGov()
+          || (isApprovedMember() && get(requestPath(id)).data.get('assigned_ngo_id', null) == myNgo()));
+        allow create: if isRegistered() && validLog(id, vid);
+      }
+    }
+
+    function validNewRequest(id) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['citizen_id', 'people_count', 'urgency', 'needs', 'hazards', 'coarse_lat', 'coarse_lon',
+                               'region', 'suggested_priority', 'priority', 'priority_factors', 'status', 'version',
+                               'created_at', 'updated_at'])
+        && d.keys().hasAll(['citizen_id', 'people_count', 'urgency', 'needs', 'hazards', 'coarse_lat', 'coarse_lon',
+                            'suggested_priority', 'priority', 'priority_factors', 'status', 'version',
+                            'created_at', 'updated_at'])
+        && d.citizen_id == request.auth.uid
+        && d.status == 'PENDING' && d.version == 1
+        && d.created_at == request.time && d.updated_at == request.time
+        && d.people_count is int && d.people_count >= 1 && d.people_count <= 200
+        && d.urgency in ['immediate', 'within_hours', 'within_day']
+        && d.needs is map
+        && d.needs.keys().hasOnly(['boat_rescue', 'medical', 'food', 'drinking_water', 'medicine', 'mobility_assistance'])
+        && d.hazards is list && d.hazards.size() <= 5
+        && d.hazards.hasOnly(['rising_water', 'trapped', 'no_exit_route', 'fire_or_electric', 'other'])
+        && d.coarse_lat is number && d.coarse_lat >= -90 && d.coarse_lat <= 90
+        && d.coarse_lon is number && d.coarse_lon >= -180 && d.coarse_lon <= 180
+        && d.get('region', 'x') is string && d.get('region', 'x').size() <= 64
+        && d.suggested_priority in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
+        && d.priority == d.suggested_priority
+        && d.priority_factors is list && d.priority_factors.size() <= 9
+        && d.priority_factors.hasOnly(['immediate_danger', 'rising_water', 'trapped', 'fire_or_electric', 'medical_need',
+                                       'no_exit_route', 'mobility_need', 'vulnerability_flagged', 'many_people'])
+        && existsAfter(privatePath(id)) && existsAfter(sensitivePath(id))
+        && existsAfter(logPath(id, 1));
+    }
+
+    // The history entry for version N is created in the same batch as the change to version N.
+    function validLog(id, vid) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['actor_id', 'actor_role', 'from_status', 'to_status', 'note', 'version', 'created_at'])
+        && d.keys().hasAll(['actor_id', 'actor_role', 'to_status', 'version', 'created_at'])
+        && d.actor_id == request.auth.uid
+        && d.actor_role in ['citizen', 'ngo', 'gov']
+        && (d.actor_role != 'gov' || isGov())
+        && (d.actor_role != 'ngo' || isActiveMember())
+        && d.version is int && vid == 'v' + string(d.version)
+        && d.created_at == request.time
+        && d.get('note', '') is string && d.get('note', '').size() <= 300
+        && d.to_status == getAfter(requestPath(id)).data.status
+        && d.version == getAfter(requestPath(id)).data.version
+        && ((d.version == 1 && !exists(requestPath(id)) && d.get('from_status', null) == null)
+            || (d.version > 1 && get(requestPath(id)).data.version == d.version - 1
+                && d.from_status == get(requestPath(id)).data.status));
+    }
+
+    function citizenCancel() {
+      let o = resource.data; let n = request.resource.data;
+      return o.citizen_id == request.auth.uid
+        && o.status in ['PENDING', 'TRIAGED', 'ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED']
+        && n.status == 'CANCELLED' && reasonOk(n)
+        && changedKeys().hasOnly(['status', 'status_reason', 'version', 'updated_at']);
+    }
+
+    function citizenConfirm() {
+      let o = resource.data; let n = request.resource.data;
+      return o.citizen_id == request.auth.uid
+        && o.status in ['RESCUED', 'ASSISTANCE_DELIVERED'] && n.status == o.status
+        && n.citizen_confirmation in ['confirmed', 'disputed']
+        && changedKeys().hasOnly(['citizen_confirmation', 'version', 'updated_at']);
+    }
+
+    // Claiming is atomic: it is allowed only while the request is still unclaimed, so when two NGOs try at once
+    // the second write is checked against the first one's result and refused.
+    function ngoClaim() {
+      let o = resource.data; let n = request.resource.data;
+      return isApprovedMember()
+        && (o.status in ['PENDING', 'TRIAGED'] || (o.status == 'ASSIGNED' && o.get('assigned_ngo_id', null) == myNgo()))
+        && n.status == 'ACCEPTED'
+        && n.assigned_ngo_id == myNgo() && n.accepted_by == request.auth.uid
+        && changedKeys().hasOnly(['status', 'assigned_ngo_id', 'accepted_by', 'version', 'updated_at']);
+    }
+
+    function ngoStep(f, t) {
+      return (f == 'ACCEPTED' && t == 'PREPARING')
+        || (f == 'PREPARING' && t == 'DISPATCHED')
+        || (f == 'DISPATCHED' && t == 'IN_PROGRESS')
+        || (f == 'IN_PROGRESS' && t in ['RESCUED', 'ASSISTANCE_DELIVERED'])
+        || (f in ['ACCEPTED', 'PREPARING', 'DISPATCHED', 'IN_PROGRESS'] && t in ['UNABLE_TO_REACH', 'REFERRED']);
+    }
+
+    function ngoProgress() {
+      let o = resource.data; let n = request.resource.data;
+      return isApprovedMember()
+        && o.get('assigned_ngo_id', null) == myNgo()
+        && ngoStep(o.status, n.status)
+        && changedKeys().hasOnly(['status', 'status_reason', 'people_assisted', 'outcome_note', 'version', 'updated_at'])
+        && (!(n.status in ['RESCUED', 'ASSISTANCE_DELIVERED'])
+            || (n.get('people_assisted', -1) is int && n.get('people_assisted', -1) >= 0 && n.get('people_assisted', -1) <= 1000))
+        && (!(n.status in ['UNABLE_TO_REACH', 'REFERRED']) || reasonOk(n));
+    }
+
+    function ngoDecline() {
+      let o = resource.data; let n = request.resource.data;
+      return isApprovedMember()
+        && o.status == 'ASSIGNED' && o.get('assigned_ngo_id', null) == myNgo()
+        && n.status == 'TRIAGED' && n.assigned_ngo_id == null && reasonOk(n)
+        && changedKeys().hasOnly(['status', 'assigned_ngo_id', 'status_reason', 'version', 'updated_at']);
+    }
+
+    // Government: assign, reassign, override priority, close, end early. Each needs a reason and an audit event
+    // created in the same batch (audit_id).
+    function govAction(id) {
+      let o = resource.data; let n = request.resource.data;
+      let a = auditPath(n.get('audit_id', 'none'));
+      return isGov()
+        && changedKeys().hasAll(['audit_id'])
+        && existsAfter(a)
+        && getAfter(a).data.entity_id == id && getAfter(a).data.actor_id == request.auth.uid
+        && (govTriage(o, n) || govAssign(o, n) || govOverride(o, n) || govClose(o, n) || govEnd(o, n));
+    }
+
+    function govTriage(o, n) {
+      return o.status == 'PENDING' && n.status == 'TRIAGED'
+        && changedKeys().hasOnly(['status', 'audit_id', 'version', 'updated_at']);
+    }
+
+    function govAssign(o, n) {
+      return o.status in ['PENDING', 'TRIAGED', 'ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED', 'UNABLE_TO_REACH']
+        && n.status == 'ASSIGNED'
+        && n.assigned_ngo_id is string && ngoIsApproved(n.assigned_ngo_id)
+        && n.assigned_by == request.auth.uid
+        && n.get('accepted_by', null) == null
+        && reasonOk(n)
+        && changedKeys().hasOnly(['status', 'assigned_ngo_id', 'accepted_by', 'assigned_by', 'status_reason',
+                                  'audit_id', 'version', 'updated_at']);
+    }
+
+    function govOverride(o, n) {
+      return n.status == o.status
+        && o.status in ['PENDING', 'TRIAGED', 'ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED', 'IN_PROGRESS', 'UNABLE_TO_REACH']
+        && n.priority in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
+        && n.priority_reason is string && n.priority_reason.size() >= 3 && n.priority_reason.size() <= 300
+        && changedKeys().hasOnly(['priority', 'priority_reason', 'audit_id', 'version', 'updated_at']);
+    }
+
+    function govClose(o, n) {
+      return o.status in ['RESCUED', 'ASSISTANCE_DELIVERED', 'UNABLE_TO_REACH', 'REFERRED']
+        && n.status == 'CLOSED'
+        && changedKeys().hasOnly(['status', 'status_reason', 'audit_id', 'version', 'updated_at']);
+    }
+
+    function govEnd(o, n) {
+      return ((o.status in ['PENDING', 'TRIAGED'] && n.status in ['DUPLICATE', 'REJECTED'])
+              || (o.status in ['PENDING', 'TRIAGED', 'ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED', 'IN_PROGRESS', 'UNABLE_TO_REACH']
+                  && n.status == 'CANCELLED'))
+        && reasonOk(n)
+        && changedKeys().hasOnly(['status', 'status_reason', 'audit_id', 'version', 'updated_at']);
+    }
+
+    // Exact location and phone. The assigned team reads them only if the citizen agreed.
+    match /rescue_private/{id} {
+      allow read: if isRegistered() && (
+        resource.data.citizen_id == request.auth.uid
+        || isGov()
+        || (isApprovedMember() && resource.data.consent_location == true
+            && get(requestPath(id)).data.get('assigned_ngo_id', null) == myNgo()
+            && get(requestPath(id)).data.status in ['ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED', 'IN_PROGRESS']));
+      allow create: if isRegistered() && validPrivate();
+    }
+
+    function validPrivate() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['citizen_id', 'exact', 'address_text', 'phone', 'consent_location', 'created_at'])
+        && d.keys().hasAll(['citizen_id', 'exact', 'phone', 'consent_location', 'created_at'])
+        && d.citizen_id == request.auth.uid
+        && d.exact is map
+        && d.exact.keys().hasOnly(['latitude', 'longitude', 'accuracy_m', 'source'])
+        && d.exact.latitude is number && d.exact.latitude >= -90 && d.exact.latitude <= 90
+        && d.exact.longitude is number && d.exact.longitude >= -180 && d.exact.longitude <= 180
+        && d.exact.source in ['gps', 'manual']
+        && d.get('address_text', '') is string && d.get('address_text', '').size() <= 200
+        && d.phone is string && d.phone.matches('^\\+?[0-9]{6,15}$')
+        && d.consent_location is bool
+        && d.created_at == request.time;
+    }
+
+    // Vulnerability flags and notes: a separate document so a citizen can share location but keep these private.
+    match /rescue_sensitive/{id} {
+      allow read: if isRegistered() && (
+        resource.data.citizen_id == request.auth.uid
+        || isGov()
+        || (isApprovedMember() && resource.data.consent_sensitive == true
+            && get(requestPath(id)).data.get('assigned_ngo_id', null) == myNgo()
+            && get(requestPath(id)).data.status in ['ASSIGNED', 'ACCEPTED', 'PREPARING', 'DISPATCHED', 'IN_PROGRESS']));
+      allow create: if isRegistered() && validSensitive();
+    }
+
+    function validSensitive() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['citizen_id', 'vulnerability_flags', 'notes', 'consent_sensitive', 'created_at'])
+        && d.keys().hasAll(['citizen_id', 'vulnerability_flags', 'consent_sensitive', 'created_at'])
+        && d.citizen_id == request.auth.uid
+        && d.vulnerability_flags is map
+        && d.vulnerability_flags.keys().hasOnly(['children', 'older_adults', 'disability_or_limited_mobility', 'pregnancy'])
+        && d.get('notes', '') is string && d.get('notes', '').size() <= 500
+        && d.consent_sensitive is bool
+        && d.created_at == request.time;
+    }
+
+    // ---- NGOs ---------------------------------------------------------------------------------------------
+
+    match /ngos/{ngoId} {
+      allow read: if isRegistered() && (
+        isGov()
+        || resource.data.owner_uid == request.auth.uid
+        || (exists(memberPath(request.auth.uid)) && get(memberPath(request.auth.uid)).data.ngo_id == ngoId));
+
+      // An application: always starts as pending, owned by the applicant, who becomes its manager in the same batch.
+      allow create: if isRegistered() && validNgoApplication(ngoId);
+
+      allow update: if isRegistered() && (ngoManagerEdit(ngoId) || govNgoDecision(ngoId));
+    }
+
+    function validNgoApplication(ngoId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['legal_name', 'registration_details', 'operating_areas', 'capabilities', 'contact_phone',
+                               'status', 'owner_uid', 'created_at', 'updated_at'])
+        && d.keys().hasAll(['legal_name', 'registration_details', 'operating_areas', 'capabilities', 'contact_phone',
+                            'status', 'owner_uid', 'created_at', 'updated_at'])
+        && d.status == 'pending' && d.owner_uid == request.auth.uid
+        && d.legal_name is string && d.legal_name.size() >= 2 && d.legal_name.size() <= 120
+        && d.registration_details is string && d.registration_details.size() >= 3 && d.registration_details.size() <= 600
+        && d.operating_areas is list && d.operating_areas.size() >= 1 && d.operating_areas.size() <= 20
+        && d.capabilities is list && d.capabilities.size() <= 12
+        && d.capabilities.hasOnly(['boat', 'vehicle', 'medical', 'food', 'water', 'shelter', 'volunteers'])
+        && d.contact_phone is string && d.contact_phone.size() <= 20
+        && d.created_at == request.time && d.updated_at == request.time
+        && !exists(memberPath(request.auth.uid))
+        && existsAfter(memberPath(request.auth.uid))
+        && getAfter(memberPath(request.auth.uid)).data.ngo_id == ngoId;
+    }
+
+    function ngoManagerEdit(ngoId) {
+      let o = resource.data; let n = request.resource.data;
+      return isManager() && myNgo() == ngoId
+        && changedKeys().hasOnly(['registration_details', 'operating_areas', 'capabilities', 'contact_phone', 'status', 'updated_at'])
+        && n.updated_at == request.time
+        && (n.status == o.status || (o.status == 'info_requested' && n.status == 'pending'))
+        && n.operating_areas is list && n.operating_areas.size() >= 1 && n.operating_areas.size() <= 20
+        && n.capabilities is list && n.capabilities.hasOnly(['boat', 'vehicle', 'medical', 'food', 'water', 'shelter', 'volunteers']);
+    }
+
+    // Approve, reject, ask for more, suspend, reinstate: government only, with a reason and an audit event.
+    function govNgoDecision(ngoId) {
+      let n = request.resource.data;
+      let a = auditPath(n.get('audit_id', 'none'));
+      return isGov()
+        && changedKeys().hasOnly(['status', 'status_reason', 'decided_by', 'decided_at', 'audit_id', 'updated_at'])
+        && n.status in ['approved', 'rejected', 'suspended', 'info_requested']
+        && reasonOk(n)
+        && n.decided_by == request.auth.uid && n.decided_at == request.time && n.updated_at == request.time
+        && existsAfter(a) && getAfter(a).data.entity_id == ngoId && getAfter(a).data.actor_id == request.auth.uid;
+    }
+
+    match /ngo_members/{uid} {
+      allow read: if isRegistered() && (
+        uid == request.auth.uid
+        || isGov()
+        || (isManager() && resource.data.ngo_id == myNgo()));
+      allow create: if isRegistered() && request.auth.uid == uid && (validBootstrapManager() || validInviteRedemption());
+      // A manager can pause a member or change the team; nobody changes their own membership.
+      allow update: if isManager() && uid != request.auth.uid
+        && resource.data.ngo_id == myNgo() && request.resource.data.ngo_id == resource.data.ngo_id
+        && changedKeys().hasOnly(['active', 'member_role', 'team', 'updated_at'])
+        && request.resource.data.member_role in ['manager', 'worker'];
+    }
+
+    function validBootstrapManager() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['ngo_id', 'member_role', 'active', 'created_at'])
+        && d.member_role == 'manager' && d.active == true && d.created_at == request.time
+        && d.ngo_id is string
+        && !exists(ngoPath(d.ngo_id))
+        && existsAfter(ngoPath(d.ngo_id))
+        && getAfter(ngoPath(d.ngo_id)).data.owner_uid == request.auth.uid
+        && getAfter(ngoPath(d.ngo_id)).data.status == 'pending';
+    }
+
+    function validInviteRedemption() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['ngo_id', 'member_role', 'active', 'invite_code', 'created_at'])
+        && d.member_role == 'worker' && d.active == true && d.created_at == request.time
+        && d.invite_code is string
+        && get(invitePath(d.invite_code)).data.ngo_id == d.ngo_id
+        && get(invitePath(d.invite_code)).data.get('used_by', null) == null
+        && get(invitePath(d.invite_code)).data.expires_at > request.time
+        && getAfter(invitePath(d.invite_code)).data.used_by == request.auth.uid
+        && ngoIsApproved(d.ngo_id);
+    }
+
+    // The invitation code is the secret: it can be read one at a time but never listed.
+    match /ngo_invites/{code} {
+      allow get: if isRegistered();
+      allow create: if isManager()
+        && request.resource.data.keys().hasOnly(['ngo_id', 'created_by', 'expires_at', 'created_at'])
+        && request.resource.data.ngo_id == myNgo() && request.resource.data.created_by == request.auth.uid
+        && request.resource.data.created_at == request.time
+        && request.resource.data.expires_at > request.time
+        && request.resource.data.expires_at <= request.time + duration.value(7, 'd')
+        && code.size() >= 12 && code.size() <= 40;
+      allow update: if isRegistered()
+        && resource.data.get('used_by', null) == null
+        && resource.data.expires_at > request.time
+        && changedKeys().hasOnly(['used_by', 'used_at'])
+        && request.resource.data.used_by == request.auth.uid
+        && request.resource.data.used_at == request.time;
+    }
+
+    // ---- NGO resources ------------------------------------------------------------------------------------
+
+    match /resources/{rid} {
+      allow read: if isRegistered() && (isGov()
+        || (isActiveMember() && resource.data.ngo_id == myNgo()));
+      allow create: if isManager() && ngoIsApproved(myNgo()) && validResource() && request.resource.data.ngo_id == myNgo();
+      allow update: if isManager() && ngoIsApproved(myNgo()) && validResource()
+        && resource.data.ngo_id == myNgo() && request.resource.data.ngo_id == resource.data.ngo_id;
+    }
+
+    function validResource() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['ngo_id', 'type', 'quantity', 'availability', 'location_text', 'condition', 'retired',
+                               'last_reported_at'])
+        && d.keys().hasAll(['ngo_id', 'type', 'quantity', 'availability', 'last_reported_at'])
+        && d.type in ['boat', 'vehicle', 'medical_supplies', 'food', 'drinking_water', 'volunteers']
+        && d.quantity is int && d.quantity >= 0 && d.quantity <= 100000
+        && d.availability in ['available', 'limited', 'unavailable']
+        && d.get('location_text', '') is string && d.get('location_text', '').size() <= 120
+        && d.get('condition', 'good') in ['good', 'fair', 'poor']
+        && d.get('retired', false) is bool
+        && d.last_reported_at == request.time;
+    }
+
+    // ---- official alerts (in-app) ----------------------------------------------------------------------------
+    // Public by design (anyone may read, signed in or not). Only government writes, always with a source, an expiry and an
+    // audit event. Push messages still go out through the admin panel (scripts/send_alert.py).
+
+    match /official_alerts/{aid} {
+      allow read: if true;
+      allow create: if isGov() && validOfficialAlert(aid);
+      allow update: if isGov() && withdrawOfficialAlert(aid);
+    }
+
+    function validOfficialAlert(aid) {
+      let d = request.resource.data;
+      let a = auditPath(d.get('audit_id', 'none'));
+      return d.keys().hasOnly(['flood', 'area_text', 'severity', 'title', 'body', 'source', 'starts_at', 'expires_at',
+                               'status', 'author_id', 'audit_id', 'created_at'])
+        && d.keys().hasAll(['flood', 'severity', 'title', 'body', 'source', 'starts_at', 'expires_at', 'status', 'author_id',
+                            'audit_id', 'created_at'])
+        && d.flood is string && d.flood.size() <= 64
+        && d.severity in ['watch', 'warning', 'critical']
+        && d.title is string && d.title.size() >= 3 && d.title.size() <= 100
+        && d.body is string && d.body.size() >= 3 && d.body.size() <= 500
+        && d.source is string && d.source.size() >= 3 && d.source.size() <= 120
+        && d.starts_at is timestamp && d.expires_at is timestamp
+        && d.expires_at > d.starts_at && d.expires_at <= d.starts_at + duration.value(72, 'h')
+        && d.status == 'published' && d.author_id == request.auth.uid && d.created_at == request.time
+        && existsAfter(a) && getAfter(a).data.entity_id == aid && getAfter(a).data.actor_id == request.auth.uid;
+    }
+
+    function withdrawOfficialAlert(aid) {
+      let n = request.resource.data;
+      let a = auditPath(n.get('audit_id', 'none'));
+      return resource.data.status == 'published' && n.status == 'withdrawn' && reasonOk(n)
+        && changedKeys().hasOnly(['status', 'status_reason', 'audit_id', 'withdrawn_at'])
+        && n.withdrawn_at == request.time
+        && existsAfter(a) && getAfter(a).data.entity_id == aid && getAfter(a).data.actor_id == request.auth.uid;
+    }
+
+    // ---- audit --------------------------------------------------------------------------------------------
+    // Government's own audit trail: append-only, readable by government only.
+
+    match /audit_events/{eid} {
+      allow read: if isGov();
+      allow create: if isGov()
+        && request.resource.data.keys().hasOnly(['actor_id', 'action', 'entity_type', 'entity_id', 'reason', 'created_at'])
+        && request.resource.data.actor_id == request.auth.uid
+        && request.resource.data.action is string && request.resource.data.action.size() <= 60
+        && request.resource.data.entity_type in ['rescue_request', 'ngo', 'alert']
+        && request.resource.data.entity_id is string
+        && request.resource.data.reason is string && request.resource.data.reason.size() >= 3
+        && request.resource.data.reason.size() <= 300
+        && request.resource.data.created_at == request.time;
+    }
+
+    // Everything else, including `alerts` and `test_devices`, is reachable only by the Admin SDK.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

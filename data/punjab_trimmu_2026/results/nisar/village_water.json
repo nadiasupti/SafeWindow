@@ -1,0 +1,463 @@
+{
+ "region": "punjab_trimmu_2026",
+ "radius_km": 3.0,
+ "dates": [
+  {
+   "date": "2026-07-12",
+   "polarization": "HV",
+   "sentinel1_date": "2026-07-13",
+   "villages": {
+    "osm302929255": {
+     "name": "اٹهاره ہزارى",
+     "name_bn": null,
+     "nisar": 0.5491,
+     "sentinel1": 0.0301,
+     "hidden": 0.519,
+     "unknown": 0.332
+    },
+    "osm866810159": {
+     "name": "Garh Maharaja",
+     "name_bn": null,
+     "nisar": 0.366,
+     "sentinel1": 0.0134,
+     "hidden": 0.3525,
+     "unknown": 0.0
+    },
+    "osm3591035304": {
+     "name": "Malkana",
+     "name_bn": null,
+     "nisar": 0.5001,
+     "sentinel1": 0.0257,
+     "hidden": 0.4744,
+     "unknown": 0.135
+    },
+    "osm3591035305": {
+     "name": "Munirabad",
+     "name_bn": null,
+     "nisar": 0.5258,
+     "sentinel1": 0.0285,
+     "hidden": 0.4973,
+     "unknown": 0.398
+    },
+    "osm12265523187": {
+     "name": "رکھ بھنگو",
+     "name_bn": null,
+     "nisar": 0.588,
+     "sentinel1": 0.0317,
+     "hidden": 0.5563,
+     "unknown": 0.445
+    },
+    "osm12265523196": {
+     "name": "Ghagh",
+     "name_bn": null,
+     "nisar": 0.6161,
+     "sentinel1": 0.0344,
+     "hidden": 0.5817,
+     "unknown": 0.494
+    },
+    "osm12265543288": {
+     "name": "ہسوالی",
+     "name_bn": null,
+     "nisar": 0.3044,
+     "sentinel1": 0.003,
+     "hidden": 0.3014,
+     "unknown": 0.0
+    },
+    "osm12265543308": {
+     "name": "منگن",
+     "name_bn": null,
+     "nisar": 0.4531,
+     "sentinel1": 0.0151,
+     "hidden": 0.4381,
+     "unknown": 0.0
+    },
+    "osm12265543324": {
+     "name": "حویلی منگن",
+     "name_bn": null,
+     "nisar": 0.4606,
+     "sentinel1": 0.0156,
+     "hidden": 0.445,
+     "unknown": 0.0
+    },
+    "osm12265543333": {
+     "name": "بستی منگن",
+     "name_bn": null,
+     "nisar": 0.4561,
+     "sentinel1": 0.0172,
+     "hidden": 0.439,
+     "unknown": 0.0
+    },
+    "osm12265543343": {
+     "name": "بستی نوہانی",
+     "name_bn": null,
+     "nisar": 0.4468,
+     "sentinel1": 0.0149,
+     "hidden": 0.4319,
+     "unknown": 0.0
+    },
+    "osm12265543363": {
+     "name": "ڈیرا مہر صدیق",
+     "name_bn": null,
+     "nisar": 0.4304,
+     "sentinel1": 0.0154,
+     "hidden": 0.415,
+     "unknown": 0.0
+    },
+    "osm12265543380": {
+     "name": "Mahay",
+     "name_bn": null,
+     "nisar": 0.4225,
+     "sentinel1": 0.0168,
+     "hidden": 0.4056,
+     "unknown": 0.054
+    },
+    "osm12265543385": {
+     "name": "چاہ شیر والا",
+     "name_bn": null,
+     "nisar": 0.4089,
+     "sentinel1": 0.0159,
+     "hidden": 0.393,
+     "unknown": 0.019
+    },
+    "osm12265543386": {
+     "name": "Tibba Gehli",
+     "name_bn": null,
+     "nisar": 0.3782,
+     "sentinel1": 0.0174,
+     "hidden": 0.3608,
+     "unknown": 0.026
+    },
+    "osm12265543389": {
+     "name": "یارےوالا",
+     "name_bn": null,
+     "nisar": 0.2872,
+     "sentinel1": 0.0087,
+     "hidden": 0.2785,
+     "unknown": 0.0
+    },
+    "osm12265543394": {
+     "name": "Pabanwala",
+     "name_bn": null,
+     "nisar": 0.278,
+     "sentinel1": 0.0027,
+     "hidden": 0.2752,
+     "unknown": 0.0
+    },
+    "osm12265566860": {
+     "name": "بستی محرم سیال",
+     "name_bn": null,
+     "nisar": 0.324,
+     "sentinel1": 0.0084,
+     "hidden": 0.3156,
+     "unknown": 0.006
+    },
+    "osm12265566898": {
+     "name": "Bela Surbana",
+     "name_bn": null,
+     "nisar": 0.2047,
+     "sentinel1": 0.0231,
+     "hidden": 0.1816,
+     "unknown": 0.0
+    },
+    "osm12265571008": {
+     "name": "گلبرگ",
+     "name_bn": null,
+     "nisar": 0.3957,
+     "sentinel1": 0.0187,
+     "hidden": 0.3771,
+     "unknown": 0.189
+    },
+    "osm12265571046": {
+     "name": "ﷲ یار جوتہ",
+     "name_bn": null,
+     "nisar": 0.2783,
+     "sentinel1": 0.0118,
+     "hidden": 0.2665,
+     "unknown": 0.254
+    },
+    "osm12265571078": {
+     "name": "Kho Ratiwala",
+     "name_bn": null,
+     "nisar": 0.2299,
+     "sentinel1": 0.0082,
+     "hidden": 0.2218,
+     "unknown": 0.102
+    },
+    "osm12265571294": {
+     "name": "چک غلام جیلانی",
+     "name_bn": null,
+     "nisar": 0.2762,
+     "sentinel1": 0.0112,
+     "hidden": 0.265,
+     "unknown": 0.016
+    },
+    "osm12265571312": {
+     "name": "Nawan Shehar",
+     "name_bn": null,
+     "nisar": 0.2041,
+     "sentinel1": 0.0054,
+     "hidden": 0.1986,
+     "unknown": 0.058
+    },
+    "osm12265571330": {
+     "name": "Chak 46 HF",
+     "name_bn": null,
+     "nisar": 0.3106,
+     "sentinel1": 0.0139,
+     "hidden": 0.2967,
+     "unknown": 0.209
+    },
+    "osm12265571331": {
+     "name": "Dera Mahar Noor Budhwana",
+     "name_bn": null,
+     "nisar": 0.3409,
+     "sentinel1": 0.015,
+     "hidden": 0.3259,
+     "unknown": 0.004
+    }
+   },
+   "villages_with_a_gap": 26,
+   "median_hidden": 0.369
+  },
+  {
+   "date": "2026-07-24",
+   "polarization": "HH",
+   "sentinel1_date": "2026-07-25",
+   "villages": {
+    "osm302929255": {
+     "name": "اٹهاره ہزارى",
+     "name_bn": null,
+     "nisar": 0.3961,
+     "sentinel1": 0.2343,
+     "hidden": 0.1618,
+     "unknown": 0.332
+    },
+    "osm866810159": {
+     "name": "Garh Maharaja",
+     "name_bn": null,
+     "nisar": 0.2103,
+     "sentinel1": 0.022,
+     "hidden": 0.1883,
+     "unknown": 0.0
+    },
+    "osm3591035304": {
+     "name": "Malkana",
+     "name_bn": null,
+     "nisar": 0.3374,
+     "sentinel1": 0.1564,
+     "hidden": 0.1809,
+     "unknown": 0.135
+    },
+    "osm3591035305": {
+     "name": "Munirabad",
+     "name_bn": null,
+     "nisar": 0.3295,
+     "sentinel1": 0.1348,
+     "hidden": 0.1947,
+     "unknown": 0.398
+    },
+    "osm12265523187": {
+     "name": "رکھ بھنگو",
+     "name_bn": null,
+     "nisar": 0.3526,
+     "sentinel1": 0.0089,
+     "hidden": 0.3437,
+     "unknown": 0.445
+    },
+    "osm12265523196": {
+     "name": "Ghagh",
+     "name_bn": null,
+     "nisar": 0.3775,
+     "sentinel1": 0.0087,
+     "hidden": 0.3688,
+     "unknown": 0.494
+    },
+    "osm12265543288": {
+     "name": "ہسوالی",
+     "name_bn": null,
+     "nisar": 0.1687,
+     "sentinel1": 0.0111,
+     "hidden": 0.1576,
+     "unknown": 0.0
+    },
+    "osm12265543308": {
+     "name": "منگن",
+     "name_bn": null,
+     "nisar": 0.2591,
+     "sentinel1": 0.0113,
+     "hidden": 0.2478,
+     "unknown": 0.0
+    },
+    "osm12265543324": {
+     "name": "حویلی منگن",
+     "name_bn": null,
+     "nisar": 0.2571,
+     "sentinel1": 0.0111,
+     "hidden": 0.2461,
+     "unknown": 0.0
+    },
+    "osm12265543333": {
+     "name": "بستی منگن",
+     "name_bn": null,
+     "nisar": 0.2503,
+     "sentinel1": 0.0109,
+     "hidden": 0.2394,
+     "unknown": 0.0
+    },
+    "osm12265543343": {
+     "name": "بستی نوہانی",
+     "name_bn": null,
+     "nisar": 0.2333,
+     "sentinel1": 0.0103,
+     "hidden": 0.223,
+     "unknown": 0.0
+    },
+    "osm12265543363": {
+     "name": "ڈیرا مہر صدیق",
+     "name_bn": null,
+     "nisar": 0.2542,
+     "sentinel1": 0.0113,
+     "hidden": 0.2429,
+     "unknown": 0.0
+    },
+    "osm12265543380": {
+     "name": "Mahay",
+     "name_bn": null,
+     "nisar": 0.2699,
+     "sentinel1": 0.0072,
+     "hidden": 0.2627,
+     "unknown": 0.054
+    },
+    "osm12265543385": {
+     "name": "چاہ شیر والا",
+     "name_bn": null,
+     "nisar": 0.2582,
+     "sentinel1": 0.007,
+     "hidden": 0.2512,
+     "unknown": 0.019
+    },
+    "osm12265543386": {
+     "name": "Tibba Gehli",
+     "name_bn": null,
+     "nisar": 0.2405,
+     "sentinel1": 0.0058,
+     "hidden": 0.2347,
+     "unknown": 0.026
+    },
+    "osm12265543389": {
+     "name": "یارےوالا",
+     "name_bn": null,
+     "nisar": 0.185,
+     "sentinel1": 0.0084,
+     "hidden": 0.1766,
+     "unknown": 0.0
+    },
+    "osm12265543394": {
+     "name": "Pabanwala",
+     "name_bn": null,
+     "nisar": 0.1666,
+     "sentinel1": 0.0091,
+     "hidden": 0.1575,
+     "unknown": 0.0
+    },
+    "osm12265566860": {
+     "name": "بستی محرم سیال",
+     "name_bn": null,
+     "nisar": 0.2014,
+     "sentinel1": 0.0014,
+     "hidden": 0.2,
+     "unknown": 0.006
+    },
+    "osm12265566898": {
+     "name": "Bela Surbana",
+     "name_bn": null,
+     "nisar": 0.1549,
+     "sentinel1": 0.0477,
+     "hidden": 0.1073,
+     "unknown": 0.0
+    },
+    "osm12265571008": {
+     "name": "گلبرگ",
+     "name_bn": null,
+     "nisar": 0.2619,
+     "sentinel1": 0.0061,
+     "hidden": 0.2558,
+     "unknown": 0.189
+    },
+    "osm12265571046": {
+     "name": "ﷲ یار جوتہ",
+     "name_bn": null,
+     "nisar": 0.1755,
+     "sentinel1": 0.0039,
+     "hidden": 0.1716,
+     "unknown": 0.254
+    },
+    "osm12265571078": {
+     "name": "Kho Ratiwala",
+     "name_bn": null,
+     "nisar": 0.1486,
+     "sentinel1": 0.0086,
+     "hidden": 0.14,
+     "unknown": 0.102
+    },
+    "osm12265571294": {
+     "name": "چک غلام جیلانی",
+     "name_bn": null,
+     "nisar": 0.164,
+     "sentinel1": 0.0022,
+     "hidden": 0.1618,
+     "unknown": 0.016
+    },
+    "osm12265571312": {
+     "name": "Nawan Shehar",
+     "name_bn": null,
+     "nisar": 0.0948,
+     "sentinel1": 0.0003,
+     "hidden": 0.0944,
+     "unknown": 0.058
+    },
+    "osm12265571330": {
+     "name": "Chak 46 HF",
+     "name_bn": null,
+     "nisar": 0.1909,
+     "sentinel1": 0.0032,
+     "hidden": 0.1877,
+     "unknown": 0.209
+    },
+    "osm12265571331": {
+     "name": "Dera Mahar Noor Budhwana",
+     "name_bn": null,
+     "nisar": 0.2119,
+     "sentinel1": 0.0034,
+     "hidden": 0.2085,
+     "unknown": 0.004
+    }
+   },
+   "villages_with_a_gap": 25,
+   "median_hidden": 0.1974
+  }
+ ],
+ "series": [
+  {
+   "date": "2026-06-18",
+   "hh_km2": null,
+   "hv_km2": 454.6,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-07-12",
+   "hh_km2": null,
+   "hv_km2": 453.2,
+   "s1_km2": 31.9,
+   "s1_date": "2026-07-13"
+  },
+  {
+   "date": "2026-07-24",
+   "hh_km2": 340.5,
+   "hv_km2": 402.9,
+   "s1_km2": 57.9,
+   "s1_date": "2026-07-25"
+  }
+ ]
+}

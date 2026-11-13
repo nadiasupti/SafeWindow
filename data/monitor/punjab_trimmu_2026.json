@@ -1,0 +1,32 @@
+{
+ "region": "punjab_trimmu_2026",
+ "name": "Trimmu, Jhang, Punjab, Pakistan: July 2026 high water (NISAR test)",
+ "checked_at": "2026-11-11T03:53:08+00:00",
+ "radar_dates": [
+  "2026-10-17",
+  "2026-10-21",
+  "2026-10-22",
+  "2026-11-02",
+  "2026-11-03",
+  "2026-11-10"
+ ],
+ "newest_radar": "2026-11-10",
+ "new_since_last_check": [
+  "2026-11-10"
+ ],
+ "rain": {
+  "trimmu": {
+   "through": "2026-11-10",
+   "1d_mm": 0,
+   "3d_mm": 0,
+   "7d_mm": 0
+  },
+  "chenab_jhelum_upstream": {
+   "through": "2026-11-10",
+   "1d_mm": 0.0,
+   "3d_mm": 0.3,
+   "7d_mm": 0.4
+  }
+ },
+ "sends_alerts": false
+}

@@ -1,0 +1,114 @@
+{
+ "source": "Google Open Buildings v3 (confidence >= 0.75)",
+ "buildings": 126977,
+ "far_from_roads": 77987,
+ "no_road_link": 15,
+ "cell_m": 500,
+ "near_water_m": 50,
+ "cut_threshold": 0.2,
+ "dates": [
+  "2025-08-16",
+  "2025-08-20",
+  "2025-08-21",
+  "2025-08-28",
+  "2025-09-01",
+  "2025-09-02",
+  "2025-09-09",
+  "2025-09-13",
+  "2025-09-14"
+ ],
+ "totals": [
+  {
+   "date": "2025-08-16",
+   "isolated": 0,
+   "uncertain": 0,
+   "connected": 48975,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 1224,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-08-20",
+   "isolated": 32,
+   "uncertain": 0,
+   "connected": 48943,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 3306,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-08-21",
+   "isolated": 0,
+   "uncertain": 0,
+   "connected": 48975,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 1871,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-08-28",
+   "isolated": 0,
+   "uncertain": 0,
+   "connected": 48975,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 936,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-09-01",
+   "isolated": 6542,
+   "uncertain": 0,
+   "connected": 42433,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 18216,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-09-02",
+   "isolated": 7999,
+   "uncertain": 0,
+   "connected": 40976,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 28194,
+   "not_seen": 1
+  },
+  {
+   "date": "2025-09-09",
+   "isolated": 7122,
+   "uncertain": 0,
+   "connected": 41853,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 18157,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-09-13",
+   "isolated": 292,
+   "uncertain": 0,
+   "connected": 48683,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 8004,
+   "not_seen": 0
+  },
+  {
+   "date": "2025-09-14",
+   "isolated": 4,
+   "uncertain": 0,
+   "connected": 48971,
+   "far_from_roads": 77987,
+   "no_road_link": 15,
+   "near_water": 9293,
+   "not_seen": 1
+  }
+ ],
+ "clusters": 225,
+ "score": "building-dates seen isolated: the sum over radar dates of the buildings seen isolated"
+}

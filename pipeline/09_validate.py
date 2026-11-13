@@ -77,7 +77,9 @@ def main():
     matched = out[out["village_id"].notna() & out.get("model_outcome", pd.Series(dtype=str)).notna()]
     print(f"{len(rep)} reports, {len(matched)} matched to a model village")
     print("\nAuto matches to check by hand:")
-    print(out[out["match"].str.startswith("auto")][["place_name", "model_name", "match"]].to_string(index=False))
+    auto = out[out["match"].str.startswith("auto")]
+    if "model_name" in auto:
+        print(auto[["place_name", "model_name", "match"]].to_string(index=False))
     if len(matched):
         rep_iso = matched["reported_isolated"].str.lower().isin(["yes", "y", "true", "1", ""])
         print("\nModel isolated vs. report says isolated:")

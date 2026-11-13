@@ -39,3 +39,7 @@ agencies: ["BMD", "FFWC", "DDM"]
 
 references:
   nisar: NISAR_L2_GCOV_PROVISIONAL_V1 (cross-sensor test; no independent flood map)
+
+# Numbers shown on the evacuation card. Check each one with local partners before use.
+emergency_contacts:
+  - {name: "National Emergency Service", name_bn: "জাতীয় জরুরি সেবা", number: "999"}

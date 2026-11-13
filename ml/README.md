@@ -76,3 +76,13 @@ Run the Streamlit interface with:
 The application uses the trained checkpoint at `ml/floodnet_model.pt`. The model was evaluated on 181 held-out FloodNet images with 96.69% accuracy and 91.89% flood F1. The checkpoint is a local prototype artifact and must not be treated as an operational flood warning system.
 
 The classifier uses real FloodNet images and labels. The original temporal U-Net remains a separate SafeWindow pipeline for future Sentinel-1 and environmental-data work.
+
+## ETCI 2021 flood segmentation (real Sentinel-1)
+
+`ml/etci_segment.py` trains a small U-Net on real Sentinel-1 VV and VH tiles (256 × 256) from the ETCI 2021 dataset, with the ETCI flood mask as the target. The split is by whole satellite scene, never by tile: validation uses two scenes and the test uses two others, including a Bangladesh scene whose site (not date) also appears in training. A global Otsu threshold on VV is the baseline the network has to beat.
+
+```powershell
+.\.venv\Scripts\python.exe ml\etci_segment.py --max-per-scene 400 --epochs 8
+```
+
+It expects the dataset in `data/raw/etci2021/data/train/` and writes `ml/etci_model.pt`. It is an experiment: SafeWindow's flood maps do not use it.

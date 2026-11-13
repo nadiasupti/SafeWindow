@@ -1,0 +1,52 @@
+{
+  "weights": [
+    0.06797821507412699,
+    0.29282599786662006,
+    0.00519197327420132,
+    0.9950804526838902,
+    0.1953662821650337,
+    0.5227569438104144
+  ],
+  "bias": -2.211436843861793,
+  "mean": [
+    0.5694330175512758,
+    0.9730669598807817,
+    1.3038236059179455,
+    1.2839760604625532,
+    1.8857011839386528,
+    0.444381763072696
+  ],
+  "std": [
+    0.8887303068274857,
+    1.2723354095369463,
+    1.6301426626052198,
+    1.618940681304317,
+    2.140224880453293,
+    0.2128402349375505
+  ],
+  "meta": {
+    "kind": "logistic regression on log rainfall + village susceptibility",
+    "trained_on": "synthetic data (invented rainfall and an invented flood rule)",
+    "validated_on_real_data": false,
+    "horizon_days": 3,
+    "seed": 42,
+    "n_train": 6000,
+    "trained_at": "2026-11-12T20:24:31+00:00",
+    "warning": "DEMO. Not validated against real floods. Do not present as a forecast.",
+    "test_metrics": {
+      "n": 2000,
+      "base_rate": 0.1545,
+      "auc": 0.8147,
+      "brier": 0.0998,
+      "critical_precision": 0.8182,
+      "critical_recall": 0.0583,
+      "critical_share_of_days": 0.011,
+      "warning_precision": 0.6894,
+      "warning_recall": 0.2945,
+      "warning_share_of_days": 0.066,
+      "watch_precision": 0.4704,
+      "watch_recall": 0.5663,
+      "watch_share_of_days": 0.186
+    }
+  }
+}

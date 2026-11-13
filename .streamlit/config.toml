@@ -1,0 +1,12 @@
+[server]
+headless = true
+enableXsrfProtection = true
+enableCORS = true
+enableStaticServing = true     # serves app/static (the vendored Leaflet) so the map needs no CDN
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "viewer"
+showErrorDetails = "none"

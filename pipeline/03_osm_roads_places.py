@@ -154,6 +154,8 @@ def main():
                     help="maximum attempts for transient OpenStreetMap connection failures")
     ap.add_argument("--osm-timeout", type=int, default=120,
                     help="HTTP timeout in seconds for each OpenStreetMap request")
+    ap.add_argument("--skip-existing", action="store_true",
+                    help="resume after a failed run: keep the roads and villages already downloaded and fetch only what is missing")
     args = ap.parse_args()
     if args.osm_timeout <= 0:
         raise SystemExit("--osm-timeout must be a positive number of seconds")
@@ -163,9 +165,15 @@ def main():
     paths = config.get_paths().ensure()
     sa = load_study_area(paths)
     poly = sa.buffer(args.buffer_m).to_crs(config.CRS_WGS84).union_all()
-    roads(poly, attempts=args.osm_attempts)
-    print("downloading villages...")
-    villages(sa.to_crs(config.CRS_WGS84).union_all(), attempts=args.osm_attempts)
+    if args.skip_existing and paths.road_edges.exists() and paths.road_nodes.exists():
+        print("roads already downloaded: skipped")
+    else:
+        roads(poly, attempts=args.osm_attempts)
+    if args.skip_existing and paths.villages.exists():
+        print("villages already downloaded: skipped")
+    else:
+        print("downloading villages...")
+        villages(sa.to_crs(config.CRS_WGS84).union_all(), attempts=args.osm_attempts)
     print("downloading shelter candidates...")
     shelters(poly, attempts=args.osm_attempts)
     print("Now hand-check shelters -> data/processed/shelters_verified.csv (see docstring).")

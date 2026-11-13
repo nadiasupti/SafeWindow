@@ -1,0 +1,9 @@
+date,source,path,note
+2017-08-08,sentinel1,processed/flood/sentinel1_20170808.tif,otsu=-11.12dB otsu_failed orbit=85
+2017-08-11,sentinel1,processed/flood/sentinel1_20170811.tif,otsu=-29.75dB otsu_failed orbit=121
+2017-08-13,sentinel1,processed/flood/sentinel1_20170813.tif,otsu=-30.25dB otsu_failed orbit=158
+2017-08-16,sentinel1,processed/flood/sentinel1_20170816.tif,otsu=-14.62dB otsu orbit=19
+2017-08-20,sentinel1,processed/flood/sentinel1_20170820.tif,otsu=-13.62dB otsu orbit=85
+2017-08-23,sentinel1,processed/flood/sentinel1_20170823.tif,otsu=-29.80dB otsu_failed orbit=121
+2017-08-25,sentinel1,processed/flood/sentinel1_20170825.tif,otsu=-30.75dB otsu_failed orbit=158
+2017-08-28,sentinel1,processed/flood/sentinel1_20170828.tif,otsu=-12.62dB otsu orbit=19

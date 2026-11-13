@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "road_criticality",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "rank": 1, "villages": 1, "population": 123583, "n_segments": 3, "length_m": 428.0, "village_ids": [ "osm822959785" ], "names": [ "Tarchoka - তারচুকা" ], "names_bn": [ "Tarchoka - তারচুকা" ], "buildings": 14 }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 91.5381424, 24.9324571 ], [ 91.5382726, 24.9315886 ] ], [ [ 91.5380924, 24.9337439 ], [ 91.5381424, 24.9324571 ] ], [ [ 91.5398663, 24.9341869 ], [ 91.5389188, 24.9340063 ], [ 91.5380924, 24.9337439 ] ] ] } },
+{ "type": "Feature", "properties": { "rank": 2, "villages": 1, "population": 20302, "n_segments": 1, "length_m": 143.0, "village_ids": [ "osm6123937356" ], "names": [ "Dholkotob village" ], "names_bn": [ "Dholkotob village" ], "buildings": 1 }, "geometry": { "type": "LineString", "coordinates": [ [ 91.3189339, 24.8875935 ], [ 91.3195536, 24.8877185 ], [ 91.3200614, 24.8882314 ] ] } },
+{ "type": "Feature", "properties": { "rank": 3, "villages": 1, "population": 19141, "n_segments": 1, "length_m": 69.9, "village_ids": [ "osm3642870480" ], "names": [ "Purba Birgaon" ], "names_bn": [ "Purba Birgaon" ], "buildings": 3 }, "geometry": { "type": "LineString", "coordinates": [ [ 91.4207809, 24.886239 ], [ 91.420801, 24.885619 ] ] } }
+]
+}

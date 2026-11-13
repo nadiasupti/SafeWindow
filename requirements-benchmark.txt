@@ -1,0 +1,15 @@
+# Packages for scripts/benchmark_forecasts.py (time-series prediction benchmark).
+# Use a separate environment (Python 3.12 recommended): python -m venv .venv-bench
+numpy
+pandas
+scikit-learn
+scipy
+statsmodels
+lightgbm
+xgboost
+catboost
+matplotlib
+requests
+# CPU build of PyTorch, then the pretrained Chronos time-series Transformer:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install chronos-forecasting

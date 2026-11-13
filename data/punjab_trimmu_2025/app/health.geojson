@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Zafar Ullah Sheikh","type":"hospital","source":"shelter list"},"geometry":{"type":"Point","coordinates":[72.0734,30.83118]}},{"type":"Feature","properties":{"name":"EPI Center BHU Kakki Nou","type":"hospital","source":"shelter list"},"geometry":{"type":"Point","coordinates":[72.0754,30.83381]}}]}

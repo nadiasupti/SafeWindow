@@ -19,17 +19,27 @@ COLLECTION = "NASA/GPM_L3/IMERG_V07"
 UTC_OFFSET_H = 6
 
 
-def daily_series(ee, box, start: str, n_days: int) -> list[float]:
+HALF_HOURS_PER_DAY = 48
+MISSING = -9999
+
+
+def daily_series(ee, box, start: str, n_days: int) -> list[float | None]:
+    """Daily rain (mm) over the box. A day is None unless all 48 half-hour images are there: a day that has not been
+    published yet (the latest day, in the morning) or only partly would otherwise give no image or a too-low total."""
     region = ee.Geometry.Rectangle(list(box))
     col = ee.ImageCollection(COLLECTION).select("precipitation")   # mm/hr, every 30 min
     t0 = ee.Date(start).advance(-UTC_OFFSET_H, "hour")
 
     def one_day(i):
         d = t0.advance(i, "day")
-        img = col.filterDate(d, d.advance(1, "day")).sum().multiply(0.5)   # mm/hr * 0.5 h
-        return img.reduceRegion(ee.Reducer.mean(), region, scale=10000).get("precipitation")
+        day = col.filterDate(d, d.advance(1, "day"))
+        total = day.sum().multiply(0.5)                                  # mm/hr * 0.5 h
+        value = total.reduceRegion(ee.Reducer.mean(), region, scale=10000).get("precipitation")
+        # ee.List.map drops nulls, so a missing day is a marker, turned into None below
+        return ee.Algorithms.If(day.size().gte(HALF_HOURS_PER_DAY), value, MISSING)
 
-    return ee.List.sequence(0, n_days - 1).map(one_day).getInfo()
+    values = ee.List.sequence(0, n_days - 1).map(one_day).getInfo()
+    return [None if v is None or v == MISSING else v for v in values]
 
 
 def main():

@@ -1,0 +1,63 @@
+# Daily check of the monitored regions (app plan, step 4): new Sentinel-1 images and NASA GPM rain.
+# It only records what it finds in data/monitor/ and commits it. It never sends an alert and never
+# runs the flood pipeline: the admin sees the result in the admin panel and decides.
+#
+# Needs one repository secret, EE_SERVICE_ACCOUNT_KEY_JSON: the whole text of the Earth Engine
+# service-account key file (safewindow-automation@safewindow-2026). The key is written to a temporary
+# file on the runner and deleted with it; it is never printed or committed.
+name: Daily check
+
+on:
+  schedule:
+    - cron: "0 0 * * *"        # 00:00 UTC = 06:00 in Bangladesh
+  workflow_dispatch: {}         # "Run workflow" button, for a check by hand
+
+permissions:
+  contents: write               # to commit data/monitor/
+
+concurrency:
+  group: daily-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: false            # the flood images are not needed for the check
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install what the check needs
+        run: python -m pip install --quiet earthengine-api numpy pandas PyYAML
+
+      - name: Check radar images and rain
+        env:
+          EE_KEY_JSON: ${{ secrets.EE_SERVICE_ACCOUNT_KEY_JSON }}
+          EE_PROJECT: safewindow-2026
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          if [ -z "$EE_KEY_JSON" ]; then
+            echo "::error::Add the repository secret EE_SERVICE_ACCOUNT_KEY_JSON (the Earth Engine key file's text)."
+            exit 1
+          fi
+          export EE_SERVICE_ACCOUNT_KEY="$RUNNER_TEMP/ee-key.json"
+          printf '%s' "$EE_KEY_JSON" > "$EE_SERVICE_ACCOUNT_KEY"
+          python scripts/daily_check.py
+
+      - name: Save the result in the repository
+        run: |
+          git config user.name "SafeWindow daily check"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/monitor
+          if git diff --cached --quiet; then
+            echo "nothing new to save"
+            exit 0
+          fi
+          git commit -m "Daily check $(TZ=Asia/Dhaka date +%Y-%m-%d) (Bangladesh date)"
+          git pull --rebase --quiet
+          git push

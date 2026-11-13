@@ -1,0 +1,488 @@
+{
+  "flood": "sunamganj_2024",
+  "name": "Sunamganj, Bangladesh: May-July 2024 flood",
+  "ok": true,
+  "mode": "replay (hindcast)",
+  "issue_date": "2024-06-17",
+  "min_signals": 2,
+  "generated_at": "2026-11-12T23:16:51+00:00",
+  "satellite": {
+    "ok": true,
+    "latest": "2024-06-12",
+    "previous": "2024-06-10",
+    "region_water_share": {
+      "latest": 0.1422,
+      "previous": 0.1135
+    }
+  },
+  "river": {
+    "ok": true,
+    "mode": "hindcast"
+  },
+  "rain": {
+    "ok": true,
+    "local_3d_mm": 150.2,
+    "upstream_3d_mm": 171.2,
+    "vote": "critical"
+  },
+  "flow": {
+    "ok": true,
+    "site": "sunamganj_bd",
+    "origin": "2024-06-17",
+    "today_m3s": 1748.8,
+    "predicted_m3s": {
+      "1": 1839.6,
+      "3": 1797.7,
+      "7": 1600.4
+    },
+    "levels": {
+      "1": "watch",
+      "3": "watch",
+      "7": "none"
+    },
+    "thresholds_m3s": {
+      "watch": 1716.9,
+      "warning": 1883.6,
+      "critical": 2064.4
+    },
+    "vote": "watch",
+    "voting_horizons": [
+      1,
+      3
+    ],
+    "vote_caps": {
+      "1": "warning",
+      "3": "watch"
+    },
+    "model": "Random Forest (60 trees, min leaf 20) on log-discharge change",
+    "trained_through": "2025-12-31",
+    "note": "Modelled discharge, not a gauge. The 7-day value is for information: it does not vote."
+  },
+  "ai": {
+    "ok": true,
+    "confidence": 0.85,
+    "trend": "falling",
+    "summary": "Between the June 10 and June 12, 2024 Sentinel-1 satellite passes, floodwater extent decreased around most monitored markers in the south-west, indicating an overall falling water level, though several villages remain heavily inundated.",
+    "limits": "Radar imagery only provides surface water extent and cannot measure exact river height or depth in meters. Large portions of the eastern map are obscured by grey no-data swaths in both passes.",
+    "provider": "gemini:gemini-3.5-flash"
+  },
+  "villages": [
+    {
+      "village": "osm1472175218",
+      "name": "ছাতক",
+      "name_en": "ছাতক",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0,
+        "before": 0.0,
+        "unknown": 0.87,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 1502.1,
+        "peak_next7_m3s": 1994.3,
+        "ratio": 1.33,
+        "vote": "watch"
+      },
+      "ai_reason": "No surface water detected in either satellite pass (0.0 water share)."
+    },
+    {
+      "village": "osm2481972070",
+      "name": "দোয়ারাবাজার",
+      "name_en": "দোয়ারাবাজার",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": null,
+        "before": null,
+        "unknown": 1.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 1512.6,
+        "peak_next7_m3s": 2008.1,
+        "ratio": 1.33,
+        "vote": "watch"
+      },
+      "ai_reason": "Located within the grey no-data area across both passes."
+    },
+    {
+      "village": "osm3642867917",
+      "name": "Patharia",
+      "name_en": "Patharia",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "warning"
+      },
+      "level": "warning",
+      "satellite": {
+        "now": 0.6332,
+        "before": 0.6507,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.7,
+        "peak_next7_m3s": 6.6,
+        "ratio": 1.4,
+        "vote": "watch"
+      },
+      "ai_reason": "High surrounding water share remains, though slightly decreasing from 65.1% to 63.3%."
+    },
+    {
+      "village": "osm3642870480",
+      "name": "Purba Birgaon",
+      "name_en": "Purba Birgaon",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "warning"
+      },
+      "level": "warning",
+      "satellite": {
+        "now": 0.7911,
+        "before": 0.9306,
+        "unknown": 0.248,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.7,
+        "peak_next7_m3s": 6.6,
+        "ratio": 1.4,
+        "vote": "watch"
+      },
+      "ai_reason": "Water share decreased from 93.1% to 79.1%, but surrounding inundation remains high."
+    },
+    {
+      "village": "osm3642877016",
+      "name": "Paschim Birgaon",
+      "name_en": "Paschim Birgaon",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "warning"
+      },
+      "level": "warning",
+      "satellite": {
+        "now": 0.721,
+        "before": 0.9153,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 81.6,
+        "peak_next7_m3s": 114.1,
+        "ratio": 1.4,
+        "vote": "watch"
+      },
+      "ai_reason": "Water share receded from 91.5% to 72.1%, though significant floodwater persists nearby."
+    },
+    {
+      "village": "osm3642877017",
+      "name": "Paschim Pagla",
+      "name_en": "Paschim Pagla",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "warning"
+      },
+      "level": "warning",
+      "satellite": {
+        "now": 0.7672,
+        "before": null,
+        "unknown": 0.649,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 45.0,
+        "peak_next7_m3s": 67.1,
+        "ratio": 1.49,
+        "vote": "watch"
+      },
+      "ai_reason": "Covered by grey no-data in pass 1, but pass 2 reveals high surrounding inundation at 76.7%."
+    },
+    {
+      "village": "osm5506312223",
+      "name": "Boromuha",
+      "name_en": "Boromuha",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "critical"
+      },
+      "level": "critical",
+      "satellite": {
+        "now": 0.8887,
+        "before": 0.9043,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.7,
+        "peak_next7_m3s": 6.6,
+        "ratio": 1.4,
+        "vote": "watch"
+      },
+      "ai_reason": "Extremely high water share persisting around the village (90.4% to 88.9%)."
+    },
+    {
+      "village": "osm6123937355",
+      "name": "Dholposhi",
+      "name_en": "Dholposhi",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "watch"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0926,
+        "before": 0.4437,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.4,
+        "peak_next7_m3s": 5.9,
+        "ratio": 1.33,
+        "vote": "watch"
+      },
+      "ai_reason": "Substantial decrease in surface water share from 44.4% down to 9.3%."
+    },
+    {
+      "village": "osm6123937356",
+      "name": "Dholkotob village",
+      "name_en": "Dholkotob village",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "watch"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.1151,
+        "before": 0.484,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.4,
+        "peak_next7_m3s": 5.9,
+        "ratio": 1.33,
+        "vote": "watch"
+      },
+      "ai_reason": "Significant recession of nearby water from 48.4% down to 11.5%."
+    },
+    {
+      "village": "osm6123937357",
+      "name": "BR 28, 29 rice (Vatipara Haor)",
+      "name_en": "BR 28, 29 rice (Vatipara Haor)",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "watch"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0919,
+        "before": 0.3802,
+        "unknown": 0.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 4.4,
+        "peak_next7_m3s": 5.9,
+        "ratio": 1.33,
+        "vote": "watch"
+      },
+      "ai_reason": "Water share decreased markedly from 38.0% to 9.2%."
+    },
+    {
+      "village": "osm6720358434",
+      "name": "Liakatganj",
+      "name_en": "Liakatganj",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0,
+        "before": 0.0,
+        "unknown": 0.994,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 8.9,
+        "peak_next7_m3s": 13.0,
+        "ratio": 1.47,
+        "vote": "watch"
+      },
+      "ai_reason": "No surface water detected in either pass (0.0 water share)."
+    },
+    {
+      "village": "osm9835676256",
+      "name": "Kusiura",
+      "name_en": "Kusiura",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0,
+        "before": 0.0,
+        "unknown": 0.948,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 419.7,
+        "peak_next7_m3s": 634.3,
+        "ratio": 1.51,
+        "vote": "watch"
+      },
+      "ai_reason": "No surface water detected in either pass (0.0 water share)."
+    },
+    {
+      "village": "osm9843505109",
+      "name": "Thabali",
+      "name_en": "Thabali",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0,
+        "before": 0.0,
+        "unknown": 0.51,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 9.3,
+        "peak_next7_m3s": 13.3,
+        "ratio": 1.43,
+        "vote": "watch"
+      },
+      "ai_reason": "No surface water detected in either pass (0.0 water share)."
+    },
+    {
+      "village": "osm9843505110",
+      "name": "Banshtala",
+      "name_en": "Banshtala",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": 0.0,
+        "before": 0.0,
+        "unknown": 0.96,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 9.3,
+        "peak_next7_m3s": 13.3,
+        "ratio": 1.43,
+        "vote": "watch"
+      },
+      "ai_reason": "No surface water detected in either pass (0.0 water share)."
+    },
+    {
+      "village": "osm822959784",
+      "name": "Jawa Bazar, Dergaw",
+      "name_en": "Jawa Bazar, Dergaw",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": null,
+        "before": null,
+        "unknown": 1.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 5.9,
+        "peak_next7_m3s": 8.2,
+        "ratio": 1.38,
+        "vote": "watch"
+      },
+      "ai_reason": "Located within the grey no-data area across both passes."
+    },
+    {
+      "village": "osm822959785",
+      "name": "Tarchoka - তারচুকা",
+      "name_en": "Tarchoka - তারচুকা",
+      "votes": {
+        "satellite": "none",
+        "river": "watch",
+        "rain": "critical",
+        "flow_model": "watch",
+        "ai": "none"
+      },
+      "level": "watch",
+      "satellite": {
+        "now": null,
+        "before": null,
+        "unknown": 1.0,
+        "vote": "none"
+      },
+      "river": {
+        "today_m3s": 5.9,
+        "peak_next7_m3s": 8.2,
+        "ratio": 1.38,
+        "vote": "watch"
+      },
+      "ai_reason": "Located within the grey no-data area across both passes."
+    }
+  ],
+  "note": "Automated and not validated. Alerts from this watch go to test phones only unless validated."
+}

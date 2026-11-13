@@ -8,8 +8,10 @@ wind-roughened haor water peaking near -15 dB (see processed/flood/otsu/*.png).
 The fixed threshold then catches only a small tail of the water.
 
 To compare dates fairly, this script measures the flooded share inside the
-area seen on every date. A fallback date that drops far below its neighbours
-is suspect. Writes <data>/results/otsu_fallback_check.csv.
+area seen on every classified date. A fallback date that drops far below its
+neighbours is suspect. Maps set entirely unknown (the rule since 24 Oct 2026)
+are left out of that area, and their flooded share is empty.
+Writes <data>/results/otsu_fallback_check.csv.
 """
 from __future__ import annotations
 
@@ -32,13 +34,16 @@ def check(data_dir: Path) -> pd.DataFrame:
     for day in log["date"]:
         with rasterio.open(flood / f"sentinel1_{day.replace('-', '')}.tif") as src:
             maps[day] = src.read(1)
-    common = np.all([m != config.UNKNOWN for m in maps.values()], axis=0)
+    # a map set entirely unknown would leave no pixel seen on every date
+    classified = [d for d, m in maps.items() if (m != config.UNKNOWN).any()]
+    common = np.all([maps[d] != config.UNKNOWN for d in classified], axis=0) if classified else None
     out = log[["date", "relative_orbit", "otsu_db"]].copy()
     # logs written since 24 Oct 2026 carry a status; older ones logged the fallback as -18 dB
     out["fallback"] = log["status"] != "otsu" if "status" in log else out["otsu_db"] == FALLBACK_DB
     out["covered_pct"] = [round(float((maps[d] != config.UNKNOWN).mean() * 100), 1) for d in out["date"]]
-    out["common_area_km2"] = round(common.sum() * config.GRID_RES_M ** 2 / 1e6, 1)
-    out["common_flood_pct"] = [round(float((maps[d][common] == config.FLOODED).mean() * 100), 1) for d in out["date"]]
+    out["common_area_km2"] = round(common.sum() * config.GRID_RES_M ** 2 / 1e6, 1) if common is not None else 0.0
+    out["common_flood_pct"] = [round(float((maps[d][common] == config.FLOODED).mean() * 100), 1)
+                               if d in classified and common.any() else np.nan for d in out["date"]]
     neighbours = (out["common_flood_pct"].shift(1) + out["common_flood_pct"].shift(-1)) / 2
     out["neighbour_mean_pct"] = neighbours.round(1)
     return out

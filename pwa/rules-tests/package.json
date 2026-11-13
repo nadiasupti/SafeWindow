@@ -1,0 +1,18 @@
+{
+  "name": "safewindow-rules-tests",
+  "private": true,
+  "type": "module",
+  "description": "Tests of firestore.rules on the local Firestore emulator. No Firebase login and no network to Firebase needed.",
+  "scripts": {
+    "test": "npx --yes firebase-tools@15.36.0 emulators:exec --only firestore --project demo-safewindow --config ../../firebase.json \"node --test rules.test.mjs\"",
+    "test:e2e": "npx --yes firebase-tools@15.36.0 emulators:exec --only auth,firestore --project demo-safewindow --config ../../firebase.json \"node e2e.mjs\"",
+    "test:all": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "firebase": "^13.2.0"
+  },
+  "dependencies": {
+    "playwright-core": "^1.65.0"
+  }
+}

@@ -1,0 +1,550 @@
+{
+ "sunamganj_bd": {
+  "site": "sunamganj_bd",
+  "test_origins": 729,
+  "thresholds_m3s": {
+   "watch": 1765.0,
+   "warning": 1926.5,
+   "critical": 2083.2
+  },
+  "horizons": {
+   "1": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9926,
+     "MAE": 11.5,
+     "event_detection": {
+      "watch": {
+       "events": 19,
+       "alarms": 19,
+       "hits": 16,
+       "false_alarms": 3,
+       "missed": 3,
+       "precision": 0.842,
+       "recall": 0.842
+      },
+      "warning": {
+       "events": 10,
+       "alarms": 10,
+       "hits": 9,
+       "false_alarms": 1,
+       "missed": 1,
+       "precision": 0.9,
+       "recall": 0.9
+      },
+      "critical": {
+       "events": 6,
+       "alarms": 9,
+       "hits": 6,
+       "false_alarms": 3,
+       "missed": 0,
+       "precision": 0.667,
+       "recall": 1.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9927,
+     "MAE": 11.7
+    },
+    "persistence": {
+     "NSE": 0.9897
+    }
+   },
+   "3": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9674,
+     "MAE": 32.8,
+     "event_detection": {
+      "watch": {
+       "events": 19,
+       "alarms": 15,
+       "hits": 13,
+       "false_alarms": 2,
+       "missed": 6,
+       "precision": 0.867,
+       "recall": 0.684
+      },
+      "warning": {
+       "events": 12,
+       "alarms": 9,
+       "hits": 7,
+       "false_alarms": 2,
+       "missed": 5,
+       "precision": 0.778,
+       "recall": 0.583
+      },
+      "critical": {
+       "events": 8,
+       "alarms": 7,
+       "hits": 5,
+       "false_alarms": 2,
+       "missed": 3,
+       "precision": 0.714,
+       "recall": 0.625
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9683,
+     "MAE": 35.0
+    },
+    "persistence": {
+     "NSE": 0.9525
+    }
+   },
+   "7": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9258,
+     "MAE": 64.7,
+     "event_detection": {
+      "watch": {
+       "events": 19,
+       "alarms": 15,
+       "hits": 11,
+       "false_alarms": 4,
+       "missed": 8,
+       "precision": 0.733,
+       "recall": 0.579
+      },
+      "warning": {
+       "events": 10,
+       "alarms": 8,
+       "hits": 4,
+       "false_alarms": 4,
+       "missed": 6,
+       "precision": 0.5,
+       "recall": 0.4
+      },
+      "critical": {
+       "events": 6,
+       "alarms": 7,
+       "hits": 2,
+       "false_alarms": 5,
+       "missed": 4,
+       "precision": 0.286,
+       "recall": 0.333
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9256,
+     "MAE": 69.0
+    },
+    "persistence": {
+     "NSE": 0.8927
+    }
+   }
+  }
+ },
+ "kurigram_bd": {
+  "site": "kurigram_bd",
+  "test_origins": 729,
+  "thresholds_m3s": {
+   "watch": 56362.8,
+   "warning": 63360.5,
+   "critical": 71448.6
+  },
+  "horizons": {
+   "1": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.992,
+     "MAE": 683.4,
+     "event_detection": {
+      "watch": {
+       "events": 30,
+       "alarms": 28,
+       "hits": 27,
+       "false_alarms": 1,
+       "missed": 3,
+       "precision": 0.964,
+       "recall": 0.9
+      },
+      "warning": {
+       "events": 16,
+       "alarms": 15,
+       "hits": 14,
+       "false_alarms": 1,
+       "missed": 2,
+       "precision": 0.933,
+       "recall": 0.875
+      },
+      "critical": {
+       "events": 5,
+       "alarms": 6,
+       "hits": 5,
+       "false_alarms": 1,
+       "missed": 0,
+       "precision": 0.833,
+       "recall": 1.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9921,
+     "MAE": 677.8
+    },
+    "persistence": {
+     "NSE": 0.982
+    }
+   },
+   "3": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9375,
+     "MAE": 2139.5,
+     "event_detection": {
+      "watch": {
+       "events": 31,
+       "alarms": 23,
+       "hits": 20,
+       "false_alarms": 3,
+       "missed": 11,
+       "precision": 0.87,
+       "recall": 0.645
+      },
+      "warning": {
+       "events": 14,
+       "alarms": 10,
+       "hits": 6,
+       "false_alarms": 4,
+       "missed": 8,
+       "precision": 0.6,
+       "recall": 0.429
+      },
+      "critical": {
+       "events": 9,
+       "alarms": 4,
+       "hits": 3,
+       "false_alarms": 1,
+       "missed": 6,
+       "precision": 0.75,
+       "recall": 0.333
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.938,
+     "MAE": 2159.9
+    },
+    "persistence": {
+     "NSE": 0.9069
+    }
+   },
+   "7": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.8503,
+     "MAE": 3681.9,
+     "event_detection": {
+      "watch": {
+       "events": 30,
+       "alarms": 22,
+       "hits": 14,
+       "false_alarms": 8,
+       "missed": 16,
+       "precision": 0.636,
+       "recall": 0.467
+      },
+      "warning": {
+       "events": 16,
+       "alarms": 4,
+       "hits": 3,
+       "false_alarms": 1,
+       "missed": 13,
+       "precision": 0.75,
+       "recall": 0.188
+      },
+      "critical": {
+       "events": 5,
+       "alarms": 0,
+       "hits": 0,
+       "false_alarms": 0,
+       "missed": 5,
+       "precision": null,
+       "recall": 0.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.8548,
+     "MAE": 3678.9
+    },
+    "persistence": {
+     "NSE": 0.7745
+    }
+   }
+  }
+ },
+ "trimmu_pk": {
+  "site": "trimmu_pk",
+  "test_origins": 729,
+  "thresholds_m3s": {
+   "watch": 2715.4,
+   "warning": 3242.4,
+   "critical": 3809.7
+  },
+  "horizons": {
+   "1": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9944,
+     "MAE": 15.7,
+     "event_detection": {
+      "watch": {
+       "events": 29,
+       "alarms": 29,
+       "hits": 27,
+       "false_alarms": 2,
+       "missed": 2,
+       "precision": 0.931,
+       "recall": 0.931
+      },
+      "warning": {
+       "events": 12,
+       "alarms": 11,
+       "hits": 10,
+       "false_alarms": 1,
+       "missed": 2,
+       "precision": 0.909,
+       "recall": 0.833
+      },
+      "critical": {
+       "events": 4,
+       "alarms": 3,
+       "hits": 2,
+       "false_alarms": 1,
+       "missed": 2,
+       "precision": 0.667,
+       "recall": 0.5
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9939,
+     "MAE": 15.3
+    },
+    "persistence": {
+     "NSE": 0.9891
+    }
+   },
+   "3": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.9598,
+     "MAE": 56.3,
+     "event_detection": {
+      "watch": {
+       "events": 31,
+       "alarms": 34,
+       "hits": 30,
+       "false_alarms": 4,
+       "missed": 1,
+       "precision": 0.882,
+       "recall": 0.968
+      },
+      "warning": {
+       "events": 10,
+       "alarms": 10,
+       "hits": 6,
+       "false_alarms": 4,
+       "missed": 4,
+       "precision": 0.6,
+       "recall": 0.6
+      },
+      "critical": {
+       "events": 3,
+       "alarms": 2,
+       "hits": 0,
+       "false_alarms": 2,
+       "missed": 3,
+       "precision": 0.0,
+       "recall": 0.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.9676,
+     "MAE": 52.7
+    },
+    "persistence": {
+     "NSE": 0.9215
+    }
+   },
+   "7": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.8723,
+     "MAE": 108.8,
+     "event_detection": {
+      "watch": {
+       "events": 29,
+       "alarms": 27,
+       "hits": 21,
+       "false_alarms": 6,
+       "missed": 8,
+       "precision": 0.778,
+       "recall": 0.724
+      },
+      "warning": {
+       "events": 12,
+       "alarms": 7,
+       "hits": 3,
+       "false_alarms": 4,
+       "missed": 9,
+       "precision": 0.429,
+       "recall": 0.25
+      },
+      "critical": {
+       "events": 4,
+       "alarms": 1,
+       "hits": 0,
+       "false_alarms": 1,
+       "missed": 4,
+       "precision": 0.0,
+       "recall": 0.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.8722,
+     "MAE": 109.4
+    },
+    "persistence": {
+     "NSE": 0.8051
+    }
+   }
+  }
+ },
+ "bara_np": {
+  "site": "bara_np",
+  "test_origins": 729,
+  "thresholds_m3s": {
+   "watch": 37.6,
+   "warning": 55.1,
+   "critical": 85.5
+  },
+  "horizons": {
+   "1": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.8055,
+     "MAE": 0.8,
+     "event_detection": {
+      "watch": {
+       "events": 46,
+       "alarms": 41,
+       "hits": 41,
+       "false_alarms": 0,
+       "missed": 5,
+       "precision": 1.0,
+       "recall": 0.891
+      },
+      "warning": {
+       "events": 15,
+       "alarms": 14,
+       "hits": 12,
+       "false_alarms": 2,
+       "missed": 3,
+       "precision": 0.857,
+       "recall": 0.8
+      },
+      "critical": {
+       "events": 4,
+       "alarms": 3,
+       "hits": 1,
+       "false_alarms": 2,
+       "missed": 3,
+       "precision": 0.333,
+       "recall": 0.25
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.8071,
+     "MAE": 0.9
+    },
+    "persistence": {
+     "NSE": 0.786
+    }
+   },
+   "3": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.831,
+     "MAE": 1.3,
+     "event_detection": {
+      "watch": {
+       "events": 42,
+       "alarms": 42,
+       "hits": 35,
+       "false_alarms": 7,
+       "missed": 7,
+       "precision": 0.833,
+       "recall": 0.833
+      },
+      "warning": {
+       "events": 14,
+       "alarms": 11,
+       "hits": 9,
+       "false_alarms": 2,
+       "missed": 5,
+       "precision": 0.818,
+       "recall": 0.643
+      },
+      "critical": {
+       "events": 3,
+       "alarms": 2,
+       "hits": 0,
+       "false_alarms": 2,
+       "missed": 3,
+       "precision": 0.0,
+       "recall": 0.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.8391,
+     "MAE": 1.4
+    },
+    "persistence": {
+     "NSE": 0.7709
+    }
+   },
+   "7": {
+    "exported (60 trees, leaf 20)": {
+     "NSE": 0.6364,
+     "MAE": 2.5,
+     "event_detection": {
+      "watch": {
+       "events": 46,
+       "alarms": 39,
+       "hits": 27,
+       "false_alarms": 12,
+       "missed": 19,
+       "precision": 0.692,
+       "recall": 0.587
+      },
+      "warning": {
+       "events": 15,
+       "alarms": 8,
+       "hits": 3,
+       "false_alarms": 5,
+       "missed": 12,
+       "precision": 0.375,
+       "recall": 0.2
+      },
+      "critical": {
+       "events": 4,
+       "alarms": 0,
+       "hits": 0,
+       "false_alarms": 0,
+       "missed": 4,
+       "precision": null,
+       "recall": 0.0
+      }
+     }
+    },
+    "benchmark size (300 trees, leaf 3)": {
+     "NSE": 0.6275,
+     "MAE": 2.7
+    },
+    "persistence": {
+     "NSE": 0.5395
+    }
+   }
+  }
+ }
+}

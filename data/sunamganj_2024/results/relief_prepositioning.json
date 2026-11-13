@@ -1,0 +1,145 @@
+{
+ "train_flood": "sunamganj_2022",
+ "test_flood": "sunamganj_2024",
+ "k": 3,
+ "radius_km": 5.0,
+ "method": "greedy max coverage of the training flood's isolated people, straight-line radius",
+ "sites": [
+  {
+   "shelter_id": "osm9707654272",
+   "name": "Noakhali Saptogram High School",
+   "type": "school",
+   "lat": 24.93037,
+   "lon": 91.36343,
+   "verified": false,
+   "train_villages": [
+    "osm3642867917",
+    "osm5506312223"
+   ]
+  },
+  {
+   "shelter_id": "osm6124539669",
+   "name": "Pangaon Community clinic",
+   "type": "hospital",
+   "lat": 24.86799,
+   "lon": 91.33071,
+   "verified": false,
+   "train_villages": [
+    "osm3642867917",
+    "osm6123937356"
+   ]
+  },
+  {
+   "shelter_id": "osm2616255489",
+   "name": "Khaled General Hospital",
+   "type": "hospital",
+   "lat": 24.92182,
+   "lon": 91.44335,
+   "verified": false,
+   "train_villages": [
+    "osm3642870480"
+   ]
+  }
+ ],
+ "train": {
+  "villages": 5,
+  "people": 187800,
+  "village_ids": [
+   "osm3642867917",
+   "osm3642870480",
+   "osm3642877016",
+   "osm5506312223",
+   "osm6123937356"
+  ]
+ },
+ "test": {
+  "villages": 5,
+  "people": 187800,
+  "covered_villages": 4,
+  "covered_people": 174413,
+  "random_mean_people": 35816,
+  "best_possible_people": 174413.0,
+  "same_villages_as_train": true,
+  "village_rows": [
+   {
+    "village_id": "osm3642867917",
+    "name": "Patharia",
+    "name_bn": null,
+    "population": 15866,
+    "covered": true,
+    "nearest_site_km": 3.6,
+    "last_connected": "2024-05-29",
+    "first_isolated": "2024-05-31"
+   },
+   {
+    "village_id": "osm3642870480",
+    "name": "Purba Birgaon",
+    "name_bn": null,
+    "population": 19141,
+    "covered": true,
+    "nearest_site_km": 4.5,
+    "last_connected": "2024-05-12",
+    "first_isolated": "2024-05-14"
+   },
+   {
+    "village_id": "osm3642877016",
+    "name": "Paschim Birgaon",
+    "name_bn": null,
+    "population": 13387,
+    "covered": false,
+    "nearest_site_km": 6.6,
+    "last_connected": "2024-05-29",
+    "first_isolated": "2024-05-31"
+   },
+   {
+    "village_id": "osm5506312223",
+    "name": "Boromuha",
+    "name_bn": null,
+    "population": 119104,
+    "covered": true,
+    "nearest_site_km": 3.3,
+    "last_connected": "2024-05-29",
+    "first_isolated": "2024-05-31"
+   },
+   {
+    "village_id": "osm6123937356",
+    "name": "Dholkotob village",
+    "name_bn": null,
+    "population": 20302,
+    "covered": true,
+    "nearest_site_km": 2.6,
+    "last_connected": "2024-06-12",
+    "first_isolated": "2024-06-19"
+   }
+  ]
+ },
+ "sensitivity": [
+  {
+   "radius_km": 3.0,
+   "sites": 1,
+   "test_people_covered": 20302,
+   "random_mean_people": 1416,
+   "best_possible_people": 20302.0
+  },
+  {
+   "radius_km": 5.0,
+   "sites": 3,
+   "test_people_covered": 174413,
+   "random_mean_people": 35816,
+   "best_possible_people": 174413.0
+  },
+  {
+   "radius_km": 10.0,
+   "sites": 1,
+   "test_people_covered": 187800,
+   "random_mean_people": 101163,
+   "best_possible_people": 187800.0
+  }
+ ],
+ "notes": [
+  "Sites are unverified OpenStreetMap shelter candidates.",
+  "Straight-line distance: during the flood no open road joins an isolated village to any shelter.",
+  "Stock would have to move before the village's last-seen-passable date, or by boat (not modelled).",
+  "If the test flood isolates the same villages as the training flood, the test shows that isolation recurs; it is not an independent test of the method."
+ ]
+}
