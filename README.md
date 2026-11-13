@@ -49,7 +49,7 @@ NASA Space Apps Challenge 2026 · Challenge: **Dancing with the SARs** · Team D
 
 ## Results at a glance
 
-The same code and the same thresholds were used for all three floods. Nothing was tuned on any reference map.
+The same code and the same thresholds were used for all three floods. Nothing was tuned on any reference map. A fourth flood, Bara-Parsa in Nepal (2017), runs in the app as an unvalidated demonstration (see Detailed results).
 
 | | Sunamganj 2022 | Sunamganj 2024 (unseen year) | Trimmu, Pakistan 2025 (unseen country) |
 |---|---|---|---|
@@ -514,6 +514,14 @@ The study area is the Copernicus EMS EMSR838 AOI 5 polygon at the Chenab–Jhelu
 - **Villages.** At the 20% threshold, 2 villages are isolated (about 75,300 people). The result is the same with town centres as destinations instead of the 3 OpenStreetMap shelter candidates (`regions/punjab_trimmu_2025_hubs.yaml`).
 - **News.** The reported Shorkot–Garh Maharaja road breaches were narrow, deliberate cuts to release water. They do not appear in SafeWindow's maps or in the Copernicus EMS maps.
 
+### August 2017, Bara-Parsa, Nepal (demonstration only)
+
+A demonstration that the unchanged method runs in a third country (`regions/nepal_terai_2017.yaml`, 152 OpenStreetMap villages). It is shown in the mobile app, marked as a demonstration.
+
+- Only 3 of 8 Sentinel-1 dates could be mapped (16, 20 and 28 August). The flood peak (11–14 August) was missed, so the pipeline's own check says NO-GO and there is no map from before the peak.
+- The study area was chosen where the radar showed the most flood water.
+- It is **not validated**: there is no independent flood map or road report for it, and the shelters are unverified OpenStreetMap candidates. It is not counted in any result above.
+
 ### What NASA data adds (measured)
 
 | NASA data | Test | Result |
@@ -627,6 +635,7 @@ SafeWindow/
 │   ├── live/               Sunamganj 2022: results, benchmark, evidence (app default)
 │   ├── sunamganj_2024/     Sunamganj 2024 results
 │   ├── punjab_trimmu_2025/ Trimmu, Pakistan 2025 results
+│   ├── nepal_terai_2017/   Bara-Parsa, Nepal 2017 (demonstration only, not validated)
 │   ├── sunamganj_2026/     2026 monsoon: NISAR layers and results (results/nisar/), daily watch
 │   ├── punjab_trimmu_2026/ 2026 monsoon: NISAR layers and results, daily watch
 │   ├── monitor/            Daily check results (written by GitHub Actions)

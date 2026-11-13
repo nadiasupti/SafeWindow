@@ -141,7 +141,15 @@ a { color: var(--blue); }
     box-shadow: 4px 0 18px rgba(15, 47, 79, 0.04); z-index: 999;
   }
   .navitem { font-size: 0.8rem; gap: 4px; }
-  .screen { max-width: 960px; padding: 24px 32px 48px; padding-inline-start: 136px; }
+  /* Content sits in the space right of the rail, centred there, up to --content-w wide; the top bar
+     lines its logo and buttons up with the content's edges. */
+  :root { --rail-w: 104px; --content-w: 1080px; --side: max(32px, calc((100vw - var(--rail-w) - var(--content-w)) / 2)); }
+  .topbar { padding-inline: calc(var(--rail-w) + var(--side)) var(--side); }
+  .screen {
+    max-width: none; width: auto; margin: 0;
+    padding: 24px var(--side) 48px; padding-inline-start: calc(var(--rail-w) + var(--side));
+  }
+  .map { height: clamp(420px, calc(100vh - 300px), 760px); }
 }
 
 /* ───────────── Cards and basic pieces ───────────── */
@@ -456,7 +464,12 @@ progress { width: 100%; height: 12px; accent-color: var(--blue); }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 2px var(--navy); } 50% { box-shadow: 0 0 0 8px rgba(16, 45, 70, 0.15); } }
 
 .map-panel { display: grid; gap: 0; }
-@media (min-width: 900px) { .map-panel { grid-template-columns: 1fr 1fr; gap: 0 var(--gap); align-items: start; } .map-panel .legend { grid-column: 1 / -1; } }
+@media (min-width: 900px) {
+  .map-panel { grid-template-columns: 1fr 1fr; gap: 0 var(--gap); align-items: start; }
+  .map-panel .legend, .map-panel .analysis-link { grid-column: 1 / -1; }
+  /* No village chosen: the date card is alone on its row, so it takes the full width. */
+  .map-panel > .card:first-child:has(+ .legend) { grid-column: 1 / -1; }
+}
 .legend summary { min-height: 44px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
 .legend summary::-webkit-details-marker { display: none; }
 .legend ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
