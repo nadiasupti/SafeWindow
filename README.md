@@ -688,6 +688,18 @@ All inputs are free and public.
 
 The OpenStreetMap data is a snapshot from October 2026, used for all three floods.
 
+### NASA and space-agency partner resources
+
+| Resource | How SafeWindow uses it |
+|---|---|
+| NASA Earthdata (the catalog behind Earthdata Search) | NISAR, OPERA and MODIS data are searched and downloaded from it with the `earthaccess` Python library |
+| ASF DAAC (Alaska Satellite Facility), NASA's SAR archive | Source of the NISAR GCOV data (`NISAR_L2_GCOV_PROVISIONAL_V1`) |
+| NISAR Data User Guide (ASF) | Reference for reading the GCOV product's HH and HV backscatter layers |
+| CSA RADARSAT Constellation Mission (RCM) | Indirect: UNOSAT flood maps made from RCM-1 images (18 and 19 June 2022) are benchmarks for Sunamganj 2022 (IoU 0.81–0.89) |
+| CONAE SAOCOM | Indirect: UNOSAT flood and affected-road maps made from a SAOCOM L-band image (June 2024) are benchmarks for Sunamganj 2024 (IoU 0.74; 56–71% of the road SafeWindow cuts is on roads UNOSAT marks as flood-affected) |
+
+SafeWindow did not download raw RCM or SAOCOM images; it compares its results with maps made from them.
+
 ---
 
 ## Limitations
@@ -705,7 +717,7 @@ The OpenStreetMap data is a snapshot from October 2026, used for all three flood
 - **Planning analyses are signals.** Road criticality depends on OpenStreetMap's roads; the relief test repeats the same five villages and uses straight-line distance.
 - **Mapped buildings are not people.** "Within 50 m of mapped water" is not "flooded inside": radar often misses water between buildings.
 - **The watch and the forecasts are not validated** on real floods: their thresholds are working assumptions, river discharge is modelled, flood peaks are unreliable beyond 1–2 days, and the forecast demo uses synthetic data. Their alerts go to test phones only.
-- **NISAR** uses the provisional product, covers only the 2026 monsoon, and has no independent flood map for those dates; the agreement figures compare two radars, not ground truth.
+- **NISAR** uses the provisional product, covers only the 2026 monsoon, and has no independent flood map for those dates; the agreement figures compare two radars, not ground truth. NASA released the validated product, `NISAR_L2_GCOV_V1`, from 21 October 2026; moving to it is the next step.
 - **The rescue platform** is a prototype on the free Firebase plan. It does not contact emergency services; multi-factor sign-in and agency sub-roles are not built.
 - **Not for emergency use.** Results must not be used to make emergency decisions without official sources.
 
