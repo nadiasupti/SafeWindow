@@ -765,6 +765,34 @@
    "hv_km2": 502.5,
    "s1_km2": null,
    "s1_date": null
+  },
+  {
+   "date": "2026-10-21",
+   "hh_km2": null,
+   "hv_km2": 778.5,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-10-30",
+   "hh_km2": null,
+   "hv_km2": 812.9,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-11-02",
+   "hh_km2": 522.0,
+   "hv_km2": 804.9,
+   "s1_km2": null,
+   "s1_date": null
+  },
+  {
+   "date": "2026-11-09",
+   "hh_km2": 399.2,
+   "hv_km2": 554.1,
+   "s1_km2": null,
+   "s1_date": null
   }
  ]
 }

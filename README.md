@@ -65,8 +65,9 @@ The same code and the same thresholds were used for all three floods. Nothing wa
 - **Weaker at Trimmu.** Agreement is lower there, where the flood doubled within two days, irrigated rice may look like flood, and OpenStreetMap is thin.
 
 **NISAR through the 2026 monsoon** (details under [NASA-ISRO NISAR](#nasa-isro-nisar-polarizations-the-monsoon-season-and-hidden-water)):
-- **The haor drains.** Eleven NISAR passes over Sunamganj, every 12 days on one track from June to October: HV water falls from 642 km² to 503 km².
-- **HV is the more robust polarization here.** It gives a water map on all 14 NISAR dates; HH does on 5. When both work they agree (IoU 0.71–0.93).
+- **The haor drains.** On one NISAR orbit track over Sunamganj (track 069, every 12 days), HV water falls from 642 km² in June to 503 km² on 16 October.
+- **Newest NISAR data.** Four passes from NASA's validated NISAR product (`NISAR_L2_GCOV_V1`, released from 21 October 2026) extend Sunamganj to 9 November 2026. They are kept apart from the season series: the product changed, and three of them are on other orbit tracks.
+- **HV is the more robust polarization here.** It gives a water map on all 18 NISAR dates; HH does on 7. When both work they agree (IoU 0.63–0.93).
 - **Water under crops.** Around Trimmu's villages NISAR sees a median 37 points more water than Sentinel-1 on 12 July, when the rice paddies are flooded for transplanting.
 
 **Planning analyses** (from the same results, nothing re-tuned; details under [Planning analyses](#planning-analyses-road-criticality-and-relief-pre-positioning)):
@@ -526,7 +527,7 @@ A demonstration that the unchanged method runs in a third country (`regions/nepa
 
 | NASA data | Test | Result |
 |---|---|---|
-| **NISAR** (NASA-ISRO, L-band) | SafeWindow's flood vs NISAR water, 1–3 days apart, Sunamganj and Trimmu 2026, in HH and HV | 94.7–97.8% of SafeWindow's flood is also water in NISAR HH. HV gives a water map on all 14 dates; HH on only 5 (its threshold falls outside the rule on 9). NISAR also sees water under crops, which SafeWindow intentionally does not count. |
+| **NISAR** (NASA-ISRO, L-band) | SafeWindow's flood vs NISAR water, 1–3 days apart, Sunamganj and Trimmu 2026, in HH and HV | 94.7–97.8% of SafeWindow's flood is also water in NISAR HH. HV gives a water map on all 18 dates; HH on only 7 (its threshold falls outside the rule on 11). NISAR also sees water under crops, which SafeWindow intentionally does not count. |
 | **OPERA DSWx-S1** | Both maps against the same Copernicus EMS references, Trimmu 2025 | Where SafeWindow and OPERA agree, 84–92% of the flood is confirmed by EMS. This gives a high-confidence class. |
 | **GPM IMERG** | Which rain window best tracks the flooded area | Upstream rain leads the flood by about 5 days at Trimmu, and by 0–3 days in the haor. Exploratory: about 9 radar dates per flood. |
 | **NASADEM** slope mask | Benchmark with and without the mask, 3 floods | In these flat floodplains the mask lowers IoU by 0.006–0.054. Kept unchanged, to avoid tuning on test data. |
@@ -550,7 +551,9 @@ NISAR science data is public from 17 June 2026, so this uses the 2026 monsoon ov
 | Trimmu, 24 Jul | 25 Jul | 94.7% / 96.8% |
 | Trimmu, 12 Jul | 13 Jul | no HH map / 89.2% |
 
-**The season (Sunamganj, track 069, every 12 days).** HV water: 642 km² (18 Jun), 655 (30 Jun), 638 (12 Jul), 656 (24 Jul), 639 (17 Aug), 633 (29 Aug), 623 (10 Sep), 583 (22 Sep), 552 (4 Oct), 503 (16 Oct). The haor stays full through the monsoon and drains from September. HH gives a map on only 5 of the 14 NISAR dates in both areas, because its threshold falls outside the rule's range; HV does on all 14.
+**The season (Sunamganj, track 069, every 12 days).** HV water: 642 km² (18 Jun), 655 (30 Jun), 638 (12 Jul), 656 (24 Jul), 639 (17 Aug), 633 (29 Aug), 623 (10 Sep), 583 (22 Sep), 552 (4 Oct), 503 (16 Oct). The haor stays full through the monsoon and drains from September. HH gives a map on only 7 of the 18 NISAR dates in both areas, because its threshold falls outside the rule's range; HV does on all 18.
+
+**Newest passes (validated product V1, 21 October to 9 November 2026).** HV water: 779 km² (21 Oct, track 141), 813 (30 Oct, track 091), 805 (2 Nov, track 141) and 554 (9 Nov, track 069). Tracks 141 and 091 cover the whole study area, while track 069 loses about 152 km² at its frame edge, so only track 069 can be set beside the series above. There, 9 November (554 km²) is higher than 16 October (503 km²), yet almost no rain fell in early November (under 1 mm a day). The HV threshold is the same (−18.9 dB), but HH backscatter is about 1 dB lower in the new product, so the change is more likely the product (or fields flooded for winter rice) than a new flood. None of these four dates has a Sentinel-1 map within 3 days.
 
 **Water only NISAR sees, around each village** (`scripts/nisar_village_water.py`). L-band (about 24 cm) passes between plants; C-band (about 6 cm) stops at the leaves. So where NISAR sees water and Sentinel-1 does not, the likeliest cause is water under vegetation.
 - **Trimmu, 12 July:** the median village has 37 points more water within 3 km in NISAR than in Sentinel-1. The largest gaps are 45–62% water in NISAR against 2–3% in Sentinel-1, when the kharif rice paddies are flooded for transplanting.
@@ -693,12 +696,14 @@ The OpenStreetMap data is a snapshot from October 2026, used for all three flood
 | Resource | How SafeWindow uses it |
 |---|---|
 | NASA Earthdata (the catalog behind Earthdata Search) | NISAR, OPERA and MODIS data are searched and downloaded from it with the `earthaccess` Python library |
-| ASF DAAC (Alaska Satellite Facility), NASA's SAR archive | Source of the NISAR GCOV data (`NISAR_L2_GCOV_PROVISIONAL_V1`) |
+| ASF DAAC (Alaska Satellite Facility), NASA's SAR archive | Source of the NISAR GCOV data (`NISAR_L2_GCOV_PROVISIONAL_V1` to 16 October 2026, the validated `NISAR_L2_GCOV_V1` from 21 October) |
 | NISAR Data User Guide (ASF) | Reference for reading the GCOV product's HH and HV backscatter layers |
 | CSA RADARSAT Constellation Mission (RCM) | Indirect: UNOSAT flood maps made from RCM-1 images (18 and 19 June 2022) are benchmarks for Sunamganj 2022 (IoU 0.81–0.89) |
 | CONAE SAOCOM | Indirect: UNOSAT flood and affected-road maps made from a SAOCOM L-band image (June 2024) are benchmarks for Sunamganj 2024 (IoU 0.74; 56–71% of the road SafeWindow cuts is on roads UNOSAT marks as flood-affected) |
 
 SafeWindow did not download raw RCM or SAOCOM images; it compares its results with maps made from them.
+
+Further reading on NISAR for floods (background, not data inputs): the NISAR Applications White Papers (two-page overviews of NISAR applications, including floods and disaster response) and the NISAR StoryMaps on SAR flood mapping, both listed in the Space Apps 2026 "Dancing with the SARs" challenge resources.
 
 ---
 
@@ -717,7 +722,7 @@ SafeWindow did not download raw RCM or SAOCOM images; it compares its results wi
 - **Planning analyses are signals.** Road criticality depends on OpenStreetMap's roads; the relief test repeats the same five villages and uses straight-line distance.
 - **Mapped buildings are not people.** "Within 50 m of mapped water" is not "flooded inside": radar often misses water between buildings.
 - **The watch and the forecasts are not validated** on real floods: their thresholds are working assumptions, river discharge is modelled, flood peaks are unreliable beyond 1–2 days, and the forecast demo uses synthetic data. Their alerts go to test phones only.
-- **NISAR** uses the provisional product, covers only the 2026 monsoon, and has no independent flood map for those dates; the agreement figures compare two radars, not ground truth. NASA released the validated product, `NISAR_L2_GCOV_V1`, from 21 October 2026; moving to it is the next step.
+- **NISAR** covers only 2026 and has no independent flood map for those dates; the agreement figures compare two radars, not ground truth. Dates to 16 October use the provisional product and later dates the validated `NISAR_L2_GCOV_V1`; the earlier dates have not been reprocessed with V1, so water areas across the two products are not directly comparable.
 - **The rescue platform** is a prototype on the free Firebase plan. It does not contact emergency services; multi-factor sign-in and agency sub-roles are not built.
 - **Not for emergency use.** Results must not be used to make emergency decisions without official sources.
 
@@ -738,7 +743,7 @@ SafeWindow did not download raw RCM or SAOCOM images; it compares its results wi
 - NISAR in both polarizations over the 2026 monsoon, with water only NISAR sees around each village;
 - the rescue platform for citizens, NGOs and government, with its rules enforced and tested on the server side;
 - the automated watch, the river-flow forecast and a 24-method forecast benchmark;
-- tests: 299 pytest tests, the app's own unit tests (14), security-rule tests against the Firebase emulator, and browser checks of the mobile app (main flow 34, flood replay 42, analyses 29, NISAR 27, buildings 21, profile 11).
+- tests: 299 pytest tests, the app's own unit tests (14), security-rule tests against the Firebase emulator, and browser checks of the mobile app (main flow 34, flood replay 42, analyses 29, NISAR 29, buildings 21, profile 11).
 
 **Open:**
 - an independent scientific review;

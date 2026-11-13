@@ -1,6 +1,9 @@
 {
  "region": "sunamganj_2026",
- "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
+ "product": [
+  "NISAR_L2_GCOV_PROVISIONAL_V1",
+  "NISAR_L2_GCOV_V1"
+ ],
  "bounds": [
   [
    24.801514695076204,
@@ -27,6 +30,7 @@
   {
    "date": "2026-06-18",
    "granule": "NISAR_L2_PR_GCOV_023_069_A_014_4005_DHDH_A_20260618T232135_20260618T232210_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.88,
     "status": "otsu_failed",
@@ -83,6 +87,7 @@
   {
    "date": "2026-06-20",
    "granule": "NISAR_L2_PR_GCOV_023_091_D_076_2005_QPDH_A_20260620T123424_20260620T123459_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -14.12,
     "status": "otsu",
@@ -155,6 +160,7 @@
   {
    "date": "2026-06-30",
    "granule": "NISAR_L2_PR_GCOV_024_069_A_014_4005_DHDH_A_20260630T232134_20260630T232209_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -12.12,
     "status": "otsu",
@@ -227,6 +233,7 @@
   {
    "date": "2026-07-12",
    "granule": "NISAR_L2_PR_GCOV_025_069_A_014_4005_DHDH_A_20260712T232134_20260712T232208_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.38,
     "status": "otsu_failed",
@@ -283,6 +290,7 @@
   {
    "date": "2026-07-24",
    "granule": "NISAR_L2_PR_GCOV_026_069_A_014_4005_DHDH_A_20260724T232133_20260724T232208_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -12.12,
     "status": "otsu",
@@ -355,6 +363,7 @@
   {
    "date": "2026-08-17",
    "granule": "NISAR_L2_PR_GCOV_028_069_A_014_4005_DHDH_A_20260817T232132_20260817T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -10.62,
     "status": "otsu_failed",
@@ -386,6 +395,7 @@
   {
    "date": "2026-08-29",
    "granule": "NISAR_L2_PR_GCOV_029_069_A_014_4005_DHDH_A_20260829T232132_20260829T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.62,
     "status": "otsu_failed",
@@ -417,6 +427,7 @@
   {
    "date": "2026-09-10",
    "granule": "NISAR_L2_PR_GCOV_030_069_A_014_4005_DHDH_A_20260910T232131_20260910T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.88,
     "status": "otsu_failed",
@@ -448,6 +459,7 @@
   {
    "date": "2026-09-22",
    "granule": "NISAR_L2_PR_GCOV_031_069_A_014_4005_DHDH_A_20260922T232132_20260922T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -12.12,
     "status": "otsu",
@@ -480,6 +492,7 @@
   {
    "date": "2026-10-04",
    "granule": "NISAR_L2_PR_GCOV_032_069_A_014_4005_DHDH_A_20261004T232132_20261004T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.88,
     "status": "otsu_failed",
@@ -511,6 +524,7 @@
   {
    "date": "2026-10-16",
    "granule": "NISAR_L2_PR_GCOV_033_069_A_014_4005_DHDH_A_20261016T232132_20261016T232206_P05023_N_F_J_001",
+   "product": "NISAR_L2_GCOV_PROVISIONAL_V1",
    "hh": {
     "threshold_db": -11.88,
     "status": "otsu_failed",
@@ -538,6 +552,136 @@
     "hv_water": "20261016_hv_water.png"
    },
    "frame_edge_removed_km2": 152.4
+  },
+  {
+   "date": "2026-10-21",
+   "granule": "NISAR_L2_PR_GCOV_033_141_A_014_4005_DHDH_A_20261021T231312_20261021T231347_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -11.88,
+    "status": "otsu_failed",
+    "water_km2": 0.0
+   },
+   "hv": {
+    "threshold_db": -17.38,
+    "status": "otsu",
+    "water_km2": 778.5
+   },
+   "hh_vs_hv": {
+    "compared_km2": 0.0,
+    "a_km2": 0.0,
+    "b_km2": 0.0,
+    "iou": null,
+    "share_of_a_in_b": null,
+    "share_of_b_in_a": null
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261021_hh.webp",
+    "hv": "20261021_hv.webp",
+    "rgb": "20261021_rgb.webp",
+    "hv_water": "20261021_hv_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-10-30",
+   "granule": "NISAR_L2_PR_GCOV_034_091_D_076_4005_DHDH_A_20261030T123421_20261030T123455_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -11.62,
+    "status": "otsu_failed",
+    "water_km2": 0.0
+   },
+   "hv": {
+    "threshold_db": -17.88,
+    "status": "otsu",
+    "water_km2": 812.9
+   },
+   "hh_vs_hv": {
+    "compared_km2": 0.0,
+    "a_km2": 0.0,
+    "b_km2": 0.0,
+    "iou": null,
+    "share_of_a_in_b": null,
+    "share_of_b_in_a": null
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261030_hh.webp",
+    "hv": "20261030_hv.webp",
+    "rgb": "20261030_rgb.webp",
+    "hv_water": "20261030_hv_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-11-02",
+   "granule": "NISAR_L2_PR_GCOV_034_141_A_014_4005_DHDH_A_20261102T231313_20261102T231347_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -12.12,
+    "status": "otsu",
+    "water_km2": 522.0
+   },
+   "hv": {
+    "threshold_db": -17.38,
+    "status": "otsu",
+    "water_km2": 804.9
+   },
+   "hh_vs_hv": {
+    "compared_km2": 1264.9,
+    "a_km2": 522.0,
+    "b_km2": 804.9,
+    "iou": 0.629,
+    "share_of_a_in_b": 0.981,
+    "share_of_b_in_a": 0.636
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261102_hh.webp",
+    "hv": "20261102_hv.webp",
+    "rgb": "20261102_rgb.webp",
+    "hh_water": "20261102_hh_water.png",
+    "hv_water": "20261102_hv_water.png"
+   },
+   "frame_edge_removed_km2": 0.0
+  },
+  {
+   "date": "2026-11-09",
+   "granule": "NISAR_L2_PR_GCOV_035_069_A_014_4005_DHDH_A_20261109T232132_20261109T232207_P05036_N_F_J_001",
+   "product": "NISAR_L2_GCOV_V1",
+   "hh": {
+    "threshold_db": -12.62,
+    "status": "otsu",
+    "water_km2": 399.2
+   },
+   "hv": {
+    "threshold_db": -18.88,
+    "status": "otsu",
+    "water_km2": 554.1
+   },
+   "hh_vs_hv": {
+    "compared_km2": 870.5,
+    "a_km2": 399.2,
+    "b_km2": 554.1,
+    "iou": 0.678,
+    "share_of_a_in_b": 0.965,
+    "share_of_b_in_a": 0.695
+   },
+   "sentinel1": null,
+   "groups": null,
+   "layers": {
+    "hh": "20261109_hh.webp",
+    "hv": "20261109_hv.webp",
+    "rgb": "20261109_rgb.webp",
+    "hh_water": "20261109_hh_water.png",
+    "hv_water": "20261109_hv_water.png"
+   },
+   "frame_edge_removed_km2": 152.3
   }
  ]
 }

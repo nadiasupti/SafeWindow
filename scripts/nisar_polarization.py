@@ -23,7 +23,9 @@ Writes:
   data/<region>/results/nisar/           small files for the app: nisar.json and PNG layers (WGS84)
 
 No independent flood map exists for these dates: this is agreement between radars and polarizations, not
-validation against ground truth. Only the NISAR provisional product (NISAR_L2_GCOV_PROVISIONAL_V1) is used.
+validation against ground truth. Products: the provisional NISAR GCOV (NISAR_L2_GCOV_PROVISIONAL_V1, June to
+mid-October 2026) and, where no provisional granule exists, the validated NISAR_L2_GCOV_V1 (from 21 October 2026).
+Each scene records which product it came from.
 """
 from __future__ import annotations
 
@@ -42,6 +44,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 GCOV = "NISAR_L2_GCOV_PROVISIONAL_V1"
+GCOV_PRODUCTS = (GCOV, "NISAR_L2_GCOV_V1")   # searched in this order: earlier dates keep the product they were read from
 MARGIN_M = 200
 CHANNELS = {"HH": "HHHH", "HV": "HVHV"}
 WATER_RGBA = (30, 110, 230, 255)  # the same blue for every water map, as on the app's flood map
@@ -69,7 +72,11 @@ def _read_once(earthaccess, day, grid, bbox):
     import h5py
     from rasterio.transform import from_origin
     from rasterio.warp import Resampling, reproject, transform_bounds
-    res = earthaccess.search_data(short_name=GCOV, bounding_box=bbox, temporal=(day, day))
+    res = []
+    for product in GCOV_PRODUCTS:
+        res = earthaccess.search_data(short_name=product, bounding_box=bbox, temporal=(day, day))
+        if res:
+            break
     if not res:
         raise SystemExit(f"no NISAR GCOV granule on {day}")
     granule = res[0]["umm"]["GranuleUR"]
@@ -97,8 +104,8 @@ def _read_once(earthaccess, day, grid, bbox):
                 db = 10 * np.log10(on_grid)
             db[~np.isfinite(db)] = np.nan
             out[pol] = db
-    print(f"  {day}: {granule}, read {r1 - r0} x {c1 - c0} px of HH and HV", flush=True)
-    return out, granule
+    print(f"  {day}: {granule} ({product}), read {r1 - r0} x {c1 - c0} px of HH and HV", flush=True)
+    return out, granule, product
 
 
 def water(db, inside, s1, config, hist_png, day, pol):
@@ -272,6 +279,7 @@ def main() -> None:
             old.unlink(missing_ok=True)
     cached = json.loads((work / "nisar_polarization.json").read_text(encoding="utf-8")) if (work / "nisar_polarization.json").exists() else {"scenes": []}
     granules = {s["date"]: s["granule"] for s in cached["scenes"]}
+    products = {s["date"]: s.get("product", GCOV) for s in cached["scenes"]}
     profile = dict(driver="GTiff", height=grid.height, width=grid.width, count=1, dtype="float32",
                    crs=grid.crs, transform=grid.transform, nodata=np.nan, compress="deflate", predictor=3)
     for day in args.dates:
@@ -282,10 +290,10 @@ def main() -> None:
             for pol, f in files.items():
                 with rasterio.open(f) as src:
                     db[pol] = src.read(1)
-            granule = granules[day]
+            granule, product = granules[day], products[day]
             print(f"  {day}: HH and HV from the earlier read ({granule})", flush=True)
         else:
-            db, granule = read_on_grid(earthaccess, day, grid, bbox)
+            db, granule, product = read_on_grid(earthaccess, day, grid, bbox)
             # the raw read is kept as it came (edge included), so a rerun starts from the same data
             for pol in ("HH", "HV"):
                 with rasterio.open(files[pol], "w", **profile) as dst:
@@ -314,7 +322,7 @@ def main() -> None:
         hh_w, hv_w = maps["HH"][0], maps["HV"][0]
         edge_km2 = round(float(edge_px.sum() * km2), 1)
         from nisar_compare import agreement
-        row = {"date": day, "granule": granule,
+        row = {"date": day, "granule": granule, "product": product,
                "hh": {"threshold_db": None if maps["HH"][1] is None else round(maps["HH"][1], 2), "status": maps["HH"][2],
                       "water_km2": round(float(((hh_w == config.FLOODED) & inside).sum() * km2), 1)},
                "hv": {"threshold_db": None if maps["HV"][1] is None else round(maps["HV"][1], 2), "status": maps["HV"][2],
@@ -339,7 +347,8 @@ def main() -> None:
         scenes.append(row)
         print(json.dumps({k: v for k, v in row.items() if k != "layers"}, indent=1), flush=True)
 
-    out = {"region": args.region, "product": GCOV, "bounds": bounds, "stretch_db": STRETCH, "frame_edge_km": EDGE_KM,
+    used = sorted({s["product"] for s in scenes}, key=GCOV_PRODUCTS.index)
+    out = {"region": args.region, "product": used[0] if len(used) == 1 else used, "bounds": bounds, "stretch_db": STRETCH, "frame_edge_km": EDGE_KM,
            "method": "Otsu threshold per polarization, the Sentinel-1 rule unchanged; 20 m grid; "
                      f"the outer {EDGE_KM:g} km of each NISAR frame left out",
            "scenes": scenes}
