@@ -16,7 +16,7 @@ The results reach people through a **mobile app** at **https://safewindow-3b759.
 - an **admin panel** where every alert is drafted, checked, approved and logged;
 - a **rescue platform** for citizens, NGOs and government, with privacy and role rules enforced on the server;
 - an **automated watch** that combines satellite water, river and rain forecasts and an optional AI reader into draft alerts;
-- a **daily check** on GitHub Actions;
+- a **daily check** on GitHub Actions (paused after submission; one click turns it back on);
 - **planning analyses:** roads that are a village's only link, where relief stock could wait before a flood, and 71,711 mapped buildings ranked for field checks.
 
 > **Important:** SafeWindow is a research prototype. It is not an official warning system, evacuation planner, emergency service or decision tool, and it never says that help is on its way. Always follow official alerts (for example BMD, FFWC and DDM in Bangladesh, or NDMA and PDMA Punjab in Pakistan).
@@ -138,7 +138,7 @@ The app for villagers is a Progressive Web App in [pwa/](pwa/) (React and Vite),
 
 Alerts are written and approved in a separate **admin panel** (`app/admin_app.py`) that opens only on the admin's own computer and needs the Firebase Admin key, which is kept outside the repository. Every alert goes through draft, approval (with a "source and date checked" box), sending, and cancellation or expiry, and every step is logged. Test alerts are marked SIMULATION and go only to registered test phones. The 🔔 Test notification tab sends one with a single click to the test phones that have alerts on for a chosen village (logged as Demo, valid for 6 hours). Real alerts stay switched off unless `SAFEWINDOW_ALLOW_LIVE=1` is set.
 
-A **daily check** runs on GitHub Actions at 06:00 Bangladesh time ([.github/workflows/daily-check.yml](.github/workflows/daily-check.yml)): it looks for new Sentinel-1 images and NASA GPM IMERG rain over the monitored 2026 regions and writes `data/monitor/`. Rain is counted only for complete days (all 48 half-hour images), so a day NASA has not finished publishing is never under-counted. It sends no alert and does not turn rain into a forecast.
+A **daily check** runs on GitHub Actions at 06:00 Bangladesh time ([.github/workflows/daily-check.yml](.github/workflows/daily-check.yml)): it looks for new Sentinel-1 images and NASA GPM IMERG rain over the monitored 2026 regions and writes `data/monitor/`. Rain is counted only for complete days (all 48 half-hour images), so a day NASA has not finished publishing is never under-counted. It sends no alert and does not turn rain into a forecast. It ran every day up to submission (13 November 2026) and is now paused in GitHub's Actions tab; **Enable workflow** there starts it again, with no code change.
 
 ---
 
@@ -388,6 +388,7 @@ They read only the pipeline's results and write new files next to them in `resul
 | Give an account the government role (Firebase Admin key) | `python scripts/provision_government.py <email>` |
 | Automated watch, now or replaying a past day | `python scripts/watch.py --flood sunamganj_2024`, or add `--as-of 2024-06-17` |
 | Check the AI key and model | `python scripts/watch.py --check-ai` |
+| Watch using the flood maps of the published app (as GitHub Actions does) | `python scripts/watch.py --flood sunamganj_2024 --data-url https://safewindow-3b759.web.app/data` |
 | Watch and put pending alerts in front of the admin (tells the admin phones) | `python scripts/watch.py --flood sunamganj_2024 --drafts --by "Name"` |
 | Register or list admin phones (told when alerts wait for approval) | `python scripts/send_alert.py --add-admin-device <id>`, `--list-admin-devices` |
 | River-flow forecast for each river | `python scripts/flow_forecast.py` |
@@ -635,7 +636,7 @@ SafeWindow/
 ├── scripts/                App export (build_pwa.py), alerts, daily check, planning analyses, NISAR,
 │                           buildings, watch and forecasts, benchmarks, NASA comparisons, hindcast,
 │                           government provisioning, demo and packaging tools
-├── .github/workflows/      Daily check on GitHub Actions
+├── .github/workflows/      Daily check (paused) and automated watch (run by hand) on GitHub Actions
 ├── firebase.json, firestore.rules, .firebaserc   Hosting and database rules for the mobile app
 ├── regions/                One YAML file per flood, plus benchmark reference lists
 ├── locales/                App text per language (en.json, bn.json)
@@ -743,7 +744,7 @@ Further reading on NISAR for floods (background, not data inputs): the NISAR App
 - an independent NISAR radar check;
 - a reproducibility check;
 - a source manifest and a methods document;
-- the mobile app (offline, Bangla and English, flood replay, village alerts), the admin panel with approval and log, and the daily check on GitHub Actions;
+- the mobile app (offline, Bangla and English, flood replay, village alerts), the admin panel with approval and log, the daily check and the automated watch on GitHub Actions;
 - the planning analyses (only connecting roads, relief pre-positioning);
 - mapped buildings (Google Open Buildings) with road access, nearness to water and a field-verification ranking;
 - NISAR in both polarizations over the 2026 monsoon, with water only NISAR sees around each village;
