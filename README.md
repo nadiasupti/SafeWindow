@@ -2,6 +2,27 @@
 
 **When does a village lose its last road to a flood shelter, and how long can it hold out?**
 
+<h3 align="center">▶ Watch SafeWindow</h3>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="https://youtu.be/HO_HQngI9Gw">
+        <img src="https://img.youtube.com/vi/HO_HQngI9Gw/maxresdefault.jpg" alt="SafeWindow – 30-second pitch video" width="400">
+      </a>
+      <br>
+      <b><a href="https://youtu.be/HO_HQngI9Gw">30-second pitch</a></b>
+    </td>
+    <td align="center">
+      <a href="https://youtu.be/mXEYfq7QKxo">
+        <img src="https://img.youtube.com/vi/mXEYfq7QKxo/maxresdefault.jpg" alt="SafeWindow – full video" width="400">
+      </a>
+      <br>
+      <b><a href="https://youtu.be/mXEYfq7QKxo">Full video</a></b>
+    </td>
+  </tr>
+</table>
+
 SafeWindow turns satellite flood maps into a date-based isolation timeline for every village. It combines Sentinel-1 radar flood maps, OpenStreetMap roads and shelters, NASA rainfall and elevation data, and a household supply assumption. For each village, it answers three questions:
 
 1. **When** is the village cut off from every shelter? (a date range between radar passes)
@@ -675,9 +696,9 @@ All inputs are free and public.
 |---|---|---|
 | NISAR GCOV (L-band, HH and HV) | NASA-ISRO, via NASA Earthdata | Independent L-band check, the 2026 monsoon season, water hidden under crops around villages |
 | OPERA DSWx-S1 | NASA JPL, via NASA Earthdata | Confidence comparison |
-| GPM IMERG V07 | NASA | Daily rainfall, lag analysis, hindcast, daily check, automated watch |
+| GPM IMERG V07 | NASA | Daily rainfall, rain-to-flood lag, hindcast, daily check (the automated watch uses Open-Meteo rain) |
 | NASADEM | NASA | Slope mask |
-| NASA POWER (daily rainfall) | NASA Langley | Rain feature in the forecast benchmark |
+| NASA POWER (daily rainfall) | NASA Langley | Downloaded for the forecast benchmark; not yet used in its results (they use ERA5 rain) |
 | LANCE MCDWD, MODIS MOD09GA | NASA | Tested; not usable for these floods (archive length, cloud) |
 
 ### Other data
